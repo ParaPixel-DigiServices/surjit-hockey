@@ -5,12 +5,9 @@ from datetime import datetime, date
 
 class TournamentBase(BaseModel):
     """Base tournament schema."""
-    event_name: str = Field(..., max_length=255)
-    event_year: Optional[int] = None
-    start_date: Optional[date] = None
-    end_date: Optional[date] = None
-    venue: Optional[str] = None
+    event_title: str = Field(..., max_length=300)
     description: Optional[str] = None
+    event_image: Optional[str] = None
 
 
 class TournamentCreate(TournamentBase):
@@ -23,6 +20,7 @@ class TournamentResponse(TournamentBase):
     id: int
     status: bool
     date_created: datetime
+    date_updated: datetime
 
     class Config:
         from_attributes = True

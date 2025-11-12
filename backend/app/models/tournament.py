@@ -8,14 +8,14 @@ class Tournament(Base):
     __tablename__ = "hockey_event_master"
 
     id = Column(Integer, primary_key=True, index=True)
-    event_name = Column(String(255), nullable=False)
-    event_year = Column(Integer)
-    start_date = Column(Date)
-    end_date = Column(Date)
-    venue = Column(String(255))
-    description = Column(Text)
-    status = Column(Boolean, default=True)
-    date_created = Column(DateTime, server_default=func.now())
+    event_title = Column(String(300), nullable=False)
+    description = Column(Text, nullable=True)
+    event_image = Column(String(250), nullable=True)
+    date_created = Column(DateTime, nullable=False)
+    date_updated = Column(DateTime, nullable=False)
+    user_created = Column(Integer, nullable=False)
+    user_updated = Column(Integer, nullable=False)
+    status = Column(Boolean, nullable=False)
 
 
 class Fixture(Base):

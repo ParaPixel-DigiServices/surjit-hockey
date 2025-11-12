@@ -32,7 +32,7 @@ async def get_tournaments(
     """
     tournaments = db.query(Tournament)\
         .filter(Tournament.status == True)\
-        .order_by(Tournament.event_year.desc())\
+        .order_by(Tournament.date_created.desc())\
         .offset(skip)\
         .limit(limit)\
         .all()
