@@ -1,0 +1,77 @@
+from pydantic import BaseModel, Field
+from typing import Optional
+from datetime import datetime, date
+
+
+class TournamentBase(BaseModel):
+    """Base tournament schema."""
+    event_name: str = Field(..., max_length=255)
+    event_year: Optional[int] = None
+    start_date: Optional[date] = None
+    end_date: Optional[date] = None
+    venue: Optional[str] = None
+    description: Optional[str] = None
+
+
+class TournamentCreate(TournamentBase):
+    """Schema for creating a tournament."""
+    pass
+
+
+class TournamentResponse(TournamentBase):
+    """Schema for tournament response."""
+    id: int
+    status: bool
+    date_created: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class FixtureBase(BaseModel):
+    """Base fixture schema."""
+    tournament_id: int
+    match_number: Optional[int] = None
+    match_date: Optional[datetime] = None
+    team1_id: int
+    team2_id: int
+    pool: Optional[str] = None
+    category: Optional[str] = None
+    venue: Optional[str] = None
+
+
+class FixtureCreate(FixtureBase):
+    """Schema for creating a fixture."""
+    pass
+
+
+class FixtureResponse(FixtureBase):
+    """Schema for fixture response."""
+    id: int
+    status: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+
+class MatchResultBase(BaseModel):
+    """Base match result schema."""
+    fixture_id: int
+    team1_score: Optional[int] = None
+    team2_score: Optional[int] = None
+    winner_team_id: Optional[int] = None
+    match_summary: Optional[str] = None
+
+
+class MatchResultCreate(MatchResultBase):
+    """Schema for creating a match result."""
+    pass
+
+
+class MatchResultResponse(MatchResultBase):
+    """Schema for match result response."""
+    id: int
+    date_updated: datetime
+
+    class Config:
+        from_attributes = True
