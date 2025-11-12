@@ -28,14 +28,14 @@ class TournamentResponse(TournamentBase):
 
 class FixtureBase(BaseModel):
     """Base fixture schema."""
-    tournament_id: int
-    match_number: Optional[int] = None
-    match_date: Optional[datetime] = None
-    team1_id: int
-    team2_id: int
-    pool: Optional[str] = None
-    category: Optional[str] = None
-    venue: Optional[str] = None
+    year_id: int
+    date_match: datetime
+    match_name: str
+    pool_category_type: int
+    match_no: int
+    pool_type: int
+    team_id_1: int
+    team_id_2: int
 
 
 class FixtureCreate(FixtureBase):
@@ -46,7 +46,8 @@ class FixtureCreate(FixtureBase):
 class FixtureResponse(FixtureBase):
     """Schema for fixture response."""
     id: int
-    status: Optional[str] = None
+    winner_id: int
+    match_status: bool
 
     class Config:
         from_attributes = True

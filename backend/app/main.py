@@ -42,7 +42,7 @@ app.include_router(
 
 app.include_router(
     content.router,
-    prefix="/api/v1",
+    prefix="/api/v1/content",
     tags=["Content"]
 )
 

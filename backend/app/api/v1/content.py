@@ -29,7 +29,7 @@ async def get_banners(db: Session = Depends(get_db)):
     """
     banners = db.query(Banner)\
         .filter(Banner.status == True)\
-        .order_by(Banner.order)\
+        .order_by(Banner.date_created.desc())\
         .all()
 
     return banners

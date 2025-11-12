@@ -74,26 +74,22 @@ async def get_tournament(
 @router.get("/{tournament_id}/fixtures", response_model=List[FixtureResponse])
 async def get_tournament_fixtures(
     tournament_id: int,
-    category: str = Query(None, description="Filter by category (Men/Women)"),
     db: Session = Depends(get_db)
 ):
     """
     Get fixtures for a tournament.
 
     Args:
-        tournament_id: Tournament ID
-        category: Optional category filter
+        tournament_id: Tournament ID (year_id in database)
         db: Database session
 
     Returns:
         List of fixtures
     """
-    query = db.query(Fixture).filter(Fixture.tournament_id == tournament_id)
-
-    if category:
-        query = query.filter(Fixture.category == category)
-
-    fixtures = query.order_by(Fixture.match_date).all()
+    fixtures = db.query(Fixture)\
+        .filter(Fixture.year_id == tournament_id)\
+        .order_by(Fixture.date_match)\
+        .all()
 
     return fixtures
 

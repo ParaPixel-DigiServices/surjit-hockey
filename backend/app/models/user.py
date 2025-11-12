@@ -8,12 +8,20 @@ class User(Base):
     __tablename__ = "alumni_user_register"
 
     id = Column(Integer, primary_key=True, index=True)
-    username = Column(String(100), unique=True, index=True, nullable=False)
-    email = Column(String(100), unique=True, index=True, nullable=False)
-    password = Column(String(255), nullable=False)
-    status = Column(Boolean, default=True)
-    date_created = Column(DateTime, server_default=func.now())
-    date_modified = Column(DateTime, onupdate=func.now())
+    first_name = Column(String(250), nullable=False)
+    last_name = Column(String(250), nullable=False)
+    username = Column(String(250), nullable=False)
+    password = Column(String(250), nullable=False)
+    email = Column(String(250), nullable=False)
+    mobile = Column(String(25), nullable=False)
+    gender = Column(Integer, nullable=False)
+    date_created = Column(DateTime, nullable=False)
+    ip = Column(String(15), nullable=False)
+    session_id = Column(String(50), nullable=False)
+    last_action = Column(Integer, nullable=False)
+    language_id = Column(Integer, nullable=False)
+    status_distinguished = Column(Boolean, nullable=False)
+    status = Column(Boolean, nullable=False)
 
 
 class UserProfile(Base):

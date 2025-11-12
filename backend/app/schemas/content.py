@@ -5,16 +5,18 @@ from datetime import datetime
 
 class BannerBase(BaseModel):
     """Base banner schema."""
-    title: Optional[str] = None
-    image: str
-    link: Optional[str] = None
-    order: Optional[int] = 0
+    image_name: str
+    title_1: str
+    title_2: Optional[str] = None
+    title_3: Optional[str] = None
 
 
 class BannerResponse(BannerBase):
     """Schema for banner response."""
     id: int
+    title_status: bool
     status: bool
+    date_created: datetime
 
     class Config:
         from_attributes = True
@@ -22,20 +24,18 @@ class BannerResponse(BannerBase):
 
 class GalleryBase(BaseModel):
     """Base gallery schema."""
-    caption: Optional[str] = Field(None, max_length=250)
-    description: Optional[str] = None
-    image_name: Optional[str] = None
+    image_name: str
+    title: str
 
 
 class GalleryCreate(GalleryBase):
     """Schema for creating a gallery item."""
-    user_id: int
+    pass
 
 
 class GalleryResponse(GalleryBase):
     """Schema for gallery response."""
     id: int
-    user_id: int
     parent_image: int
     date_created: datetime
     status: bool

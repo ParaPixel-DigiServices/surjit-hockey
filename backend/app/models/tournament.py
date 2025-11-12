@@ -23,15 +23,21 @@ class Fixture(Base):
     __tablename__ = "hockey_fixture_master"
 
     id = Column(Integer, primary_key=True, index=True)
-    tournament_id = Column(Integer, index=True)
-    match_number = Column(Integer)
-    match_date = Column(DateTime)
-    team1_id = Column(Integer)
-    team2_id = Column(Integer)
-    pool = Column(String(50))
-    category = Column(String(20))  # Men/Women
-    venue = Column(String(255))
-    status = Column(String(50))  # scheduled, completed, cancelled
+    year_id = Column(Integer, nullable=False)
+    date_match = Column(DateTime, nullable=False)
+    match_name = Column(String(300), nullable=False)
+    pool_category_type = Column(Integer, nullable=False)
+    match_no = Column(Integer, nullable=False)
+    pool_type = Column(Integer, nullable=False)
+    team_id_1 = Column(Integer, nullable=False)
+    team_id_2 = Column(Integer, nullable=False)
+    pool_id_1 = Column(Integer, nullable=False)
+    match_id_1 = Column(Integer, nullable=False)
+    pool_id_2 = Column(Integer, nullable=False)
+    match_id_2 = Column(Integer, nullable=False)
+    winner_id = Column(Integer, nullable=False)
+    match_status = Column(Boolean, nullable=False)
+    match_report_file = Column(String(250), nullable=False)
 
 
 class MatchResult(Base):

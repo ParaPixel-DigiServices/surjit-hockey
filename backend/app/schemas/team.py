@@ -4,10 +4,11 @@ from typing import Optional
 
 class TeamBase(BaseModel):
     """Base team schema."""
-    team_name: str = Field(..., max_length=255)
-    team_code: Optional[str] = Field(None, max_length=50)
-    logo: Optional[str] = None
-    description: Optional[str] = None
+    team_name: str = Field(..., max_length=250)
+    team_name_short: str = Field(..., max_length=50)
+    team_logo: Optional[str] = None
+    team_coach: Optional[str] = None
+    team_manager: Optional[str] = None
 
 
 class TeamCreate(TeamBase):
@@ -18,6 +19,7 @@ class TeamCreate(TeamBase):
 class TeamResponse(TeamBase):
     """Schema for team response."""
     id: int
+    team_type: int
     status: bool
 
     class Config:
