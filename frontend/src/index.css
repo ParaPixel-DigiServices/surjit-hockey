@@ -1,0 +1,216 @@
+@import "tailwindcss";
+
+/* ===========================================================
+   🎨 THEME TOKENS (Tailwind 4.1 @theme)
+   ----------------------------------------------------------- */
+@theme {
+  --color-bg: #0f1724;
+  --color-light: #ffffff;
+  --color-accent: #ffb400;
+  --color-muted: #94a3b8;
+
+  --font-sans: 'Inter', ui-sans-serif, system-ui;
+  --font-display: 'Playfair Display', serif;
+
+  --container-max: 1200px;
+
+  --radius-base: 0.5rem;
+  --radius-lg: 1rem;
+
+  --shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* ===========================================================
+   🌍 GLOBAL BASE & ACCESSIBILITY
+   ----------------------------------------------------------- */
+html,
+body,
+#root {
+  height: 100%;
+}
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg);
+  color: var(--color-light);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Keyboard focus outline */
+:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ===========================================================
+   🔤 TYPOGRAPHY SCALE (mobile-first)
+   ----------------------------------------------------------- */
+@layer base {
+  html, body {
+    font-family: 'Sora', sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, .h1 { @apply text-4xl sm:text-5xl md:text-6xl font-display font-semibold leading-tight; }
+  h2, .h2 { @apply text-3xl sm:text-4xl font-display font-semibold leading-snug; }
+  h3, .h3 { @apply text-2xl sm:text-3xl font-display font-medium; }
+  p, .p   { @apply text-base text-white/80; }
+  small   { @apply text-sm text-white/60; }
+}
+
+/* ===========================================================
+   🧱 COMPONENT & UTILITY LAYERS
+   ----------------------------------------------------------- */
+@layer components {
+  .container {
+    @apply mx-auto w-full max-w-[var(--container-max)] px-4 sm:px-6 lg:px-8;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md font-semibold shadow-sm transition;
+  }
+  .btn-primary {
+    @apply bg-[var(--color-accent)] text-black hover:opacity-90 px-5 py-2;
+  }
+  .btn-outline {
+    @apply border border-white/20 text-white hover:bg-white/10 px-5 py-2;
+  }
+}
+
+@layer utilities {
+  .img-fluid { @apply w-full h-auto object-cover; }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+
+.page-with-header {
+  padding-top: 4rem;
+}
+
+/* Hide scrollbar for Chrome, Safari, Opera */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge, Firefox */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar for a cleaner design */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Marquee CSS: place in index.css / globals.css */
+
+/* Hide default scrollbar where used */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* marquee-track animation: translateX by 50% (since content is duplicated) */
+.marquee-track {
+  display: flex;
+  gap: 0;
+  align-items: center;
+  /* Duration controls speed: longer = slower */
+  animation: marquee 32s linear infinite;
+  will-change: transform;
+}
+
+/* Pause on hover (user can still click) */
+.marquee-track:hover,
+.marquee-track:focus-within {
+  animation-play-state: paused;
+}
+
+/* each item style */
+.marquee-item {
+  display: inline-block;
+  user-select: none;
+  cursor: pointer;
+}
+
+/* Keyframes: move from 0 to -50% (half the total content) */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Small responsive tweak: reduce padding on smaller screens */
+@media (max-width: 640px) {
+  .marquee-item {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+/* Optional: reduce motion for prefers-reduced-motion users */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
+/* ----------------------------------------
+   Custom Golden Scrollbar for About Header
+----------------------------------------- */
+.about-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #ffd700 #1b2b4a;
+}
+
+.about-scrollbar::-webkit-scrollbar {
+  height: 6px;
+}
+
+.about-scrollbar::-webkit-scrollbar-track {
+  background: #1b2b4a;
+}
+
+.about-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #ffd700, #e6b800);
+  border-radius: 4px;
+}
+
+.about-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(90deg, #ffda44, #ffd700);
+}
+
+.form-input {
+  @apply w-full p-3 rounded-lg bg-transparent border border-[#ffd700]/40 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#ffd700];
+}
