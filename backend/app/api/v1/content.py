@@ -3,36 +3,14 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from app.core import get_db
-from app.models.content import Banner, Gallery, Memory
+from app.models.content import Gallery, Memory
 from app.schemas.content import (
-    BannerResponse,
     GalleryResponse,
     MemoryResponse,
     MemoryCreate
 )
-from app.api.deps import get_current_active_user
-from app.models.user import User
 
 router = APIRouter()
-
-
-@router.get("/banners", response_model=List[BannerResponse])
-async def get_banners(db: Session = Depends(get_db)):
-    """
-    Get all active banners.
-
-    Args:
-        db: Database session
-
-    Returns:
-        List of banners
-    """
-    banners = db.query(Banner)\
-        .filter(Banner.status == True)\
-        .order_by(Banner.date_created.desc())\
-        .all()
-
-    return banners
 
 
 @router.get("/gallery", response_model=List[GalleryResponse])
@@ -146,22 +124,20 @@ async def get_memories(
 @router.post("/memories", response_model=MemoryResponse, status_code=status.HTTP_201_CREATED)
 async def create_memory(
     memory_data: MemoryCreate,
-    current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db)
 ):
     """
-    Create a new memory post (authenticated users only).
+    Create a new memory post.
 
     Args:
         memory_data: Memory post data
-        current_user: Current authenticated user
         db: Database session
 
     Returns:
         Created memory post
     """
     new_memory = Memory(
-        user_id=current_user.id,
+        user_id=memory_data.user_id,
         caption=memory_data.caption,
         description=memory_data.description,
         image_name=memory_data.image_name,

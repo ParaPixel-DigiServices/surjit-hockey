@@ -47,58 +47,6 @@
 http://localhost:8000/api/v1
 ```
 
-### Authentication Endpoints
-
-#### Register User
-
-```http
-POST /auth/register
-Content-Type: application/json
-
-{
-  "username": "johndoe",
-  "email": "john@example.com",
-  "password": "securepassword123"
-}
-```
-
-**Response:**
-
-```json
-{
-  "id": 1,
-  "username": "johndoe",
-  "email": "john@example.com",
-  "status": true,
-  "date_created": "2025-11-13T10:00:00"
-}
-```
-
-#### Login
-
-```http
-POST /auth/login
-Content-Type: application/x-www-form-urlencoded
-
-username=johndoe&password=securepassword123
-```
-
-**Response:**
-
-```json
-{
-  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "token_type": "bearer"
-}
-```
-
-#### Get Current User
-
-```http
-GET /auth/me
-Authorization: Bearer {token}
-```
-
 ### Tournament Endpoints
 
 #### Get All Tournaments
@@ -184,12 +132,6 @@ GET /teams/{id}/players
 
 ### Content Endpoints
 
-#### Get Banners
-
-```http
-GET /banners
-```
-
 #### Get Gallery
 
 ```http
@@ -228,21 +170,6 @@ Content-Type: application/json
   "image_name": "memory.jpg"
 }
 ```
-
-## Authentication
-
-Most endpoints are public, but certain actions require authentication:
-
-1. **Get Token**: Use `/auth/login` endpoint
-2. **Use Token**: Include in Authorization header:
-   ```
-   Authorization: Bearer {your_token_here}
-   ```
-
-Protected endpoints:
-
-- `POST /memories` - Create memory
-- `GET /auth/me` - Get current user
 
 ## Error Responses
 
