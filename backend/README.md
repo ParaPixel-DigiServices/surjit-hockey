@@ -57,97 +57,80 @@ Once the server is running, visit:
 backend/
 ├── app/
 │   ├── api/              # API routes
-│   │   ├── v1/          # API version 1
-│   │   │   ├── auth.py  # Authentication endpoints
-│   │   │   ├── tournaments.py
-│   │   │   ├── teams.py
-│   │   │   ├── news.py
-│   │   │   └── gallery.py
-│   │   └── deps.py      # Dependencies (auth, db)
+│   │   └── v1/          # API version 1
+│   │       ├── tournaments.py
+│   │       ├── teams.py
+│   │       └── content.py
 │   │
 │   ├── core/            # Core functionality
+│   │   ├── __init__.py  # Database dependency
 │   │   ├── config.py    # Configuration
-│   │   ├── security.py  # Security utilities
 │   │   └── database.py  # Database connection
 │   │
 │   ├── models/          # SQLAlchemy models
-│   │   ├── user.py
 │   │   ├── tournament.py
 │   │   ├── team.py
-│   │   └── content.py
+│   │   ├── content.py
+│   │   └── user.py
 │   │
 │   ├── schemas/         # Pydantic schemas
-│   │   ├── user.py
 │   │   ├── tournament.py
 │   │   ├── team.py
-│   │   └── content.py
-│   │
-│   ├── crud/            # CRUD operations
-│   │   ├── user.py
-│   │   ├── tournament.py
-│   │   └── team.py
+│   │   ├── content.py
+│   │   └── user.py
 │   │
 │   └── main.py          # Application entry point
 │
-├── alembic/             # Database migrations
-├── tests/               # Test files
+├── tests/               # Test scripts
+│   ├── test_endpoints.py
+│   ├── test_db.py
+│   └── test_api.ps1
 ├── requirements.txt
-├── .env.example
+├── .env
+├── .gitignore
+├── API_DOCUMENTATION.md
 └── README.md
 ```
 
 ## Key Features
 
-### Authentication
-
-- JWT-based authentication
-- Secure password hashing with bcrypt
-- Token refresh mechanism
-
 ### Tournament Management
 
-- Create, read, update tournaments
-- Manage fixtures and match schedules
-- Track results and statistics
+- List all tournaments
+- Get tournament details
+- View tournament fixtures
+- Access match results
 
 ### Team Management
 
-- Team profiles and information
-- Player rosters
-- Team statistics
+- List all teams
+- Get team details
+- Team information and statistics
 
 ### Content Management
 
-- News articles
-- Photo galleries
-- Memory posts
+- Photo gallery
+- Memory posts from alumni
 
 ## API Endpoints Overview
-
-### Authentication (`/api/v1/auth`)
-
-- `POST /register` - Register new user
-- `POST /login` - User login (returns JWT token)
-- `POST /refresh` - Refresh access token
-- `GET /me` - Get current user info
 
 ### Tournaments (`/api/v1/tournaments`)
 
 - `GET /` - List all tournaments
 - `GET /{id}` - Get tournament details
 - `GET /{id}/fixtures` - Get tournament fixtures
-- `GET /{id}/teams` - Get participating teams
 - `GET /{id}/results` - Get tournament results
 
 ### Teams (`/api/v1/teams`)
 
 - `GET /` - List all teams
 - `GET /{id}` - Get team details
-- `GET /{id}/players` - Get team roster
 
-### News (`/api/v1/news`)
+### Content (`/api/v1/content`)
 
-- `GET /` - List news articles
+- `GET /gallery` - Get gallery items
+- `GET /memories` - Get memory posts
+- `POST /memories` - Create new memory post
 - `GET /{id}` - Get article details
 - `GET /trending` - Get trending news
 
@@ -165,60 +148,41 @@ backend/
 
 ## Database Models
 
-### User Models
+### Data Models
 
-- `User` - User authentication and basic info
-- `UserProfile` - Extended user profile
-- `UserSportsDetails` - Sports background
+**Tournament Models**
 
-### Tournament Models
+- `Tournament` - Tournament events from `hockey_event_master`
+- `Fixture` - Match fixtures from `hockey_fixture_master`
+- `MatchResult` - Match results from `hockey_match_results`
+- `Category` - Tournament categories from `hockey_category_master`
 
-- `Tournament` - Tournament information
-- `Fixture` - Match fixtures
-- `Result` - Match results
-- `Category` - Men/Women categories
+**Team Models**
 
-### Team Models
+- `Team` - Team information from `hockey_team_master`
 
-- `Team` - Team information
-- `Player` - Player profiles
+**Content Models**
 
-### Content Models
+- `Gallery` - Photo galleries from `hockey_gallery`
+- `Memory` - Memory posts from `alumni_memory`
 
-- `News` - News articles
-- `Gallery` - Photo albums
-- `GalleryImage` - Individual images
-- `Memory` - Memory posts
+**User Models**
+
+- `User` - User accounts from `alumni_user_register`
 
 ## Development
 
 ### Running Tests
 
 ```bash
-pytest
-```
+# Run comprehensive endpoint tests
+python tests/test_endpoints.py
 
-### Code Formatting
+# Test database connection
+python tests/test_db.py
 
-```bash
-# Format code
-black app/
-
-# Sort imports
-isort app/
-```
-
-### Database Migrations
-
-```bash
-# Create new migration
-alembic revision --autogenerate -m "description"
-
-# Apply migrations
-alembic upgrade head
-
-# Rollback migration
-alembic downgrade -1
+# PowerShell test script
+.\tests\test_api.ps1
 ```
 
 ## Production Deployment
@@ -247,11 +211,10 @@ docker run -p 8000:8000 --env-file .env surjit-hockey-api
 
 ## Security Considerations
 
-- All passwords are hashed using bcrypt
-- JWT tokens expire after configured time
 - CORS is configured for specific origins
 - Input validation using Pydantic
 - SQL injection protection via SQLAlchemy ORM
+- Proper handling of MySQL zero dates
 
 ## Troubleshooting
 

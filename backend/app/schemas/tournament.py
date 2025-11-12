@@ -20,10 +20,13 @@ class TournamentResponse(TournamentBase):
     id: int
     status: bool
     date_created: datetime
-    date_updated: datetime
+    date_updated: Optional[datetime] = None
 
     class Config:
         from_attributes = True
+        json_encoders = {
+            datetime: lambda v: v.isoformat() if v else None
+        }
 
 
 class FixtureBase(BaseModel):

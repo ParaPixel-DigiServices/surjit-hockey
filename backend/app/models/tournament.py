@@ -12,9 +12,9 @@ class Tournament(Base):
     description = Column(Text, nullable=True)
     event_image = Column(String(250), nullable=True)
     date_created = Column(DateTime, nullable=False)
-    date_updated = Column(DateTime, nullable=False)
-    user_created = Column(Integer, nullable=False)
-    user_updated = Column(Integer, nullable=False)
+    date_updated = Column(DateTime, nullable=True)
+    user_created = Column(Integer, nullable=True)
+    user_updated = Column(Integer, nullable=True)
     status = Column(Boolean, nullable=False)
 
 

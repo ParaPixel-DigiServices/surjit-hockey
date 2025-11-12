@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 from typing import List
+from datetime import datetime
 
 from app.core import get_db
 from app.models.tournament import Tournament, Fixture, MatchResult
@@ -11,6 +12,20 @@ from app.schemas.tournament import (
 )
 
 router = APIRouter()
+
+
+def sanitize_tournament(tournament):
+    """Convert tournament model to dict with proper datetime handling."""
+    data = {
+        "id": tournament.id,
+        "event_title": tournament.event_title,
+        "description": tournament.description,
+        "event_image": tournament.event_image,
+        "status": tournament.status,
+        "date_created": tournament.date_created,
+        "date_updated": None if (isinstance(tournament.date_updated, str) or tournament.date_updated is None) else tournament.date_updated
+    }
+    return data
 
 
 @router.get("/", response_model=List[TournamentResponse])
@@ -37,7 +52,7 @@ async def get_tournaments(
         .limit(limit)\
         .all()
 
-    return tournaments
+    return [sanitize_tournament(t) for t in tournaments]
 
 
 @router.get("/{tournament_id}", response_model=TournamentResponse)
@@ -68,7 +83,7 @@ async def get_tournament(
             detail="Tournament not found"
         )
 
-    return tournament
+    return sanitize_tournament(tournament)
 
 
 @router.get("/{tournament_id}/fixtures", response_model=List[FixtureResponse])

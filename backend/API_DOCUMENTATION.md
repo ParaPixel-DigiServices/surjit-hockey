@@ -52,7 +52,7 @@ http://localhost:8000/api/v1
 #### Get All Tournaments
 
 ```http
-GET /tournaments?skip=0&limit=100
+GET /api/v1/tournaments?skip=0&limit=100
 ```
 
 **Response:**
@@ -60,15 +60,13 @@ GET /tournaments?skip=0&limit=100
 ```json
 [
   {
-    "id": 1,
-    "event_name": "38th Surjit Hockey Tournament",
-    "event_year": 2025,
-    "start_date": "2025-11-15",
-    "end_date": "2025-11-25",
-    "venue": "Surjit Hockey Stadium, Jalandhar",
-    "description": "Annual Grade-I Hockey Tournament",
+    "id": 100,
+    "event_title": "DAY4 1",
+    "description": "",
+    "event_image": "100-950.JPG",
     "status": true,
-    "date_created": "2025-01-01T00:00:00"
+    "date_created": "2024-10-22T04:27:26",
+    "date_updated": null
   }
 ]
 ```
@@ -76,31 +74,27 @@ GET /tournaments?skip=0&limit=100
 #### Get Tournament by ID
 
 ```http
-GET /tournaments/{id}
+GET /api/v1/tournaments/{id}
+```
+
+**Response:**
+
+```json
+{
+  "id": 100,
+  "event_title": "DAY4 1",
+  "description": "",
+  "event_image": "100-950.JPG",
+  "status": true,
+  "date_created": "2024-10-22T04:27:26",
+  "date_updated": null
+}
 ```
 
 #### Get Tournament Fixtures
 
 ```http
-GET /tournaments/{id}/fixtures?category=Men
-```
-
-**Query Parameters:**
-
-- `category` (optional): Filter by Men/Women
-
-#### Get Tournament Results
-
-```http
-GET /tournaments/{id}/results
-```
-
-### Team Endpoints
-
-#### Get All Teams
-
-```http
-GET /teams?skip=0&limit=100
+GET /api/v1/tournaments/{id}/fixtures
 ```
 
 **Response:**
@@ -109,10 +103,46 @@ GET /teams?skip=0&limit=100
 [
   {
     "id": 1,
-    "team_name": "Indian Navy",
-    "team_code": "NAVY",
-    "logo": "teams/navy.png",
-    "description": "Indian Navy Hockey Team",
+    "year_id": 100,
+    "date_match": "2024-10-22T10:00:00",
+    "match_name": "Pool A Match 1",
+    "pool_category_type": 1,
+    "match_no": 1,
+    "pool_type": 1,
+    "team_id_1": 22,
+    "team_id_2": 25,
+    "winner_id": 0,
+    "match_status": false
+  }
+]
+```
+
+#### Get Tournament Results
+
+```http
+GET /api/v1/tournaments/{id}/results
+```
+
+### Team Endpoints
+
+#### Get All Teams
+
+```http
+GET /api/v1/teams?skip=0&limit=100
+```
+
+**Response:**
+
+```json
+[
+  {
+    "id": 22,
+    "team_name": "Army-XI Delhi",
+    "team_name_short": "ARMY",
+    "team_logo": "22.png",
+    "team_coach": "",
+    "team_manager": "",
+    "team_type": 0,
     "status": true
   }
 ]
@@ -121,13 +151,22 @@ GET /teams?skip=0&limit=100
 #### Get Team by ID
 
 ```http
-GET /teams/{id}
+GET /api/v1/teams/{id}
 ```
 
-#### Get Team Players
+**Response:**
 
-```http
-GET /teams/{id}/players
+```json
+{
+  "id": 22,
+  "team_name": "Army-XI Delhi",
+  "team_name_short": "ARMY",
+  "team_logo": "22.png",
+  "team_coach": "",
+  "team_manager": "",
+  "team_type": 0,
+  "status": true
+}
 ```
 
 ### Content Endpoints
@@ -135,36 +174,54 @@ GET /teams/{id}/players
 #### Get Gallery
 
 ```http
-GET /gallery?skip=0&limit=50
+GET /api/v1/content/gallery?skip=0&limit=50
 ```
 
-#### Get Gallery Item
+**Response:**
 
-```http
-GET /gallery/{id}
-```
-
-#### Get Gallery Album Images
-
-```http
-GET /gallery/{id}/images
+```json
+[
+  {
+    "id": 43,
+    "image_name": "43-243.JPG",
+    "title": "40th Indian Oil Servo Surjit Hockey Tournament Day 4",
+    "parent_image": 0,
+    "date_created": "2024-10-22T04:21:01",
+    "status": true
+  }
+]
 ```
 
 #### Get Memories
 
 ```http
-GET /memories?skip=0&limit=50
+GET /api/v1/content/memories?skip=0&limit=50
 ```
 
-#### Create Memory (Authenticated)
+**Response:**
+
+```json
+[
+  {
+    "id": 38,
+    "user_id": 114,
+    "caption": "Ashaley Kaur Visit",
+    "description": "Fitness & Bhangra by Ashley Kaur Reen Season",
+    "image_name": "38-460.JPG",
+    "date_created": "2022-06-25T22:24:01",
+    "status": true
+  }
+]
+```
+
+#### Create Memory
 
 ```http
-POST /memories
-Authorization: Bearer {token}
+POST /api/v1/content/memories
 Content-Type: application/json
 
 {
-  "user_id": 1,
+  "user_id": 114,
   "caption": "Great memories from tournament",
   "description": "Wonderful experience playing in 2024 tournament",
   "image_name": "memory.jpg"
@@ -255,29 +312,24 @@ Update `CORS_ORIGINS` in `.env` for production.
 
 ## Database Schema
 
-### Users & Authentication
-
-- `alumni_user_register` - User accounts
-- `alumni_user_personal_details` - User profiles
-- `alumni_user_sports_details` - Sports background
-
 ### Tournaments
 
 - `hockey_event_master` - Tournament events
 - `hockey_fixture_master` - Match fixtures
 - `hockey_match_results` - Match results
-- `hockey_category_master` - Categories
 
 ### Teams
 
-- `hockey_teams` - Team information
-- `hockey_alumni_master` - Players
+- `hockey_team_master` - Team information
 
 ### Content
 
-- `hockey_banner` - Banner images
-- `alumni_gallery` - Photo galleries
+- `hockey_gallery` - Photo galleries
 - `alumni_memory` - Memory posts
+
+### Users
+
+- `alumni_user_register` - User accounts
 
 ## Environment Variables
 

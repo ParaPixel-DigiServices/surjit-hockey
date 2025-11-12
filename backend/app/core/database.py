@@ -1,13 +1,15 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, event
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from app.core.config import settings
+import pymysql
 
-# Create database engine
+# Create database engine with MySQL zero date handling
 engine = create_engine(
     settings.DATABASE_URL,
     pool_pre_ping=True,
     pool_recycle=3600,
+    connect_args={"init_command": "SET sql_mode='ALLOW_INVALID_DATES'"}
 )
 
 # Create SessionLocal class
