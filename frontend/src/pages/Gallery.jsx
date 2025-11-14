@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 // --- Import Album Thumbnails and Images ---
 import album1Thumb from "../assets/gallery1_thumb.jpeg";
-import album2Thumb from "../assets/gallery2_thumb.jpg";
+import album2Thumb from "../assets/gallery2_thumb.jpeg";
 import album3Thumb from "../assets/gallery3_thumb.jpeg";
 
 import g1a from "../assets/gallery1_1.jpeg";
