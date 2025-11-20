@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
-from app.api.v1 import tournaments, teams, content
+from app.api.v1 import tournaments, teams, content, news
 
 # Create FastAPI application
 app = FastAPI(
@@ -38,6 +38,12 @@ app.include_router(
     content.router,
     prefix="/api/v1/content",
     tags=["Content"]
+)
+
+app.include_router(
+    news.router,
+    prefix="/api/v1",
+    tags=["News & Info"]
 )
 
 

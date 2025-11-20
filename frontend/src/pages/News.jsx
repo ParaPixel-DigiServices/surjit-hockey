@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Newspaper, ArrowRight } from "lucide-react";
+import { api } from "../services/api";
 
 // --- Import Example Images ---
 import news1 from "../assets/news1.jpg";
@@ -18,10 +19,36 @@ import news4 from "../assets/news4.jpg";
  * ✅ Elegant Navbar to return home
  */
 
+const fallbackImages = [news1, news2, news3, news4];
+
 export default function News() {
   const navigate = useNavigate();
+  const [newsItems, setNewsItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const newsItems = [
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        setLoading(true);
+        const data = await api.getNews(0, 10);
+        const formattedNews = data.map((item, index) => ({
+          id: item.id,
+          title: item.title,
+          date: new Date(item.date_created).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+          image: fallbackImages[index % fallbackImages.length],
+          excerpt: item.description ? item.description.substring(0, 200) + (item.description.length > 200 ? '...' : '') : 'Click to read more...'
+        }));
+        setNewsItems(formattedNews);
+      } catch (error) {
+        console.error('Failed to fetch news:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchNews();
+  }, []);
+
+  const staticNewsItems = [
     {
       title: "Indian Oil Mumbai Wins 2024 Surjit Hockey Tournament",
       date: "November 2, 2024",
