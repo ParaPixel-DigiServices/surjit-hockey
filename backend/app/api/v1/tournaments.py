@@ -124,9 +124,16 @@ async def get_tournament_results(
     Returns:
         List of match results
     """
-    results = db.query(MatchResult)\
-        .join(Fixture)\
-        .filter(Fixture.tournament_id == tournament_id)\
-        .all()
+    try:
+        results = db.query(MatchResult)\
+            .join(Fixture, MatchResult.fixture_id == Fixture.id)\
+            .filter(Fixture.year_id == tournament_id)\
+            .all()
+        return results
+    except Exception as e:
+        # Return empty list if query fails (e.g., no data)
+        print(f"Error fetching results: {e}")
+        return []
 
-    return results
+
+

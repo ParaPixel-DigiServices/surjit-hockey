@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { api } from "../services/api";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -60,37 +61,103 @@ import g3j from "../assets/gallery3_10.JPG";
 export default function Gallery() {
   const navigate = useNavigate();
 
-  const albums = [
-    {
-      title: "Opening Ceremony",
-      description:
-        "Inaugural moments of the Surjit Hockey Tournament with dignitaries and vibrant celebrations.",
-      thumbnail: album1Thumb,
-      images: [g1a, g1b, g1c, g1d, g1e, g1f, g1g, g1h, g1i, g1j, g1k, g1l, g1m, g1n, g1o, g1p, g1q, g1r, g1s, g1t, g1u],
-    },
-    {
-      title: "Match Highlights",
-      description:
-        "Adrenaline-pumping match highlights showcasing the skill, speed, and passion of hockey.",
-      thumbnail: album2Thumb,
-      images: [g2a, g2b, g2c, g2d, g2e, g2f, g2g],
-    },
-    {
-      title: "Closing Ceremony",
-      description:
-        "A grand evening to honor champions and relive the glory of the Surjit Hockey legacy.",
-      thumbnail: album3Thumb,
-      images: [g3a, g3b, g3c, g3d, g3e, g3f, g3g, g3h, g3i, g3j],
-    },
-  ];
-
+  const [albums, setAlbums] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedAlbum, setSelectedAlbum] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const handleNext = () => {
+  useEffect(() => {
+    const fetchGallery = async () => {
+      try {
+        setLoading(true);
+        const galleryData = await api.getGallery();
+        
+        // Group images by some criteria or just create a default album for now
+        // Since the API returns a flat list of images, we might want to group them
+        // For this example, I'll put them all in one "Tournament Gallery" album
+        // In a real app, you'd likely have an album ID or category in the response
+        
+        if (galleryData && galleryData.length > 0) {
+             const apiImages = galleryData.map(item => ({
+                src: item.image_name, // You might need to prepend a base URL for images
+                id: item.id,
+                title: item.title
+             }));
+
+             // Grouping logic (placeholder)
+             const defaultAlbum = {
+                title: "Tournament Gallery",
+                description: "Moments from the tournament",
+                thumbnail: apiImages[0]?.src || album1Thumb, // Fallback
+                images: apiImages.map(img => img.src)
+             };
+             
+             setAlbums([defaultAlbum]);
+        } else {
+            // Fallback to static data if API returns empty (for demo purposes)
+             setAlbums([
+                {
+                  title: "Opening Ceremony",
+                  description:
+                    "Inaugural moments of the Surjit Hockey Tournament with dignitaries and vibrant celebrations.",
+                  thumbnail: album1Thumb,
+                  images: [g1a, g1b, g1c, g1d, g1e, g1f, g1g, g1h, g1i, g1j, g1k, g1l, g1m, g1n, g1o, g1p, g1q, g1r, g1s, g1t, g1u],
+                },
+                {
+                  title: "Match Highlights",
+                  description:
+                    "Adrenaline-pumping match highlights showcasing the skill, speed, and passion of hockey.",
+                  thumbnail: album2Thumb,
+                  images: [g2a, g2b, g2c, g2d, g2e, g2f, g2g],
+                },
+                {
+                  title: "Closing Ceremony",
+                  description:
+                    "A grand evening to honor champions and relive the glory of the Surjit Hockey legacy.",
+                  thumbnail: album3Thumb,
+                  images: [g3a, g3b, g3c, g3d, g3e, g3f, g3g, g3h, g3i, g3j],
+                },
+              ]);
+        }
+
+      } catch (error) {
+        console.error("Failed to fetch gallery:", error);
+         // Fallback to static data on error
+             setAlbums([
+                {
+                  title: "Opening Ceremony",
+                  description:
+                    "Inaugural moments of the Surjit Hockey Tournament with dignitaries and vibrant celebrations.",
+                  thumbnail: album1Thumb,
+                  images: [g1a, g1b, g1c, g1d, g1e, g1f, g1g, g1h, g1i, g1j, g1k, g1l, g1m, g1n, g1o, g1p, g1q, g1r, g1s, g1t, g1u],
+                },
+                {
+                  title: "Match Highlights",
+                  description:
+                    "Adrenaline-pumping match highlights showcasing the skill, speed, and passion of hockey.",
+                  thumbnail: album2Thumb,
+                  images: [g2a, g2b, g2c, g2d, g2e, g2f, g2g],
+                },
+                {
+                  title: "Closing Ceremony",
+                  description:
+                    "A grand evening to honor champions and relive the glory of the Surjit Hockey legacy.",
+                  thumbnail: album3Thumb,
+                  images: [g3a, g3b, g3c, g3d, g3e, g3f, g3g, g3h, g3i, g3j],
+                },
+              ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGallery();
+  }, []);
+
+  const handleNext = React.useCallback(() => {
     if (selectedAlbum)
       setCurrentIndex((prev) => (prev + 1) % selectedAlbum.images.length);
-  };
+  }, [selectedAlbum]);
 
   const handlePrev = () => {
     if (selectedAlbum)
@@ -106,7 +173,12 @@ export default function Gallery() {
       const timer = setInterval(handleNext, 3500);
       return () => clearInterval(timer);
     }
-  }, [selectedAlbum]);
+  }, [selectedAlbum, handleNext]);
+
+  // Use loading state to show a spinner or something
+  if (loading) {
+    return <div className="text-white text-center py-20">Loading gallery...</div>;
+  }
 
   return (
     <section

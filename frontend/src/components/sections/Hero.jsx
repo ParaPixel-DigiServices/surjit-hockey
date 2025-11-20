@@ -1,14 +1,7 @@
 import React from 'react';
-import heroImage from '../../assets/hero.jpg'; // ✅ replace with your image
+import heroImage from '../../assets/hero.jpg';
 
-/**
- * Hero Section — Sporty Tournament Style
- * ----------------------------------------
- * - Bold Sora uppercase typography
- * - Dynamic accent bar under headline
- * - Subtle gradient overlay
- * - Responsive and cinematic
- */
+
 export default function Hero() {
   return (
     <section className="relative w-full min-h-[90vh] flex items-center justify-center overflow-hidden bg-black">

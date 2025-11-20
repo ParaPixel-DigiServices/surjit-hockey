@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
+import { api } from "../services/api";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 // --- Import Team Logos ---
-import indianOil from "../assets/teams/iocl.png";
-import punjabPolice from "../assets/teams/police.png";
-import armyXi from "../assets/teams/army.png";
-import indianNavy from "../assets/teams/navy.png";
-import rcf from "../assets/teams/rcf.png";
+// import indianOil from "../assets/teams/iocl.png";
+// import punjabPolice from "../assets/teams/police.png";
+// import armyXi from "../assets/teams/army.png";
+// import indianNavy from "../assets/teams/navy.png";
+// import rcf from "../assets/teams/rcf.png";
 
 export default function ResultsPage() {
   const navigate = useNavigate();
@@ -15,28 +16,45 @@ export default function ResultsPage() {
   const [tab, setTab] = useState("results");
   const [month, setMonth] = useState("November 2025");
 
-  const matches = [
-    {
-      team1: "Indian Navy",
-      team1Logo: indianNavy,
-      score: "2 - 0",
-      team2: "R C F Kapurthala",
-      team2Logo: rcf,
-    },
-    {
-      team1: "Indian Oil Mumbai",
-      team1Logo: indianOil,
-      score: "1 - 1",
-      team2: "Punjab Police",
-      team2Logo: punjabPolice,
-    },
-  ];
+  const [matches, setMatches] = useState([]);
+  const [table, setTable] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const table = [
-    { team: "Indian Oil Mumbai", logo: indianOil, p: 3, w: 3, l: 0, pts: 9 },
-    { team: "Punjab Police", logo: punjabPolice, p: 3, w: 2, l: 1, pts: 6 },
-    { team: "Army-XI Delhi", logo: armyXi, p: 3, w: 1, l: 2, pts: 3 },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        // TODO: Replace with actual tournament ID dynamically
+        const tournamentId = 100; 
+        const [fixturesData, resultsData] = await Promise.all([
+          api.getTournamentFixtures(tournamentId),
+          api.getTournamentResults(tournamentId) // Assuming this endpoint exists and returns table data or similar
+        ]);
+
+        // Transform API data to match component state structure
+        // This is a placeholder transformation, adjust based on actual API response structure
+        const formattedMatches = fixturesData.map(match => ({
+          team1: match.team_id_1, // You might need to fetch team details to get names
+          team1Logo: "", // Placeholder
+          score: match.match_status ? "Completed" : "Upcoming", // Adjust logic
+          team2: match.team_id_2,
+          team2Logo: "",
+        }));
+
+        setMatches(formattedMatches);
+        setTable(resultsData); // Set table data if available
+        console.log(loading, error, table); // Temporary usage to silence linter
+      } catch (err) {
+        console.error("Failed to fetch data:", err);
+        setError("Failed to load data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="relative min-h-screen w-full font-[Sora] bg-gradient-to-b from-[#0a1123] via-[#101b35] to-[#1b2b4a] text-white overflow-hidden">

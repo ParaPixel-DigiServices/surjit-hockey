@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { api } from "../../services/api";
 import { motion, AnimatePresence } from "framer-motion";
 
 // --- Example logos (replace with real imports later) ---
@@ -10,36 +11,64 @@ import crpf from "../../assets/teams/crpf.png";
 import iocl from "../../assets/teams/iocl.png";
 import psb from "../../assets/teams/psb.png";
 import army from "../../assets/teams/army.png";
+import cbct from "../../assets/teams/cbct.png";
 import railway from "../../assets/teams/railway.png";
 import bpcl from "../../assets/teams/bpcl.png";
 import bsf from "../../assets/teams/bsf.png";
 import cag from "../../assets/teams/cag.png";
 import fci from "../../assets/teams/fci.png";
 import itbp from "../../assets/teams/itbp.png";
-import cbct from "../../assets/teams/cbct.png";
 
 export default function ParticipatingTeams() {
   const [activeTab, setActiveTab] = useState("men");
 
-  const menTeams = [
-    { name: "R C F Kapurthala", logo: rcf },
-    { name: "Indian Navy", logo: navy },
-    { name: "Punjab Police", logo: police },
-    { name: "Indian Air Force", logo: airforce },
-    { name: "CRPF Delhi", logo: crpf },
-    { name: "Indian Oil Mumbai", logo: iocl },
-    { name: "Punjab & Sind Bank", logo: psb },
-    { name: "Army-XI Delhi", logo: army },
-    { name: "Indian Railway", logo: railway },
-    { name: "Bharat Petroleum", logo: bpcl },
-    { name: "BSF Jalandhar", logo: bsf },
-    { name: "CAG New Delhi", logo: cag },
-    { name: "FCI", logo: fci },
-    { name: "ITBP", logo: itbp },
-    { name: "CBCT Delhi", logo: cbct },
-  ];
+  const [menTeams, setMenTeams] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const womenTeams = [];
+  useEffect(() => {
+    const fetchTeams = async () => {
+      try {
+        setLoading(true);
+        const teamsData = await api.getTeams();
+        
+        const formattedTeams = teamsData.map(team => ({
+          name: team.team_name,
+          logo: team.team_logo, // You might need to prepend base URL
+          id: team.id
+        }));
+        
+        setMenTeams(formattedTeams);
+      } catch (error) {
+        console.error("Failed to fetch teams:", error);
+        // Fallback data
+        setMenTeams([
+            { name: "R C F Kapurthala", logo: rcf },
+            { name: "Indian Navy", logo: navy },
+            { name: "Punjab Police", logo: police },
+            { name: "Indian Air Force", logo: airforce },
+            { name: "CRPF Delhi", logo: crpf },
+            { name: "Indian Oil Mumbai", logo: iocl },
+            { name: "Punjab & Sind Bank", logo: psb },
+            { name: "Army-XI Delhi", logo: army },
+            { name: "Indian Railway", logo: railway },
+            { name: "Bharat Petroleum", logo: bpcl },
+            { name: "BSF Jalandhar", logo: bsf },
+            { name: "CAG New Delhi", logo: cag },
+            { name: "FCI", logo: fci },
+            { name: "ITBP", logo: itbp },
+            { name: "CBCT Delhi", logo: cbct },
+          ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTeams();
+  }, []);
+
+  if (loading) {
+      return <div className="text-white text-center py-20">Loading teams...</div>;
+  }
 
   return (
     <section

@@ -1,18 +1,53 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { api } from "../../services/api";
 import { motion } from "framer-motion";
 import indianNavy from "../../assets/teams/navy.png";
 import rcf from "../../assets/teams/rcf.png";
 
 export default function FixturesMen() {
-  const fixtures = [
-    {
-      date: "2025-11-05 12:34:00",
-      matchNo: 1,
-      pool: "Pool - A (M)",
-      team1: { name: "Indian Navy", logo: indianNavy },
-      team2: { name: "R C F Kapurthala", logo: rcf },
-    },
-  ];
+  const [fixtures, setFixtures] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFixtures = async () => {
+      try {
+        setLoading(true);
+        // TODO: Replace with actual tournament ID dynamically
+        const tournamentId = 100; 
+        const fixturesData = await api.getTournamentFixtures(tournamentId);
+        
+        const formattedFixtures = fixturesData.map(match => ({
+          date: new Date(match.date_match).toLocaleString(),
+          matchNo: match.match_no,
+          pool: match.pool_type === 1 ? "Pool - A (M)" : "Pool - B (M)", // Adjust logic based on pool type
+          team1: { name: `Team ${match.team_id_1}`, logo: indianNavy }, // Placeholder for team name/logo lookup
+          team2: { name: `Team ${match.team_id_2}`, logo: rcf }, // Placeholder
+        }));
+        
+        setFixtures(formattedFixtures);
+      } catch (error) {
+        console.error("Failed to fetch fixtures:", error);
+        // Fallback data
+        setFixtures([
+            {
+              date: "2025-11-05 12:34:00",
+              matchNo: 1,
+              pool: "Pool - A (M)",
+              team1: { name: "Indian Navy", logo: indianNavy },
+              team2: { name: "R C F Kapurthala", logo: rcf },
+            },
+          ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFixtures();
+  }, []);
+
+  if (loading) {
+    return <div className="text-white text-center py-20">Loading fixtures...</div>;
+  }
 
   const leaderboard = [
     "PUNJAB & SIND BANK",

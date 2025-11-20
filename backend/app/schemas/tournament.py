@@ -73,7 +73,8 @@ class MatchResultCreate(MatchResultBase):
 class MatchResultResponse(MatchResultBase):
     """Schema for match result response."""
     id: int
-    date_updated: datetime
+    date_updated: Optional[datetime] = None
 
     class Config:
         from_attributes = True
+

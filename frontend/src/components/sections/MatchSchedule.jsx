@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { api } from "../../services/api";
 import { motion, AnimatePresence } from "framer-motion";
 
 /**
@@ -12,46 +13,80 @@ import { motion, AnimatePresence } from "framer-motion";
  * - Responsive and mobile-first
  */
 
-const matches = [
-  { id: 1, date: "2025-11-12", teams: "India vs Australia", time: "7:00 PM", venue: "Jalandhar Stadium" },
-  { id: 2, date: "2025-11-15", teams: "Pakistan vs England", time: "5:00 PM", venue: "Ludhiana Ground" },
-  { id: 3, date: "2025-11-20", teams: "India vs Pakistan", time: "8:00 PM", venue: "Amritsar Arena" },
-  { id: 4, date: "2025-11-25", teams: "Australia vs England", time: "6:00 PM", venue: "Chandigarh Field" },
-];
-
-// Utility functions
-function daysInMonth(year, month) {
-  return new Date(year, month + 1, 0).getDate();
-}
-
-function monthMatrix(year, month) {
-  const first = new Date(year, month, 1);
-  const startDay = first.getDay();
-  const totalDays = daysInMonth(year, month);
-  const weeks = [];
-  let day = 1;
-  let week = new Array(7).fill(null);
-
-  for (let i = startDay; i < 7; i++) week[i] = day++;
-  weeks.push(week);
-
-  while (day <= totalDays) {
-    const w = new Array(7).fill(null);
-    for (let i = 0; i < 7 && day <= totalDays; i++) w[i] = day++;
-    weeks.push(w);
-  }
-  return weeks;
-}
-
-function pad(n) {
-  return n < 10 ? `0${n}` : `${n}`;
-}
-
-function toISO(year, month, day) {
-  return `${year}-${pad(month + 1)}-${pad(day)}`;
-}
-
 export default function MatchSchedule() {
+  const [matches, setMatches] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMatches = async () => {
+      try {
+        setLoading(true);
+        // TODO: Replace with actual tournament ID dynamically
+        const tournamentId = 100; 
+        const fixturesData = await api.getTournamentFixtures(tournamentId);
+        
+        const formattedMatches = fixturesData.map(match => ({
+          id: match.id,
+          date: new Date(match.date_match).toISOString().split('T')[0],
+          teams: `Team ${match.team_id_1} vs Team ${match.team_id_2}`, // Placeholder logic
+          time: new Date(match.date_match).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          venue: "Surjit Hockey Stadium", // Placeholder
+        }));
+        
+        setMatches(formattedMatches);
+      } catch (error) {
+        console.error("Failed to fetch matches:", error);
+        // Fallback data
+        setMatches([
+            { id: 1, date: "2025-11-12", teams: "India vs Australia", time: "7:00 PM", venue: "Jalandhar Stadium" },
+            { id: 2, date: "2025-11-15", teams: "Pakistan vs England", time: "5:00 PM", venue: "Ludhiana Ground" },
+            { id: 3, date: "2025-11-20", teams: "India vs Pakistan", time: "8:00 PM", venue: "Amritsar Arena" },
+            { id: 4, date: "2025-11-25", teams: "Australia vs England", time: "6:00 PM", venue: "Chandigarh Field" },
+          ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMatches();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center py-20">Loading schedule...</div>;
+  }
+
+  // Utility functions
+  function daysInMonth(year, month) {
+    return new Date(year, month + 1, 0).getDate();
+  }
+
+  function monthMatrix(year, month) {
+    const first = new Date(year, month, 1);
+    const startDay = first.getDay();
+    const totalDays = daysInMonth(year, month);
+    const weeks = [];
+    let day = 1;
+    let week = new Array(7).fill(null);
+
+    for (let i = startDay; i < 7; i++) week[i] = day++;
+    weeks.push(week);
+
+    while (day <= totalDays) {
+      const w = new Array(7).fill(null);
+      for (let i = 0; i < 7 && day <= totalDays; i++) w[i] = day++;
+      weeks.push(w);
+    }
+    return weeks;
+  }
+
+  function pad(n) {
+    return n < 10 ? `0${n}` : `${n}`;
+  }
+
+  function toISO(year, month, day) {
+    return `${year}-${pad(month + 1)}-${pad(day)}`;
+  }
+
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth();
