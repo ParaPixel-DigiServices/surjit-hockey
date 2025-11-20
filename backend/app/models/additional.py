@@ -111,3 +111,96 @@ class PositionMaster(Base):
     id = Column(Integer, primary_key=True, index=True)
     position = Column(String(250), nullable=False)
     status = Column(Boolean, nullable=False, default=True)
+
+
+class MatchReport(Base):
+    """Match reports with images."""
+    __tablename__ = "hockey_fixture_match_report"
+
+    id = Column(Integer, primary_key=True, index=True)
+    match_id = Column(Integer, nullable=False, index=True)
+    image_name = Column(String(250), nullable=False)
+    caption = Column(String(250), nullable=True)
+    year_id = Column(Integer, nullable=False)
+
+
+class Streaming(Base):
+    """Live streaming links."""
+    __tablename__ = "hockey_streaming_master"
+
+    id = Column(Integer, primary_key=True, index=True)
+    url_name = Column(String(200), nullable=False)
+    url = Column(String(300), nullable=False)
+    embed_code = Column(Text, nullable=True)
+    date_updated = Column(DateTime, nullable=False)
+    user_updated_by = Column(Integer, nullable=False)
+
+
+class Timer(Base):
+    """Tournament countdown timer."""
+    __tablename__ = "hockey_timer"
+
+    id = Column(Integer, primary_key=True, index=True)
+    timer_time = Column(String(100), nullable=False)
+
+
+class CapacityMaster(Base):
+    """Player capacity types."""
+    __tablename__ = "hockey_capacity_master"
+
+    id = Column(Integer, primary_key=True, index=True)
+    capacity = Column(String(250), nullable=False)
+    status = Column(Boolean, nullable=False, default=True)
+
+
+class LevelMaster(Base):
+    """Tournament level types."""
+    __tablename__ = "hockey_level_master"
+
+    id = Column(Integer, primary_key=True, index=True)
+    level = Column(String(250), nullable=False)
+    status = Column(Boolean, nullable=False, default=True)
+
+
+class IdentityMaster(Base):
+    """Identity/credential information."""
+    __tablename__ = "hockey_identity_master"
+
+    id = Column(Integer, primary_key=True, index=True)
+    identity_category_type = Column(SmallInteger, nullable=False)
+    name = Column(String(250), nullable=False)
+    father_name = Column(String(250), nullable=True)
+    designation = Column(String(300), nullable=True)
+    village = Column(String(250), nullable=True)
+    hadbast_no = Column(Integer, nullable=True)
+    ward_no = Column(Integer, nullable=True)
+    category_id = Column(Integer, nullable=True)
+    office = Column(String(300), nullable=True)
+    out_sourced = Column(String(200), nullable=True)
+    date_of_retirement = Column(String(50), nullable=True)
+    dob = Column(String(50), nullable=True)
+    mobile = Column(String(20), nullable=True)
+    landline = Column(String(20), nullable=True)
+    email = Column(String(250), nullable=True)
+    date_valid = Column(String(50), nullable=True)
+    adhaar_no = Column(String(50), nullable=True)
+    address = Column(Text, nullable=True)
+    blood_group = Column(SmallInteger, nullable=True)
+    image = Column(String(100), nullable=True)
+    status = Column(Boolean, nullable=False, default=True)
+
+
+class TeamPlayerScoringDetail(Base):
+    """Team player scoring details - goals with timing."""
+    __tablename__ = "hockey_team_player_details"
+
+    id = Column(Integer, primary_key=True, index=True)
+    year_id = Column(Integer, nullable=False, index=True)
+    player_id = Column(Integer, nullable=False, index=True)
+    match_id = Column(Integer, nullable=False, index=True)
+    match_score_id = Column(Integer, nullable=False)
+    score_type = Column(SmallInteger, nullable=False)  # 1=goal, 2=penalty, etc
+    score = Column(Integer, nullable=False)
+    time = Column(Integer, nullable=False)  # Minutes
+    date_scored = Column(DateTime, nullable=False)
+    user_created = Column(Integer, nullable=False)

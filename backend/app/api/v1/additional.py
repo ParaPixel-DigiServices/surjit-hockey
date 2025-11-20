@@ -6,12 +6,16 @@ from typing import List
 from app.core import get_db
 from app.models.additional import (
     MatchScoringDetail, PoolMaster, PoolDetails, YearMaster,
-    Honour, Dedicated, Ticker, ImageOfDay, PositionMaster
+    Honour, Dedicated, Ticker, ImageOfDay, PositionMaster,
+    MatchReport, Streaming, Timer, CapacityMaster, LevelMaster,
+    IdentityMaster, TeamPlayerScoringDetail
 )
 from app.schemas.additional import (
     MatchScoringDetailResponse, PoolMasterResponse, PoolDetailsResponse,
     YearMasterResponse, HonourResponse, DedicatedResponse, TickerResponse,
-    ImageOfDayResponse, PositionMasterResponse
+    ImageOfDayResponse, PositionMasterResponse, MatchReportResponse,
+    StreamingResponse, TimerResponse, CapacityMasterResponse, LevelMasterResponse,
+    IdentityMasterResponse, TeamPlayerScoringDetailResponse
 )
 
 router = APIRouter()
@@ -259,3 +263,174 @@ async def get_positions(
         .all()
 
     return positions
+
+
+# ===== MATCH REPORTS =====
+@router.get("/matches/{match_id}/reports", response_model=List[MatchReportResponse])
+async def get_match_reports(
+    match_id: int,
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=100),
+    db: Session = Depends(get_db)
+):
+    """
+    Get match report images for a specific match.
+
+    Args:
+        match_id: Match ID
+        skip: Number of records to skip
+        limit: Maximum number of records to return
+        db: Database session
+
+    Returns:
+        List of match report images
+    """
+    reports = db.query(MatchReport)\
+        .filter(MatchReport.match_id == match_id)\
+        .offset(skip)\
+        .limit(limit)\
+        .all()
+
+    return reports
+
+
+# ===== LIVE STREAMING =====
+@router.get("/streaming", response_model=StreamingResponse)
+async def get_streaming(
+    db: Session = Depends(get_db)
+):
+    """
+    Get current live streaming link.
+
+    Returns:
+        Live streaming information
+    """
+    streaming = db.query(Streaming)\
+        .order_by(Streaming.date_updated.desc())\
+        .first()
+
+    if not streaming:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No streaming link found"
+        )
+
+    return streaming
+
+
+# ===== TOURNAMENT TIMER =====
+@router.get("/timer", response_model=TimerResponse)
+async def get_timer(
+    db: Session = Depends(get_db)
+):
+    """
+    Get tournament countdown timer.
+
+    Returns:
+        Timer information
+    """
+    timer = db.query(Timer).first()
+
+    if not timer:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No timer found"
+        )
+
+    return timer
+
+
+# ===== CAPACITY MASTER =====
+@router.get("/capacities", response_model=List[CapacityMasterResponse])
+async def get_capacities(
+    db: Session = Depends(get_db)
+):
+    """
+    Get list of player capacities.
+
+    Returns:
+        List of capacities
+    """
+    capacities = db.query(CapacityMaster)\
+        .filter(CapacityMaster.status == True)\
+        .order_by(CapacityMaster.capacity)\
+        .all()
+
+    return capacities
+
+
+# ===== LEVEL MASTER =====
+@router.get("/levels", response_model=List[LevelMasterResponse])
+async def get_levels(
+    db: Session = Depends(get_db)
+):
+    """
+    Get list of tournament levels.
+
+    Returns:
+        List of levels
+    """
+    levels = db.query(LevelMaster)\
+        .filter(LevelMaster.status == True)\
+        .order_by(LevelMaster.level)\
+        .all()
+
+    return levels
+
+
+# ===== IDENTITY MASTER =====
+@router.get("/identities", response_model=List[IdentityMasterResponse])
+async def get_identities(
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=100),
+    db: Session = Depends(get_db)
+):
+    """
+    Get list of identity records.
+
+    Args:
+        skip: Number of records to skip
+        limit: Maximum number of records to return
+        db: Database session
+
+    Returns:
+        List of identity records
+    """
+    identities = db.query(IdentityMaster)\
+        .filter(IdentityMaster.status == True)\
+        .order_by(IdentityMaster.name)\
+        .offset(skip)\
+        .limit(limit)\
+        .all()
+
+    return identities
+
+
+# ===== TEAM PLAYER SCORING DETAILS =====
+@router.get("/matches/{match_id}/goals", response_model=List[TeamPlayerScoringDetailResponse])
+async def get_match_goals(
+    match_id: int,
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=100),
+    db: Session = Depends(get_db)
+):
+    """
+    Get goal scoring details with timing for a specific match.
+
+    Args:
+        match_id: Match ID
+        skip: Number of records to skip
+        limit: Maximum number of records to return
+        db: Database session
+
+    Returns:
+        List of goal scoring details with player IDs and timing
+    """
+    goals = db.query(TeamPlayerScoringDetail)\
+        .filter(TeamPlayerScoringDetail.match_id == match_id)\
+        .order_by(TeamPlayerScoringDetail.time)\
+        .offset(skip)\
+        .limit(limit)\
+        .all()
+
+    return goals

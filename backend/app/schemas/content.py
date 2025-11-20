@@ -22,6 +22,19 @@ class BannerResponse(BannerBase):
         from_attributes = True
 
 
+class AdvertisementResponse(BaseModel):
+    """Schema for advertisement response."""
+    id: int
+    title: Optional[str] = None
+    image: str
+    link: Optional[str] = None
+    position: Optional[str] = None
+    status: bool
+
+    class Config:
+        from_attributes = True
+
+
 class GalleryBase(BaseModel):
     """Base gallery schema."""
     image_name: str

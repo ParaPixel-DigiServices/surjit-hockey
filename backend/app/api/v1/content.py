@@ -3,11 +3,12 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from app.core import get_db
-from app.models.content import Gallery, Memory
+from app.models.content import Gallery, Memory, Advertisement
 from app.schemas.content import (
     GalleryResponse,
     MemoryResponse,
-    MemoryCreate
+    MemoryCreate,
+    AdvertisementResponse
 )
 
 router = APIRouter()
@@ -149,3 +150,33 @@ async def create_memory(
     db.refresh(new_memory)
 
     return new_memory
+
+
+@router.get("/advertisements", response_model=List[AdvertisementResponse])
+async def get_advertisements(
+    position: str = Query(
+        None, description="Filter by position (sidebar, header, footer, etc.)"),
+    skip: int = Query(0, ge=0),
+    limit: int = Query(50, ge=1, le=100),
+    db: Session = Depends(get_db)
+):
+    """
+    Get active advertisements.
+
+    Args:
+        position: Filter by ad position
+        skip: Number of records to skip
+        limit: Maximum number of records to return
+        db: Database session
+
+    Returns:
+        List of active advertisements
+    """
+    query = db.query(Advertisement).filter(Advertisement.status == True)
+
+    if position:
+        query = query.filter(Advertisement.position == position)
+
+    ads = query.offset(skip).limit(limit).all()
+
+    return ads

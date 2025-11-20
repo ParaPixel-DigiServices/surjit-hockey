@@ -7,7 +7,9 @@ from app.models.content import Banner, Advertisement, Gallery, Memory
 from app.models.news import News, NewsImage, Official, Sponsor, Standing
 from app.models.additional import (
     MatchScoringDetail, PoolMaster, PoolDetails, YearMaster,
-    Honour, Dedicated, Ticker, ImageOfDay, PositionMaster
+    Honour, Dedicated, Ticker, ImageOfDay, PositionMaster,
+    MatchReport, Streaming, Timer, CapacityMaster, LevelMaster,
+    IdentityMaster, TeamPlayerScoringDetail
 )
 
 __all__ = [
@@ -39,4 +41,11 @@ __all__ = [
     "Ticker",
     "ImageOfDay",
     "PositionMaster",
+    "MatchReport",
+    "Streaming",
+    "Timer",
+    "CapacityMaster",
+    "LevelMaster",
+    "IdentityMaster",
+    "TeamPlayerScoringDetail",
 ]

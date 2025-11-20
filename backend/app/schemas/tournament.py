@@ -78,3 +78,13 @@ class MatchResultResponse(MatchResultBase):
     class Config:
         from_attributes = True
 
+
+class CategoryResponse(BaseModel):
+    """Schema for category response."""
+    id: int
+    category_name: str
+    description: Optional[str] = None
+    status: bool
+
+    class Config:
+        from_attributes = True

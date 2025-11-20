@@ -121,3 +121,91 @@ class PositionMasterResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class MatchReportResponse(BaseModel):
+    """Match report response."""
+    id: int
+    match_id: int
+    image_name: str
+    caption: Optional[str] = None
+    year_id: int
+
+    class Config:
+        from_attributes = True
+
+
+class StreamingResponse(BaseModel):
+    """Streaming response."""
+    id: int
+    url_name: str
+    url: str
+    embed_code: Optional[str] = None
+    date_updated: datetime
+    user_updated_by: int
+
+    class Config:
+        from_attributes = True
+
+
+class TimerResponse(BaseModel):
+    """Timer response."""
+    id: int
+    timer_time: str
+
+    class Config:
+        from_attributes = True
+
+
+class CapacityMasterResponse(BaseModel):
+    """Capacity master response."""
+    id: int
+    capacity: str
+    status: bool
+
+    class Config:
+        from_attributes = True
+
+
+class LevelMasterResponse(BaseModel):
+    """Level master response."""
+    id: int
+    level: str
+    status: bool
+
+    class Config:
+        from_attributes = True
+
+
+class IdentityMasterResponse(BaseModel):
+    """Identity master response."""
+    id: int
+    identity_category_type: int
+    name: str
+    father_name: Optional[str] = None
+    designation: Optional[str] = None
+    village: Optional[str] = None
+    mobile: Optional[str] = None
+    email: Optional[str] = None
+    address: Optional[str] = None
+    image: Optional[str] = None
+    status: bool
+
+    class Config:
+        from_attributes = True
+
+
+class TeamPlayerScoringDetailResponse(BaseModel):
+    """Team player scoring detail response."""
+    id: int
+    year_id: int
+    player_id: int
+    match_id: int
+    match_score_id: int
+    score_type: int
+    score: int
+    time: int
+    date_scored: datetime
+
+    class Config:
+        from_attributes = True

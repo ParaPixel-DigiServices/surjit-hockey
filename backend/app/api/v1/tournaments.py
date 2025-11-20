@@ -4,11 +4,12 @@ from typing import List
 from datetime import datetime
 
 from app.core import get_db
-from app.models.tournament import Tournament, Fixture, MatchResult
+from app.models.tournament import Tournament, Fixture, MatchResult, Category
 from app.schemas.tournament import (
     TournamentResponse,
     FixtureResponse,
-    MatchResultResponse
+    MatchResultResponse,
+    CategoryResponse
 )
 
 router = APIRouter()
@@ -136,4 +137,21 @@ async def get_tournament_results(
         return []
 
 
+@router.get("/categories/all", response_model=List[CategoryResponse])
+async def get_categories(
+    db: Session = Depends(get_db)
+):
+    """
+    Get tournament categories (Men/Women).
 
+    Args:
+        db: Database session
+
+    Returns:
+        List of active categories
+    """
+    categories = db.query(Category)\
+        .filter(Category.status == True)\
+        .all()
+
+    return categories
