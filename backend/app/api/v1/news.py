@@ -57,7 +57,7 @@ async def get_news(
             "date_updated": sanitize_datetime(news, 'date_updated'),
             "status": news.status
         })
-    
+
     return result
 
 
@@ -219,7 +219,8 @@ async def get_sponsor_by_id(
 async def get_standings_by_year(
     year_id: int,
     pool_id: int = Query(None, description="Filter by pool ID"),
-    pool_category_type: int = Query(None, description="Filter by pool category type"),
+    pool_category_type: int = Query(
+        None, description="Filter by pool category type"),
     db: Session = Depends(get_db)
 ):
     """
@@ -236,13 +237,13 @@ async def get_standings_by_year(
     """
     query = db.query(Standing)\
         .filter(Standing.year_id == year_id)
-    
+
     if pool_id is not None:
         query = query.filter(Standing.pool_id == pool_id)
-    
+
     if pool_category_type is not None:
         query = query.filter(Standing.pool_category_type == pool_category_type)
-    
+
     standings = query.order_by(Standing.points.desc()).all()
 
     return standings
@@ -259,7 +260,7 @@ async def get_active_banners(
         List of active banners
     """
     from app.models.content import Banner
-    
+
     banners = db.query(Banner)\
         .filter(Banner.status == True)\
         .all()
@@ -275,5 +276,5 @@ async def get_active_banners(
             "title_status": banner.title_status,
             "status": banner.status
         })
-    
+
     return result

@@ -2,9 +2,13 @@
 
 from app.models.user import User, UserProfile, UserSportsDetails
 from app.models.tournament import Tournament, Fixture, MatchResult, Category
-from app.models.team import Team, Player
+from app.models.team import Team, TeamPlayer, Alumni
 from app.models.content import Banner, Advertisement, Gallery, Memory
 from app.models.news import News, NewsImage, Official, Sponsor, Standing
+from app.models.additional import (
+    MatchScoringDetail, PoolMaster, PoolDetails, YearMaster,
+    Honour, Dedicated, Ticker, ImageOfDay, PositionMaster
+)
 
 __all__ = [
     "User",
@@ -15,7 +19,8 @@ __all__ = [
     "MatchResult",
     "Category",
     "Team",
-    "Player",
+    "TeamPlayer",
+    "Alumni",
     "Banner",
     "Advertisement",
     "Gallery",
@@ -25,4 +30,13 @@ __all__ = [
     "Official",
     "Sponsor",
     "Standing",
+    "MatchScoringDetail",
+    "PoolMaster",
+    "PoolDetails",
+    "YearMaster",
+    "Honour",
+    "Dedicated",
+    "Ticker",
+    "ImageOfDay",
+    "PositionMaster",
 ]

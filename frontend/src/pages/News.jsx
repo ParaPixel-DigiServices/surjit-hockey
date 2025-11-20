@@ -34,13 +34,20 @@ export default function News() {
         const formattedNews = data.map((item, index) => ({
           id: item.id,
           title: item.title,
-          date: new Date(item.date_created).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+          date: new Date(item.date_created).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }),
           image: fallbackImages[index % fallbackImages.length],
-          excerpt: item.description ? item.description.substring(0, 200) + (item.description.length > 200 ? '...' : '') : 'Click to read more...'
+          excerpt: item.description
+            ? item.description.substring(0, 200) +
+              (item.description.length > 200 ? "..." : "")
+            : "Click to read more...",
         }));
         setNewsItems(formattedNews);
       } catch (error) {
-        console.error('Failed to fetch news:', error);
+        console.error("Failed to fetch news:", error);
       } finally {
         setLoading(false);
       }
