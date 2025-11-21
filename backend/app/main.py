@@ -48,7 +48,7 @@ app.include_router(
 
 app.include_router(
     additional.router,
-    prefix="/api/v1",
+    prefix="/api/v1/additional",
     tags=["Additional Features"]
 )
 
