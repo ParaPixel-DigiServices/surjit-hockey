@@ -3,12 +3,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Newspaper, ArrowRight } from "lucide-react";
 import { api } from "../services/api";
-
-// --- Import Example Images ---
-import news1 from "../assets/news1.jpg";
-import news2 from "../assets/news2.jpg";
-import news3 from "../assets/news3.jpg";
-import news4 from "../assets/news4.jpg";
+import config from "../config/api";
 
 /**
  * NEWS PAGE — Surjit Hockey Society
@@ -17,9 +12,8 @@ import news4 from "../assets/news4.jpg";
  * ✅ Magazine-style alternating articles
  * ✅ Smooth hover and parallax transitions
  * ✅ Elegant Navbar to return home
+ * ✅ Fetches real news from API
  */
-
-const fallbackImages = [news1, news2, news3, news4];
 
 export default function News() {
   const navigate = useNavigate();
@@ -30,8 +24,8 @@ export default function News() {
     const fetchNews = async () => {
       try {
         setLoading(true);
-        const data = await api.getNews(0, 10);
-        const formattedNews = data.map((item, index) => ({
+        const data = await api.getNews(0, 20);
+        const formattedNews = data.map((item) => ({
           id: item.id,
           title: item.title,
           date: new Date(item.date_created).toLocaleDateString("en-US", {
@@ -39,7 +33,9 @@ export default function News() {
             month: "long",
             day: "numeric",
           }),
-          image: fallbackImages[index % fallbackImages.length],
+          image: item.news_image
+            ? config.getUploadUrl("news", item.news_image)
+            : config.getUploadUrl("news", "1.jpg"),
           excerpt: item.description
             ? item.description.substring(0, 200) +
               (item.description.length > 200 ? "..." : "")
@@ -163,7 +159,10 @@ export default function News() {
               <p className="text-black/70 leading-relaxed text-base">
                 {news.excerpt}
               </p>
-              <button className="flex items-center gap-2 mt-3 text-[#d4af37] font-semibold hover:gap-3 transition-all">
+              <button
+                onClick={() => navigate(`/news/${news.id}`)}
+                className="flex items-center gap-2 mt-3 text-[#d4af37] font-semibold hover:gap-3 transition-all"
+              >
                 Read Full Story <ArrowRight size={18} />
               </button>
             </div>

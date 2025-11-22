@@ -39,8 +39,8 @@ export default function Footer() {
           <div className="h-[3px] w-16 bg-[#ffd700] mb-5 rounded-full"></div>
           <p className="text-gray-300 leading-relaxed text-sm md:text-base">
             The Surjit Hockey Society is dedicated to preserving and promoting
-            the spirit of Indian hockey through the Surjit Hockey Tournament —
-            a celebration of sportsmanship, unity, and excellence.
+            the spirit of Indian hockey through the Surjit Hockey Tournament — a
+            celebration of sportsmanship, unity, and excellence.
           </p>
         </motion.div>
 
@@ -85,9 +85,7 @@ export default function Footer() {
           <ul className="space-y-3 text-gray-300 text-sm md:text-base">
             <li className="flex items-start gap-3">
               <FaMapMarkerAlt className="text-[#ffd700] mt-[2px]" />
-              <span>
-                Guru Gobind Singh Stadium, Jalandhar, Punjab, India
-              </span>
+              <span>Guru Gobind Singh Stadium, Jalandhar, Punjab, India</span>
             </li>
             <li className="flex items-center gap-3">
               <FaPhoneAlt className="text-[#ffd700]" />
@@ -109,10 +107,19 @@ export default function Footer() {
           {/* Social Media Icons */}
           <div className="flex gap-4 mt-6">
             {[
-              { Icon: FaFacebookF, url: "https://www.facebook.com/surjithockeyjal" },
-              { Icon: FaInstagram, url: "https://www.instagram.com/surjit_hockey_tournament" },
+              {
+                Icon: FaFacebookF,
+                url: "https://www.facebook.com/surjithockeyjal",
+              },
+              {
+                Icon: FaInstagram,
+                url: "https://www.instagram.com/surjit_hockey_tournament",
+              },
               { Icon: FaTwitter, url: "https://twitter.com/surjit_hockey" },
-              { Icon: FaYoutube, url: "https://www.youtube.com/@surjithockeytournament" },
+              {
+                Icon: FaYoutube,
+                url: "https://www.youtube.com/@surjithockeytournament",
+              },
             ].map(({ Icon, url }, i) => (
               <a
                 key={i}

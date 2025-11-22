@@ -10,6 +10,7 @@ import Results from "./pages/Results";
 import TournamentFixtures from "./components/tournaments/FixturesMen";
 import Gallery from "./pages/Gallery";
 import News from "./pages/News";
+import NewsDetail from "./pages/NewsDetail";
 import NotFound from "./pages/NotFound";
 
 // New Pages
@@ -60,6 +61,15 @@ export default function App() {
         element={
           <MainLayout>
             <News />
+          </MainLayout>
+        }
+      />
+
+      <Route
+        path="/news/:id"
+        element={
+          <MainLayout>
+            <NewsDetail />
           </MainLayout>
         }
       />

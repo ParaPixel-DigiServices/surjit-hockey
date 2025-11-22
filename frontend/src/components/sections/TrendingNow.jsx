@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { api } from "../../services/api";
 import config from "../../config/api";
 
 /**
@@ -12,40 +13,52 @@ import config from "../../config/api";
  * - Image left, text right layout
  * - Smooth scroll snapping & fade/zoom animation
  * - Fully responsive & mobile swipe enabled
+ * - Fetches real news from API
  */
 
-const articles = [
-  {
-    id: 1,
-    title: "India Triumphs in National Hockey Championship",
-    excerpt:
-      "A powerful performance leads the team to victory in this year's national championship. Here's how it unfolded on the field.",
-    image: config.getUploadUrl("news", "1.jpg"),
-  },
-  {
-    id: 2,
-    title: "Rising Stars: The New Era of Surjit Hockey Talent",
-    excerpt:
-      "Discover the young players redefining speed, skill, and precision on the pitch this season.",
-    image: config.getUploadUrl("news", "2.jpg"),
-  },
-  {
-    id: 3,
-    title: "The Legacy Behind the Surjit Hockey Tournament",
-    excerpt:
-      "A look back at the historical milestones that built one of India's most prestigious hockey tournaments.",
-    image: config.getUploadUrl("news", "3.jpg"),
-  },
-  {
-    id: 4,
-    title: "Fitness and Focus: How Champions Train Off the Field",
-    excerpt:
-      "From discipline to diet, we break down how top players prepare their minds and bodies for excellence.",
-    image: config.getUploadUrl("news", "11-24-379.jpg"),
-  },
-];
-
 export default function TrendingNow() {
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        setLoading(true);
+        const newsData = await api.getNews(0, 4);
+        const formattedArticles = newsData.map((item) => ({
+          id: item.id,
+          title: item.title,
+          excerpt: item.description
+            ? item.description.substring(0, 180) + "..."
+            : "Click to read more about this exciting news story.",
+          image: item.news_image
+            ? config.getUploadUrl("news", item.news_image)
+            : config.getUploadUrl("news", "1.jpg"),
+        }));
+        setArticles(formattedArticles);
+      } catch (error) {
+        console.error("Failed to fetch news:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchNews();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="relative bg-black text-white py-16 flex items-center justify-center min-h-[80vh]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#ffd700] mx-auto mb-4"></div>
+          <p className="text-gray-300">Loading latest news...</p>
+        </div>
+      </section>
+    );
+  }
+
+  if (articles.length === 0) {
+    return null;
+  }
   return (
     <section className="relative bg-black text-white py-10 overflow-hidden">
       {/* Section Heading */}
@@ -103,7 +116,7 @@ export default function TrendingNow() {
                 {article.excerpt}
               </motion.p>
 
-              <Link to="/news">
+              <Link to={`/news/${article.id}`}>
                 <motion.span
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
