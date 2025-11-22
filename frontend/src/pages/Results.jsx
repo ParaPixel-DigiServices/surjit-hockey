@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { api } from "../services/api";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 import config from "../config/api";
 
 // --- Import Team Logos ---
@@ -12,7 +11,6 @@ import config from "../config/api";
 // import rcf from "../assets/teams/rcf.png";
 
 export default function ResultsPage() {
-  const navigate = useNavigate();
   const [gender, setGender] = useState("men");
   const [tab, setTab] = useState("results");
   const [month, setMonth] = useState("November 2025");
@@ -59,27 +57,6 @@ export default function ResultsPage() {
 
   return (
     <div className="relative min-h-screen w-full font-[Sora] bg-gradient-to-b from-[#0a1123] via-[#101b35] to-[#1b2b4a] text-white overflow-hidden">
-      {/* --- Sticky Navbar --- */}
-      <header className="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-[#0b152d]/70 border-b border-[#ffd700]/20 shadow-md">
-        <div className="max-w-6xl mx-auto flex justify-between items-center px-6 py-4">
-          <motion.h1
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-lg sm:text-xl font-semibold text-[#ffd700] uppercase tracking-wider"
-          >
-            Surjit Hockey Tournament
-          </motion.h1>
-
-          <button
-            onClick={() => navigate("/")}
-            className="text-sm uppercase font-semibold text-white/90 hover:text-[#ffd700] transition"
-          >
-            ← Back to Home
-          </button>
-        </div>
-      </header>
-
       {/* --- Hero Banner --- */}
       <motion.section
         initial={{ opacity: 0, y: -40 }}

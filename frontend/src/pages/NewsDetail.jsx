@@ -49,8 +49,12 @@ export default function NewsDetail() {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center max-w-md">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Article Not Found</h2>
-          <p className="text-gray-600 mb-6">{error || "The news article you're looking for doesn't exist."}</p>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            Article Not Found
+          </h2>
+          <p className="text-gray-600 mb-6">
+            {error || "The news article you're looking for doesn't exist."}
+          </p>
           <button
             onClick={() => navigate("/news")}
             className="inline-flex items-center gap-2 bg-[#ffd700] text-[#1b2b4a] font-semibold px-6 py-3 rounded-md hover:brightness-95 transition"
@@ -67,36 +71,17 @@ export default function NewsDetail() {
     ? config.getUploadUrl("news", news.news_image)
     : null;
 
-  const formattedDate = new Date(news.date_created).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const formattedDate = new Date(news.date_created).toLocaleDateString(
+    "en-US",
+    {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }
+  );
 
   return (
     <div className="min-h-screen bg-white font-[Sora]">
-      {/* Header */}
-      <header className="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-lg border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
-          <motion.h1
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-lg sm:text-xl font-semibold text-[#0a0a0a] uppercase tracking-wide"
-          >
-            Surjit Hockey News
-          </motion.h1>
-
-          <button
-            onClick={() => navigate("/news")}
-            className="inline-flex items-center gap-2 text-sm uppercase font-semibold text-black/70 hover:text-[#ffd700] transition"
-          >
-            <ArrowLeft size={18} />
-            Back to News
-          </button>
-        </div>
-      </header>
-
       {/* Main Content */}
       <motion.article
         initial={{ opacity: 0, y: 20 }}
@@ -150,7 +135,9 @@ export default function NewsDetail() {
         {/* Additional Details if available */}
         {news.detail && (
           <div className="mt-8 p-6 bg-gray-50 rounded-xl border border-gray-200">
-            <h3 className="text-xl font-semibold text-[#1b2b4a] mb-4">Additional Details</h3>
+            <h3 className="text-xl font-semibold text-[#1b2b4a] mb-4">
+              Additional Details
+            </h3>
             <div
               className="text-gray-700 whitespace-pre-wrap"
               dangerouslySetInnerHTML={{ __html: news.detail }}

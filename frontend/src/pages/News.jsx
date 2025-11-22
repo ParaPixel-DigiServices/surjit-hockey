@@ -84,27 +84,6 @@ export default function News() {
 
   return (
     <div className="relative min-h-screen bg-white text-[#111] font-[Sora] overflow-hidden">
-      {/* Navbar */}
-      <header className="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-lg border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
-          <motion.h1
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-lg sm:text-xl font-semibold text-[#0a0a0a] uppercase tracking-wide"
-          >
-            Surjit Hockey Newsroom
-          </motion.h1>
-
-          <button
-            onClick={() => navigate("/")}
-            className="text-sm uppercase font-semibold text-black/70 hover:text-[#d4af37] transition"
-          >
-            ← Back to Home
-          </button>
-        </div>
-      </header>
-
       {/* Hero Banner */}
       <section className="relative h-[50vh] bg-gradient-to-b from-[#f6f6f6] to-white flex flex-col justify-center items-center text-center mt-16">
         <motion.h2

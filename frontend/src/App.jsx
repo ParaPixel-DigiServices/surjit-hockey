@@ -80,7 +80,14 @@ export default function App() {
       <Route path="/tournament" element={<Tournaments />} />
       <Route path="/tournaments" element={<Tournaments />} />
       <Route path="/fixtures" element={<TournamentFixtures />} />
-      <Route path="/results" element={<Results />} />
+      <Route
+        path="/results"
+        element={
+          <MainLayout>
+            <Results />
+          </MainLayout>
+        }
+      />
 
       {/** ========= NEW DROPDOWN PAGES ========= **/}
 

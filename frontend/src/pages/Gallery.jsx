@@ -207,27 +207,6 @@ export default function Gallery() {
       id="gallery"
       className="relative w-full min-h-screen overflow-hidden font-[Sora]"
     >
-      {/* --- Frosted Navbar --- */}
-      <header className="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-[#0b152d]/80 border-b border-[#ffd700]/20 shadow-md">
-        <div className="max-w-6xl mx-auto flex justify-between items-center px-6 py-4">
-          <motion.h1
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-lg sm:text-xl font-semibold text-[#ffd700] uppercase tracking-wider"
-          >
-            Surjit Hockey Tournament Gallery
-          </motion.h1>
-
-          <button
-            onClick={() => navigate("/")}
-            className="text-sm uppercase font-semibold text-white/90 hover:text-[#ffd700] transition"
-          >
-            ← Back to Home
-          </button>
-        </div>
-      </header>
-
       {/* --- Animated Gradient Background --- */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_#0a1123_20%,_#1b2b4a_60%,_black_100%)] animate-[gradientShift_12s_ease_infinite]">
         <div className="absolute w-[600px] h-[600px] bg-[#ffd700]/10 blur-[180px] top-0 left-1/4 animate-pulse" />
