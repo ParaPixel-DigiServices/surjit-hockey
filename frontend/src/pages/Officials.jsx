@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Phone, Award } from "lucide-react";
+import config from "../config/api";
 
 /**
  * Officials Page
@@ -18,7 +19,7 @@ export default function Officials() {
   const fetchOfficials = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8000/api/v1/officials?skip=0&limit=500"
+        `${config.apiUrl}/officials?skip=0&limit=500`
       );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -33,7 +34,7 @@ export default function Officials() {
             off_email: o.email,
             off_mobile: o.mobile_no,
             off_photo: o.profile_image
-              ? `http://localhost:8000/uploads/officials/${o.profile_image}`
+              ? config.getUploadUrl("officials", o.profile_image)
               : null,
           }))
         : [];

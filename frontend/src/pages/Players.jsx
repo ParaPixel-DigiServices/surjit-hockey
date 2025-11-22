@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import config from "../config/api";
 
 /**
  * Players Page
@@ -26,8 +27,8 @@ export default function Players() {
   const fetchTeamsAndPositions = async () => {
     try {
       const [teamsRes, positionsRes] = await Promise.all([
-        fetch("http://localhost:8000/api/v1/teams?skip=0&limit=500"),
-        fetch("http://localhost:8000/api/v1/additional/positions"),
+        fetch(`${config.apiUrl}/teams?skip=0&limit=500`),
+        fetch(`${config.apiUrl}/additional/positions`),
       ]);
 
       const teamsData = await teamsRes.json();
@@ -65,9 +66,7 @@ export default function Players() {
 
   const fetchTeamPlayers = async (teamId) => {
     try {
-      const response = await fetch(
-        `http://localhost:8000/api/v1/teams/${teamId}/players`
-      );
+      const response = await fetch(`${config.apiUrl}/teams/${teamId}/players`);
       if (!response.ok) {
         console.error(`Players endpoint error: ${response.status}`);
         setPlayers([]);
@@ -80,7 +79,7 @@ export default function Players() {
             ply_id: p.id,
             ply_name: p.full_name,
             ply_photo: p.profile_image
-              ? `http://localhost:8000/uploads/players/${p.profile_image}`
+              ? config.getUploadUrl("players", p.profile_image)
               : null,
             ply_mobile: p.mobile_no,
             position_name:

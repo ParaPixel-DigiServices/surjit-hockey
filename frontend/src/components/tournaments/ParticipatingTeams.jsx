@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { api } from "../../services/api";
 import { motion, AnimatePresence } from "framer-motion";
+import config from "../../config/api";
 
 // --- Example logos (replace with real imports later) ---
 import rcf from "../../assets/teams/rcf.png";
@@ -30,36 +31,36 @@ export default function ParticipatingTeams() {
       try {
         setLoading(true);
         const teamsData = await api.getTeams();
-        
-        const formattedTeams = teamsData.map(team => ({
+
+        const formattedTeams = teamsData.map((team) => ({
           name: team.team_name,
-          logo: team.team_logo 
-            ? `http://localhost:8000/uploads/teams/${team.team_logo}`
+          logo: team.team_logo
+            ? config.getUploadUrl("teams", team.team_logo)
             : null,
-          id: team.id
+          id: team.id,
         }));
-        
+
         setMenTeams(formattedTeams);
       } catch (error) {
         console.error("Failed to fetch teams:", error);
         // Fallback data
         setMenTeams([
-            { name: "R C F Kapurthala", logo: rcf },
-            { name: "Indian Navy", logo: navy },
-            { name: "Punjab Police", logo: police },
-            { name: "Indian Air Force", logo: airforce },
-            { name: "CRPF Delhi", logo: crpf },
-            { name: "Indian Oil Mumbai", logo: iocl },
-            { name: "Punjab & Sind Bank", logo: psb },
-            { name: "Army-XI Delhi", logo: army },
-            { name: "Indian Railway", logo: railway },
-            { name: "Bharat Petroleum", logo: bpcl },
-            { name: "BSF Jalandhar", logo: bsf },
-            { name: "CAG New Delhi", logo: cag },
-            { name: "FCI", logo: fci },
-            { name: "ITBP", logo: itbp },
-            { name: "CBCT Delhi", logo: cbct },
-          ]);
+          { name: "R C F Kapurthala", logo: rcf },
+          { name: "Indian Navy", logo: navy },
+          { name: "Punjab Police", logo: police },
+          { name: "Indian Air Force", logo: airforce },
+          { name: "CRPF Delhi", logo: crpf },
+          { name: "Indian Oil Mumbai", logo: iocl },
+          { name: "Punjab & Sind Bank", logo: psb },
+          { name: "Army-XI Delhi", logo: army },
+          { name: "Indian Railway", logo: railway },
+          { name: "Bharat Petroleum", logo: bpcl },
+          { name: "BSF Jalandhar", logo: bsf },
+          { name: "CAG New Delhi", logo: cag },
+          { name: "FCI", logo: fci },
+          { name: "ITBP", logo: itbp },
+          { name: "CBCT Delhi", logo: cbct },
+        ]);
       } finally {
         setLoading(false);
       }
@@ -69,7 +70,7 @@ export default function ParticipatingTeams() {
   }, []);
 
   if (loading) {
-      return <div className="text-white text-center py-20">Loading teams...</div>;
+    return <div className="text-white text-center py-20">Loading teams...</div>;
   }
 
   return (

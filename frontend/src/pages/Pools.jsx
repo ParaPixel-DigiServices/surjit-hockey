@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import config from "../config/api";
 
 /**
  * Pools Page
@@ -26,8 +27,8 @@ export default function Pools() {
   const fetchYearsAndPools = async () => {
     try {
       const [yearsRes, poolsRes] = await Promise.all([
-        fetch("http://localhost:8000/api/v1/additional/years"),
-        fetch("http://localhost:8000/api/v1/additional/pools"),
+        fetch(`${config.apiUrl}/additional/years`),
+        fetch(`${config.apiUrl}/additional/pools`),
       ]);
 
       const yearsData = await yearsRes.json();
@@ -58,8 +59,8 @@ export default function Pools() {
   const fetchPoolTeams = async (yearId) => {
     try {
       const [poolTeamsRes, teamsRes] = await Promise.all([
-        fetch(`http://localhost:8000/api/v1/additional/pools/${yearId}/teams`),
-        fetch("http://localhost:8000/api/v1/teams?skip=0&limit=1000"),
+        fetch(`${config.apiUrl}/additional/pools/${yearId}/teams`),
+        fetch(`${config.apiUrl}/teams?skip=0&limit=1000`),
       ]);
 
       const poolTeamsData = await poolTeamsRes.json();

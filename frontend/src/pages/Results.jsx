@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { api } from "../services/api";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import config from "../config/api";
 
 // --- Import Team Logos ---
 // import indianOil from "../assets/teams/iocl.png";
@@ -26,15 +27,15 @@ export default function ResultsPage() {
       try {
         setLoading(true);
         // TODO: Replace with actual tournament ID dynamically
-        const tournamentId = 100; 
+        const tournamentId = 100;
         const [fixturesData, resultsData] = await Promise.all([
           api.getTournamentFixtures(tournamentId),
-          api.getTournamentResults(tournamentId) // Assuming this endpoint exists and returns table data or similar
+          api.getTournamentResults(tournamentId), // Assuming this endpoint exists and returns table data or similar
         ]);
 
         // Transform API data to match component state structure
         // This is a placeholder transformation, adjust based on actual API response structure
-        const formattedMatches = fixturesData.map(match => ({
+        const formattedMatches = fixturesData.map((match) => ({
           team1: match.team_id_1, // You might need to fetch team details to get names
           team1Logo: "", // Placeholder
           score: match.match_status ? "Completed" : "Upcoming", // Adjust logic
@@ -87,7 +88,12 @@ export default function ResultsPage() {
         className="relative pt-28 pb-20 text-center"
       >
         {/* Hockey turf background */}
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1623241850511-6a58a9c472c8?auto=format&fit=crop&w=1600&q=80')] bg-cover bg-center opacity-20" />
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-20"
+          style={{
+            backgroundImage: `url('${config.getUploadUrl("gallery", "1-494.jpeg")}')`,
+          }}
+        />
         <h1 className="relative text-5xl sm:text-6xl font-extrabold uppercase text-[#ffd700] mb-4 drop-shadow-lg">
           Fixtures & Results
         </h1>
@@ -242,9 +248,7 @@ export default function ResultsPage() {
                         <tr
                           key={i}
                           className={`${
-                            i % 2 === 0
-                              ? "bg-[#1b2b4a]/40"
-                              : "bg-[#0e1830]/40"
+                            i % 2 === 0 ? "bg-[#1b2b4a]/40" : "bg-[#0e1830]/40"
                           } hover:bg-[#ffd700]/10 transition`}
                         >
                           <td className="py-3 px-4 flex items-center gap-3">

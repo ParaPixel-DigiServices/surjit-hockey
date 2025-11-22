@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import config from "../config/api";
 
 /**
  * Positions Page
@@ -16,9 +17,7 @@ export default function Positions() {
 
   const fetchPositions = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:8000/api/v1/additional/positions"
-      );
+      const response = await fetch(`${config.apiUrl}/additional/positions`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

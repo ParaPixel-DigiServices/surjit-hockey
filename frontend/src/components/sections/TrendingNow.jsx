@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import config from "../../config/api";
 
 /**
  * TrendingNow Section — Cinematic Black Edition
@@ -17,33 +18,29 @@ const articles = [
     id: 1,
     title: "India Triumphs in National Hockey Championship",
     excerpt:
-      "A powerful performance leads the team to victory in this year’s national championship. Here's how it unfolded on the field.",
-    image:
-      "https://images.unsplash.com/photo-1621086893828-8d6b13e80b7b?auto=format&fit=crop&w=1600&q=80",
+      "A powerful performance leads the team to victory in this year's national championship. Here's how it unfolded on the field.",
+    image: config.getUploadUrl("news", "1.jpg"),
   },
   {
     id: 2,
     title: "Rising Stars: The New Era of Surjit Hockey Talent",
     excerpt:
       "Discover the young players redefining speed, skill, and precision on the pitch this season.",
-    image:
-      "https://images.unsplash.com/photo-1600180758890-6d8cf9f6b2b8?auto=format&fit=crop&w=1600&q=80",
+    image: config.getUploadUrl("news", "2.jpg"),
   },
   {
     id: 3,
     title: "The Legacy Behind the Surjit Hockey Tournament",
     excerpt:
-      "A look back at the historical milestones that built one of India’s most prestigious hockey tournaments.",
-    image:
-      "https://images.unsplash.com/photo-1580696887153-28d1833ddcb9?auto=format&fit=crop&w=1600&q=80",
+      "A look back at the historical milestones that built one of India's most prestigious hockey tournaments.",
+    image: config.getUploadUrl("news", "3.jpg"),
   },
   {
     id: 4,
     title: "Fitness and Focus: How Champions Train Off the Field",
     excerpt:
       "From discipline to diet, we break down how top players prepare their minds and bodies for excellence.",
-    image:
-      "https://images.unsplash.com/photo-1509023919128-76b98d3e09af?auto=format&fit=crop&w=1600&q=80",
+    image: config.getUploadUrl("news", "11-24-379.jpg"),
   },
 ];
 

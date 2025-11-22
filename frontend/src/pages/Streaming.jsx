@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Play, Calendar, ExternalLink } from "lucide-react";
+import config from "../config/api";
 
 /**
  * Streaming Page
@@ -17,9 +18,7 @@ export default function Streaming() {
 
   const fetchStreamingData = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:8000/api/v1/additional/streaming"
-      );
+      const response = await fetch(`${config.apiUrl}/additional/streaming`);
       const data = await response.json();
       setStreamingData(data);
     } catch (error) {

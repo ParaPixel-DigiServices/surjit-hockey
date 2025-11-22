@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Trophy, Medal, Award } from "lucide-react";
+import config from "../config/api";
 
 /**
  * Honours Page
@@ -18,8 +19,8 @@ export default function Honours() {
   const fetchHonours = async () => {
     try {
       const [honoursRes, teamsRes] = await Promise.all([
-        fetch("http://localhost:8000/api/v1/additional/honours"),
-        fetch("http://localhost:8000/api/v1/teams?skip=0&limit=1000"),
+        fetch(`${config.apiUrl}/additional/honours`),
+        fetch(`${config.apiUrl}/teams?skip=0&limit=1000`),
       ]);
 
       if (!honoursRes.ok) {

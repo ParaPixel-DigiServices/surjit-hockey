@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import config from "../../config/api";
 
 /**
  * Messages.jsx — Delegates’ Messages Carousel
@@ -16,8 +17,7 @@ const messages = [
     id: 1,
     name: "Dr. Arjun Singh",
     role: "Chief Organizer",
-    image:
-      "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?auto=format&fit=crop&w=400&q=80",
+    image: config.getUploadUrl("officials", "13-406.jpg"),
     message:
       "We extend a warm welcome to all teams and fans joining us for this year's Surjit Hockey Tournament. Let the spirit of sportsmanship shine through every match!",
   },
@@ -25,8 +25,7 @@ const messages = [
     id: 2,
     name: "Karanveer Bains",
     role: "Tournament Director",
-    image:
-      "https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=400&q=80",
+    image: config.getUploadUrl("officials", "20-181.jpg"),
     message:
       "This event is more than competition — it's a celebration of dedication, teamwork, and legacy. Best wishes to all participating teams.",
   },
@@ -34,10 +33,9 @@ const messages = [
     id: 3,
     name: "Simran Gill",
     role: "Executive Member",
-    image:
-      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=400&q=80",
+    image: config.getUploadUrl("officials", "21-864.jpg"),
     message:
-      "Every year, our tournament grows stronger because of our community’s love for hockey. Thank you for being part of our journey.",
+      "Every year, our tournament grows stronger because of our community's love for hockey. Thank you for being part of our journey.",
   },
 ];
 
@@ -54,7 +52,8 @@ export default function Messages() {
   }, [hovering]);
 
   const next = () => setIndex((prev) => (prev + 1) % messages.length);
-  const prev = () => setIndex((prev) => (prev - 1 + messages.length) % messages.length);
+  const prev = () =>
+    setIndex((prev) => (prev - 1 + messages.length) % messages.length);
 
   return (
     <section
@@ -96,7 +95,9 @@ export default function Messages() {
             <h4 className="text-lg md:text-xl font-bold text-[#1b2b4a]">
               {messages[index].name}
             </h4>
-            <p className="text-sm text-gray-500 font-medium">{messages[index].role}</p>
+            <p className="text-sm text-gray-500 font-medium">
+              {messages[index].role}
+            </p>
           </motion.div>
         </AnimatePresence>
 

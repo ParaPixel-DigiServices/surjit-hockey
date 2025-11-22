@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Users, MapPin } from "lucide-react";
+import config from "../config/api";
 
 /**
  * Teams Page
@@ -18,9 +19,7 @@ export default function Teams() {
 
   const fetchTeams = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:8000/api/v1/teams?skip=0&limit=500"
-      );
+      const response = await fetch(`${config.apiUrl}/teams?skip=0&limit=500`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -32,7 +31,7 @@ export default function Teams() {
             team_name: t.team_name,
             team_name_short: t.team_name_short,
             team_logo: t.team_logo
-              ? `http://localhost:8000/uploads/teams/${t.team_logo}`
+              ? config.getUploadUrl("teams", t.team_logo)
               : null,
             team_coach: t.team_coach,
             team_manager: t.team_manager,

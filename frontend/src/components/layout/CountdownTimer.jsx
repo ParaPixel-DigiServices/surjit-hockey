@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import config from "../../config/api";
 
 /**
  * CountdownTimer - Shows time remaining until next match
@@ -17,9 +18,7 @@ export default function CountdownTimer() {
   useEffect(() => {
     const fetchTimer = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:8000/api/v1/additional/timer"
-        );
+        const response = await fetch(`${config.apiUrl}/additional/timer`);
         if (response.ok) {
           const data = await response.json();
           // Parse the timer_time format: "2025-12-05 12:41 pm"
