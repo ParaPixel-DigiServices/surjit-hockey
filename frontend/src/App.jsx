@@ -21,6 +21,7 @@ import Players from "./pages/Players";
 import Positions from "./pages/Positions";
 import Streaming from "./pages/Streaming";
 import Teams from "./pages/Teams";
+import TeamDetail from "./pages/TeamDetail";
 import Sponsors from "./pages/Sponsors";
 import Messages from "./pages/Messages";
 import Contact from "./pages/Contact";
@@ -150,6 +151,24 @@ export default function App() {
         element={
           <MainLayout>
             <Teams />
+          </MainLayout>
+        }
+      />
+
+      <Route
+        path="/teams"
+        element={
+          <MainLayout>
+            <Teams />
+          </MainLayout>
+        }
+      />
+
+      <Route
+        path="/team/:id"
+        element={
+          <MainLayout>
+            <TeamDetail />
           </MainLayout>
         }
       />

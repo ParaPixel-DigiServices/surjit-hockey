@@ -1,6 +1,6 @@
-from pydantic import BaseModel, Field, field_serializer
+from pydantic import BaseModel, Field, field_serializer, field_validator
 from typing import Optional
-from datetime import date
+from datetime import date, datetime
 
 
 class TeamBase(BaseModel):
@@ -46,6 +46,29 @@ class TeamPlayerResponse(TeamPlayerBase):
     dob: Optional[date] = None
     mobile_no: Optional[str] = None
     status: bool
+
+    @field_validator('dob', mode='before')
+    @classmethod
+    def validate_dob(cls, v):
+        """Handle MySQL zero dates and convert strings to proper dates."""
+        if v is None or v == '':
+            return None
+        # Handle MySQL zero date
+        if isinstance(v, str):
+            if v == '0000-00-00' or v.startswith('0000-'):
+                return None
+            # Try to parse valid string dates
+            try:
+                parsed = datetime.strptime(v, '%Y-%m-%d').date()
+                if parsed.year > 1:
+                    return parsed
+                return None
+            except (ValueError, AttributeError):
+                return None
+        # Already a date object
+        if isinstance(v, date) and v.year > 1:
+            return v
+        return None
 
     @field_serializer('dob')
     def serialize_dob(self, dob: Optional[date], _info):
