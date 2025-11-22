@@ -23,7 +23,7 @@ export default function TeamDetail() {
     try {
       // Fetch team details first
       const teamRes = await fetch(`${config.apiUrl}/teams/${id}`);
-      
+
       if (teamRes.ok) {
         const teamData = await teamRes.json();
         setTeam(teamData);
@@ -38,7 +38,26 @@ export default function TeamDetail() {
         const playersRes = await fetch(`${config.apiUrl}/teams/${id}/players`);
         if (playersRes.ok) {
           const playersData = await playersRes.json();
-          setPlayers(playersData);
+          
+          // Deduplicate players by jersey number - keep the most recent (highest playing_year or id)
+          const uniquePlayersMap = new Map();
+          playersData.forEach(player => {
+            const key = player.jersey_no || `no_jersey_${player.id}`;
+            const existing = uniquePlayersMap.get(key);
+            
+            // Keep the player with the highest playing_year, or highest id if playing_year is the same
+            if (!existing || 
+                (player.playing_year > existing.playing_year) ||
+                (player.playing_year === existing.playing_year && player.id > existing.id)) {
+              uniquePlayersMap.set(key, player);
+            }
+          });
+          
+          // Convert back to array and sort by jersey number
+          const uniquePlayers = Array.from(uniquePlayersMap.values())
+            .sort((a, b) => (a.jersey_no || 999) - (b.jersey_no || 999));
+          
+          setPlayers(uniquePlayers);
         } else {
           console.warn("Players endpoint failed, status:", playersRes.status);
           setPlayers([]);
