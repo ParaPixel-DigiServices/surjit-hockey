@@ -55,7 +55,9 @@ export default function Topbar({ onOpenMobile }) {
           <div className="flex items-center gap-3">
             <img src={logo} alt="logo" className="w-10 h-10 object-contain" />
             <div className="leading-tight">
-              <div className="text-sm font-semibold text-white">Surjit Hockey — Admin</div>
+              <div className="text-sm font-semibold text-white">
+                Surjit Hockey — Admin
+              </div>
               <div className="text-xs text-white/60">Control Panel</div>
             </div>
           </div>
@@ -93,7 +95,7 @@ function ProfileDropdown() {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
@@ -103,11 +105,15 @@ function ProfileDropdown() {
         className="flex items-center gap-3 p-1 rounded-lg hover:bg-white/5 transition"
       >
         <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#ffd700] to-[#ffdd66] flex items-center justify-center text-[#071226] font-bold">
-          {user?.username?.substring(0, 2).toUpperCase() || 'AD'}
+          {user?.username?.substring(0, 2).toUpperCase() || "AD"}
         </div>
         <div className="hidden sm:flex flex-col text-right">
-          <div className="text-sm font-semibold">{user?.username || 'Admin'}</div>
-          <div className="text-xs text-white/60">{user?.email || 'admin@hockey.com'}</div>
+          <div className="text-sm font-semibold">
+            {user?.username || "Admin"}
+          </div>
+          <div className="text-xs text-white/60">
+            {user?.email || "admin@hockey.com"}
+          </div>
         </div>
       </button>
 
@@ -127,11 +133,15 @@ function ProfileDropdown() {
               <div className="p-4 border-b border-white/10">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#ffd700] to-[#ffdd66] flex items-center justify-center text-[#071226] font-bold">
-                    {user?.username?.substring(0, 2).toUpperCase() || 'AD'}
+                    {user?.username?.substring(0, 2).toUpperCase() || "AD"}
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-white">{user?.username || 'Admin'}</div>
-                    <div className="text-xs text-white/60">{user?.email || 'admin@hockey.com'}</div>
+                    <div className="text-sm font-semibold text-white">
+                      {user?.username || "Admin"}
+                    </div>
+                    <div className="text-xs text-white/60">
+                      {user?.email || "admin@hockey.com"}
+                    </div>
                   </div>
                 </div>
               </div>

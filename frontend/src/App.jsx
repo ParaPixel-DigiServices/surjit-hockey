@@ -55,157 +55,157 @@ export default function App() {
           }
         />
 
-      <Route
-        path="/gallery"
-        element={
-          <MainLayout>
-            <Gallery />
-          </MainLayout>
-        }
-      />
+        <Route
+          path="/gallery"
+          element={
+            <MainLayout>
+              <Gallery />
+            </MainLayout>
+          }
+        />
 
-      <Route
-        path="/news"
-        element={
-          <MainLayout>
-            <News />
-          </MainLayout>
-        }
-      />
+        <Route
+          path="/news"
+          element={
+            <MainLayout>
+              <News />
+            </MainLayout>
+          }
+        />
 
-      <Route
-        path="/news/:id"
-        element={
-          <MainLayout>
-            <NewsDetail />
-          </MainLayout>
-        }
-      />
+        <Route
+          path="/news/:id"
+          element={
+            <MainLayout>
+              <NewsDetail />
+            </MainLayout>
+          }
+        />
 
-      {/** 🚨 About page uses its OWN header — NOT MainLayout **/}
-      <Route path="/about" element={<About />} />
+        {/** 🚨 About page uses its OWN header — NOT MainLayout **/}
+        <Route path="/about" element={<About />} />
 
-      <Route path="/tournament" element={<Tournaments />} />
-      <Route path="/tournaments" element={<Tournaments />} />
-      <Route path="/fixtures" element={<TournamentFixtures />} />
-      <Route
-        path="/results"
-        element={
-          <MainLayout>
-            <Results />
-          </MainLayout>
-        }
-      />
+        <Route path="/tournament" element={<Tournaments />} />
+        <Route path="/tournaments" element={<Tournaments />} />
+        <Route path="/fixtures" element={<TournamentFixtures />} />
+        <Route
+          path="/results"
+          element={
+            <MainLayout>
+              <Results />
+            </MainLayout>
+          }
+        />
 
-      {/** ========= NEW DROPDOWN PAGES ========= **/}
+        {/** ========= NEW DROPDOWN PAGES ========= **/}
 
-      <Route
-        path="/pools"
-        element={
-          <MainLayout>
-            <Pools />
-          </MainLayout>
-        }
-      />
+        <Route
+          path="/pools"
+          element={
+            <MainLayout>
+              <Pools />
+            </MainLayout>
+          }
+        />
 
-      <Route
-        path="/honours"
-        element={
-          <MainLayout>
-            <Honours />
-          </MainLayout>
-        }
-      />
+        <Route
+          path="/honours"
+          element={
+            <MainLayout>
+              <Honours />
+            </MainLayout>
+          }
+        />
 
-      <Route
-        path="/officials"
-        element={
-          <MainLayout>
-            <Officials />
-          </MainLayout>
-        }
-      />
+        <Route
+          path="/officials"
+          element={
+            <MainLayout>
+              <Officials />
+            </MainLayout>
+          }
+        />
 
-      <Route
-        path="/players"
-        element={
-          <MainLayout>
-            <Players />
-          </MainLayout>
-        }
-      />
+        <Route
+          path="/players"
+          element={
+            <MainLayout>
+              <Players />
+            </MainLayout>
+          }
+        />
 
-      <Route
-        path="/positions"
-        element={
-          <MainLayout>
-            <Positions />
-          </MainLayout>
-        }
-      />
+        <Route
+          path="/positions"
+          element={
+            <MainLayout>
+              <Positions />
+            </MainLayout>
+          }
+        />
 
-      <Route
-        path="/streaming"
-        element={
-          <MainLayout>
-            <Streaming />
-          </MainLayout>
-        }
-      />
+        <Route
+          path="/streaming"
+          element={
+            <MainLayout>
+              <Streaming />
+            </MainLayout>
+          }
+        />
 
-      <Route
-        path="/teams"
-        element={
-          <MainLayout>
-            <Teams />
-          </MainLayout>
-        }
-      />
+        <Route
+          path="/teams"
+          element={
+            <MainLayout>
+              <Teams />
+            </MainLayout>
+          }
+        />
 
-      <Route
-        path="/teams"
-        element={
-          <MainLayout>
-            <Teams />
-          </MainLayout>
-        }
-      />
+        <Route
+          path="/teams"
+          element={
+            <MainLayout>
+              <Teams />
+            </MainLayout>
+          }
+        />
 
-      <Route
-        path="/team/:id"
-        element={
-          <MainLayout>
-            <TeamDetail />
-          </MainLayout>
-        }
-      />
+        <Route
+          path="/team/:id"
+          element={
+            <MainLayout>
+              <TeamDetail />
+            </MainLayout>
+          }
+        />
 
-      <Route
-        path="/messages"
-        element={
-          <MainLayout>
-            <Messages />
-          </MainLayout>
-        }
-      />
+        <Route
+          path="/messages"
+          element={
+            <MainLayout>
+              <Messages />
+            </MainLayout>
+          }
+        />
 
-      <Route
-        path="/contact"
-        element={
-          <MainLayout>
-            <Contact />
-          </MainLayout>
-        }
-      />
+        <Route
+          path="/contact"
+          element={
+            <MainLayout>
+              <Contact />
+            </MainLayout>
+          }
+        />
 
-      <Route
-        path="/sponsors"
-        element={
-          <MainLayout>
-            <Sponsors />
-          </MainLayout>
-        }
-      />
+        <Route
+          path="/sponsors"
+          element={
+            <MainLayout>
+              <Sponsors />
+            </MainLayout>
+          }
+        />
 
         {/** ========= ADMIN ROUTES (PROTECTED) ========= **/}
 

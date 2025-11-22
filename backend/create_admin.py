@@ -19,12 +19,12 @@ else:
     db.add(admin)
     db.commit()
     db.refresh(admin)
-    
+
     # Create profile
     profile = UserProfile(user_id=admin.id)
     db.add(profile)
     db.commit()
-    
+
     print('✅ Admin user created successfully!')
     print('   Username: admin')
     print('   Password: admin123')
