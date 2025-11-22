@@ -5,7 +5,8 @@ from app.models.user import User, UserProfile
 
 # Hash password directly with bcrypt
 password = "admin123"
-hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+hashed = bcrypt.hashpw(password.encode(
+    'utf-8'), bcrypt.gensalt()).decode('utf-8')
 
 db = next(get_db())
 
