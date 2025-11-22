@@ -133,4 +133,55 @@ export const api = {
     if (!response.ok) throw new Error("Failed to fetch team players");
     return response.json();
   },
+
+  // Additional Endpoints
+  getPools: async () => {
+    const response = await fetch(`${API_BASE_URL}/additional/pools`);
+    if (!response.ok) throw new Error("Failed to fetch pools");
+    return response.json();
+  },
+
+  getPoolTeams: async (yearId) => {
+    const response = await fetch(
+      `${API_BASE_URL}/additional/pools/${yearId}/teams`
+    );
+    if (!response.ok) throw new Error("Failed to fetch pool teams");
+    return response.json();
+  },
+
+  getYears: async () => {
+    const response = await fetch(`${API_BASE_URL}/additional/years`);
+    if (!response.ok) throw new Error("Failed to fetch years");
+    return response.json();
+  },
+
+  getHonours: async () => {
+    const response = await fetch(`${API_BASE_URL}/additional/honours`);
+    if (!response.ok) throw new Error("Failed to fetch honours");
+    return response.json();
+  },
+
+  getPositions: async () => {
+    const response = await fetch(`${API_BASE_URL}/additional/positions`);
+    if (!response.ok) throw new Error("Failed to fetch positions");
+    return response.json();
+  },
+
+  getStreaming: async () => {
+    const response = await fetch(`${API_BASE_URL}/additional/streaming`);
+    if (!response.ok) throw new Error("Failed to fetch streaming data");
+    return response.json();
+  },
+
+  getTimer: async () => {
+    const response = await fetch(`${API_BASE_URL}/additional/timer`);
+    if (!response.ok) throw new Error("Failed to fetch timer");
+    return response.json();
+  },
+
+  getImageOfDay: async () => {
+    const response = await fetch(`${API_BASE_URL}/additional/image-of-day`);
+    if (!response.ok) throw new Error("Failed to fetch image of day");
+    return response.json();
+  },
 };

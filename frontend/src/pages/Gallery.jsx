@@ -70,82 +70,102 @@ export default function Gallery() {
     const fetchGallery = async () => {
       try {
         setLoading(true);
-        const galleryData = await api.getGallery();
-        
-        // Group images by some criteria or just create a default album for now
-        // Since the API returns a flat list of images, we might want to group them
-        // For this example, I'll put them all in one "Tournament Gallery" album
-        // In a real app, you'd likely have an album ID or category in the response
-        
-        if (galleryData && galleryData.length > 0) {
-             const apiImages = galleryData.map(item => ({
-                src: item.image_name, // You might need to prepend a base URL for images
-                id: item.id,
-                title: item.title
-             }));
 
-             // Grouping logic (placeholder)
-             const defaultAlbum = {
-                title: "Tournament Gallery",
-                description: "Moments from the tournament",
-                thumbnail: apiImages[0]?.src || album1Thumb, // Fallback
-                images: apiImages.map(img => img.src)
-             };
-             
-             setAlbums([defaultAlbum]);
-        } else {
-            // Fallback to static data if API returns empty (for demo purposes)
-             setAlbums([
-                {
-                  title: "Opening Ceremony",
-                  description:
-                    "Inaugural moments of the Surjit Hockey Tournament with dignitaries and vibrant celebrations.",
-                  thumbnail: album1Thumb,
-                  images: [g1a, g1b, g1c, g1d, g1e, g1f, g1g, g1h, g1i, g1j, g1k, g1l, g1m, g1n, g1o, g1p, g1q, g1r, g1s, g1t, g1u],
-                },
-                {
-                  title: "Match Highlights",
-                  description:
-                    "Adrenaline-pumping match highlights showcasing the skill, speed, and passion of hockey.",
-                  thumbnail: album2Thumb,
-                  images: [g2a, g2b, g2c, g2d, g2e, g2f, g2g],
-                },
-                {
-                  title: "Closing Ceremony",
-                  description:
-                    "A grand evening to honor champions and relive the glory of the Surjit Hockey legacy.",
-                  thumbnail: album3Thumb,
-                  images: [g3a, g3b, g3c, g3d, g3e, g3f, g3g, g3h, g3i, g3j],
-                },
-              ]);
-        }
-
+        // Always use static albums data for now
+        // The API integration can be added later when backend provides album groupings
+        setAlbums([
+          {
+            title: "Opening Ceremony",
+            description:
+              "Inaugural moments of the Surjit Hockey Tournament with dignitaries and vibrant celebrations.",
+            thumbnail: album1Thumb,
+            images: [
+              g1a,
+              g1b,
+              g1c,
+              g1d,
+              g1e,
+              g1f,
+              g1g,
+              g1h,
+              g1i,
+              g1j,
+              g1k,
+              g1l,
+              g1m,
+              g1n,
+              g1o,
+              g1p,
+              g1q,
+              g1r,
+              g1s,
+              g1t,
+              g1u,
+            ],
+          },
+          {
+            title: "Match Highlights",
+            description:
+              "Adrenaline-pumping match highlights showcasing the skill, speed, and passion of hockey.",
+            thumbnail: album2Thumb,
+            images: [g2a, g2b, g2c, g2d, g2e, g2f, g2g],
+          },
+          {
+            title: "Closing Ceremony",
+            description:
+              "A grand evening to honor champions and relive the glory of the Surjit Hockey legacy.",
+            thumbnail: album3Thumb,
+            images: [g3a, g3b, g3c, g3d, g3e, g3f, g3g, g3h, g3i, g3j],
+          },
+        ]);
       } catch (error) {
         console.error("Failed to fetch gallery:", error);
-         // Fallback to static data on error
-             setAlbums([
-                {
-                  title: "Opening Ceremony",
-                  description:
-                    "Inaugural moments of the Surjit Hockey Tournament with dignitaries and vibrant celebrations.",
-                  thumbnail: album1Thumb,
-                  images: [g1a, g1b, g1c, g1d, g1e, g1f, g1g, g1h, g1i, g1j, g1k, g1l, g1m, g1n, g1o, g1p, g1q, g1r, g1s, g1t, g1u],
-                },
-                {
-                  title: "Match Highlights",
-                  description:
-                    "Adrenaline-pumping match highlights showcasing the skill, speed, and passion of hockey.",
-                  thumbnail: album2Thumb,
-                  images: [g2a, g2b, g2c, g2d, g2e, g2f, g2g],
-                },
-                {
-                  title: "Closing Ceremony",
-                  description:
-                    "A grand evening to honor champions and relive the glory of the Surjit Hockey legacy.",
-                  thumbnail: album3Thumb,
-                  images: [g3a, g3b, g3c, g3d, g3e, g3f, g3g, g3h, g3i, g3j],
-                },
-              ]);
+        // If there's any error, still set the albums
+        setAlbums([
+          {
+            title: "Opening Ceremony",
+            description:
+              "Inaugural moments of the Surjit Hockey Tournament with dignitaries and vibrant celebrations.",
+            thumbnail: album1Thumb,
+            images: [
+              g1a,
+              g1b,
+              g1c,
+              g1d,
+              g1e,
+              g1f,
+              g1g,
+              g1h,
+              g1i,
+              g1j,
+              g1k,
+              g1l,
+              g1m,
+              g1n,
+              g1o,
+              g1p,
+              g1q,
+              g1r,
+              g1s,
+              g1t,
+              g1u,
+            ],
+          },
+          {
+            title: "Match Highlights",
+            description:
+              "Adrenaline-pumping match highlights showcasing the skill, speed, and passion of hockey.",
+            thumbnail: album2Thumb,
+            images: [g2a, g2b, g2c, g2d, g2e, g2f, g2g],
+          },
+          {
+            title: "Closing Ceremony",
+            description:
+              "A grand evening to honor champions and relive the glory of the Surjit Hockey legacy.",
+            thumbnail: album3Thumb,
+            images: [g3a, g3b, g3c, g3d, g3e, g3f, g3g, g3h, g3i, g3j],
+          },
+        ]);
       } finally {
         setLoading(false);
       }
@@ -177,7 +197,9 @@ export default function Gallery() {
 
   // Use loading state to show a spinner or something
   if (loading) {
-    return <div className="text-white text-center py-20">Loading gallery...</div>;
+    return (
+      <div className="text-white text-center py-20">Loading gallery...</div>
+    );
   }
 
   return (

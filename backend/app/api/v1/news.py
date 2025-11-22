@@ -102,7 +102,7 @@ async def get_news_by_id(
 @router.get("/officials", response_model=List[OfficialResponse])
 async def get_officials(
     skip: int = Query(0, ge=0),
-    limit: int = Query(100, ge=1, le=100),
+    limit: int = Query(100, ge=1, le=1000),
     db: Session = Depends(get_db)
 ):
     """
@@ -160,7 +160,7 @@ async def get_official_by_id(
 @router.get("/sponsors", response_model=List[SponsorResponse])
 async def get_sponsors(
     skip: int = Query(0, ge=0),
-    limit: int = Query(100, ge=1, le=100),
+    limit: int = Query(100, ge=1, le=1000),
     db: Session = Depends(get_db)
 ):
     """
