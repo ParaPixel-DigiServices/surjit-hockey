@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Trophy, Medal, Award } from "lucide-react";
+import { Trophy, Medal, Award, Users } from "lucide-react";
 import config from "../config/api";
 
 /**
@@ -10,7 +10,9 @@ import config from "../config/api";
  */
 export default function Honours() {
   const [honours, setHonours] = useState([]);
+  const [teams, setTeams] = useState({});
   const [loading, setLoading] = useState(true);
+  const [activeCategory, setActiveCategory] = useState("men"); // men or women
 
   useEffect(() => {
     fetchHonours();
@@ -20,7 +22,7 @@ export default function Honours() {
     try {
       const [honoursRes, teamsRes] = await Promise.all([
         fetch(`${config.apiUrl}/additional/honours`),
-        fetch(`${config.apiUrl}/teams?skip=0&limit=1000`),
+        fetch(`${config.apiUrl}/teams?skip=0&limit=200`),
       ]);
 
       if (!honoursRes.ok) {
@@ -30,36 +32,16 @@ export default function Honours() {
       const honoursData = await honoursRes.json();
       const teamsData = await teamsRes.json();
 
-      // Create team lookup map
+      // Create team lookup map with full team objects
       const teamMap = {};
       if (Array.isArray(teamsData)) {
         teamsData.forEach((team) => {
-          teamMap[team.team_id] = team.team_name;
+          teamMap[team.id] = team;
         });
       }
 
-      // Map honours data with team names
-      const mappedHonours = Array.isArray(honoursData)
-        ? honoursData.map((honour) => {
-            const winnerName = teamMap[honour.team_id_1] || "Unknown Team";
-            const runnerUpName = teamMap[honour.team_id_2] || "Unknown Team";
-
-            return {
-              hon_id: honour.id,
-              year: honour.year,
-              position: honour.joint_winner
-                ? "Joint Winners"
-                : "Winner & Runner-up",
-              team_name: honour.joint_winner
-                ? winnerName
-                : `🏆 ${winnerName} | 🥈 ${runnerUpName}`,
-              tournament_name:
-                honour.team_type === 0 ? "Men's Category" : "Women's Category",
-            };
-          })
-        : [];
-
-      setHonours(mappedHonours);
+      setTeams(teamMap);
+      setHonours(honoursData);
     } catch (error) {
       console.error("Failed to fetch honours:", error);
     } finally {
@@ -67,18 +49,31 @@ export default function Honours() {
     }
   };
 
-  const getIcon = (position) => {
-    switch (position?.toLowerCase()) {
-      case "winner":
-      case "champion":
-        return <Trophy className="text-[#ffd700]" size={32} />;
-      case "runner-up":
-      case "second":
-        return <Medal className="text-[#c0c0c0]" size={32} />;
-      default:
-        return <Award className="text-[#cd7f32]" size={32} />;
+  const getTeamInfo = (teamId) => {
+    if (teams[teamId]) {
+      return {
+        name: teams[teamId].team_name,
+        logo: teams[teamId].team_logo,
+      };
     }
+    return { name: "Unknown Team", logo: null };
   };
+
+  // Filter honours by category and group by year
+  const filteredHonours = honours.filter(
+    (h) => h.team_type === (activeCategory === "men" ? 0 : 1)
+  );
+
+  // Group by year (some years have multiple entries)
+  const groupedByYear = {};
+  filteredHonours.forEach((honour) => {
+    if (!groupedByYear[honour.year]) {
+      groupedByYear[honour.year] = [];
+    }
+    groupedByYear[honour.year].push(honour);
+  });
+
+  const years = Object.keys(groupedByYear).sort((a, b) => b - a);
 
   if (loading) {
     return (
@@ -100,50 +95,169 @@ export default function Honours() {
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Hall of <span className="text-[#ffd700]">Honours</span>
           </h1>
-          <p className="text-white/70 text-lg">
+          <p className="text-white/70 text-lg mb-8">
             Celebrating champions and achievements across the years
           </p>
+
+          {/* Category Toggle */}
+          <div className="flex justify-center gap-4">
+            <button
+              onClick={() => setActiveCategory("men")}
+              className={`px-6 py-3 rounded-lg font-semibold transition ${
+                activeCategory === "men"
+                  ? "bg-[#ffd700] text-[#0b152d]"
+                  : "bg-[#1b2b4a] text-white hover:bg-[#1b2b4a]/80"
+              }`}
+            >
+              <Users className="inline mr-2" size={20} />
+              Men's Category
+            </button>
+            <button
+              onClick={() => setActiveCategory("women")}
+              className={`px-6 py-3 rounded-lg font-semibold transition ${
+                activeCategory === "women"
+                  ? "bg-[#ffd700] text-[#0b152d]"
+                  : "bg-[#1b2b4a] text-white hover:bg-[#1b2b4a]/80"
+              }`}
+            >
+              <Users className="inline mr-2" size={20} />
+              Women's Category
+            </button>
+          </div>
         </motion.div>
 
-        {/* Honours Timeline */}
+        {/* Honours by Year */}
         <div className="space-y-8">
-          {honours.map((honour, index) => (
-            <motion.div
-              key={honour.hon_id}
-              initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-[#1b2b4a] rounded-lg p-6 border border-white/10 hover:border-[#ffd700]/50 transition"
-            >
-              <div className="flex items-center gap-6">
-                {/* Icon */}
-                <div className="flex-shrink-0">{getIcon(honour.position)}</div>
+          {years.map((year, yearIndex) => {
+            const yearHonours = groupedByYear[year];
 
-                {/* Content */}
-                <div className="flex-grow">
-                  <div className="flex items-center gap-4 mb-2">
-                    <h3 className="text-2xl font-bold text-[#ffd700]">
-                      {honour.year || "N/A"}
-                    </h3>
-                    <span className="px-3 py-1 bg-white/10 rounded-full text-sm">
-                      {honour.position || "Participant"}
-                    </span>
-                  </div>
-                  <p className="text-white/80 text-lg">{honour.team_name}</p>
-                  {honour.tournament_name && (
-                    <p className="text-white/50 text-sm mt-1">
-                      {honour.tournament_name}
-                    </p>
-                  )}
+            return (
+              <motion.div
+                key={year}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: yearIndex * 0.05 }}
+                className="bg-gradient-to-br from-[#1b2b4a] to-[#0b152d] rounded-xl p-8 border border-[#ffd700]/20"
+              >
+                {/* Year Header */}
+                <div className="flex items-center gap-4 mb-6 pb-4 border-b border-white/10">
+                  <Trophy className="text-[#ffd700]" size={32} />
+                  <h2 className="text-3xl font-bold text-[#ffd700]">{year}</h2>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+
+                {/* Matches for this year */}
+                <div className="space-y-6">
+                  {yearHonours.map((honour, index) => {
+                    const winner = getTeamInfo(honour.team_id_1);
+                    const runnerUp = getTeamInfo(honour.team_id_2);
+                    const isJoint = honour.joint_winner;
+
+                    return (
+                      <div
+                        key={index}
+                        className="bg-[#0b152d]/50 rounded-lg p-6"
+                      >
+                        {isJoint ? (
+                          // Joint Winners
+                          <div className="text-center">
+                            <div className="inline-flex items-center gap-3 bg-[#ffd700]/20 px-6 py-3 rounded-full mb-4">
+                              <Trophy className="text-[#ffd700]" size={24} />
+                              <span className="text-[#ffd700] font-bold text-lg">
+                                Joint Winners
+                              </span>
+                            </div>
+                            <div className="flex items-center justify-center gap-4">
+                              {winner.logo && (
+                                <img
+                                  src={config.getUploadUrl(
+                                    "teams",
+                                    winner.logo
+                                  )}
+                                  alt={winner.name}
+                                  className="w-16 h-16 object-contain"
+                                />
+                              )}
+                              <span className="text-2xl font-bold text-white">
+                                {winner.name}
+                              </span>
+                            </div>
+                          </div>
+                        ) : (
+                          // Winner vs Runner-up
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                            {/* Winner */}
+                            <div className="text-center">
+                              <div className="inline-flex items-center gap-2 bg-[#ffd700]/20 px-4 py-2 rounded-full mb-3">
+                                <Trophy className="text-[#ffd700]" size={20} />
+                                <span className="text-[#ffd700] font-semibold">
+                                  Winner
+                                </span>
+                              </div>
+                              <div className="flex flex-col items-center gap-3">
+                                {winner.logo && (
+                                  <img
+                                    src={config.getUploadUrl(
+                                      "teams",
+                                      winner.logo
+                                    )}
+                                    alt={winner.name}
+                                    className="w-20 h-20 object-contain"
+                                  />
+                                )}
+                                <span className="text-xl font-bold text-white">
+                                  {winner.name}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* VS */}
+                            <div className="text-center">
+                              <span className="text-3xl font-bold text-white/30">
+                                VS
+                              </span>
+                            </div>
+
+                            {/* Runner-up */}
+                            <div className="text-center">
+                              <div className="inline-flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full mb-3">
+                                <Medal className="text-[#c0c0c0]" size={20} />
+                                <span className="text-white/70 font-semibold">
+                                  Runner-up
+                                </span>
+                              </div>
+                              <div className="flex flex-col items-center gap-3">
+                                {runnerUp.logo && (
+                                  <img
+                                    src={config.getUploadUrl(
+                                      "teams",
+                                      runnerUp.logo
+                                    )}
+                                    alt={runnerUp.name}
+                                    className="w-20 h-20 object-contain"
+                                  />
+                                )}
+                                <span className="text-xl font-bold text-white/70">
+                                  {runnerUp.name}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
 
-        {honours.length === 0 && (
+        {years.length === 0 && (
           <div className="text-center text-white/50 py-12">
-            No honours data available
+            <Trophy className="mx-auto mb-4 text-white/20" size={64} />
+            <p className="text-xl">
+              No honours data available for this category
+            </p>
           </div>
         )}
       </div>
