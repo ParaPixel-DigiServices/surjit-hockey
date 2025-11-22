@@ -11,11 +11,32 @@ export default function CountdownTimer() {
     minutes: 0,
     seconds: 0,
   });
+  const [matchDate, setMatchDate] = useState(null);
 
-  // Set your next match date here
-  const matchDate = new Date("2025-11-15T17:30:00");
+  // Fetch timer from API
+  useEffect(() => {
+    const fetchTimer = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8000/api/v1/additional/timer"
+        );
+        if (response.ok) {
+          const data = await response.json();
+          // Parse the timer_time format: "2025-12-05 12:41 pm"
+          const parsedDate = new Date(data.timer_time);
+          setMatchDate(parsedDate);
+        }
+      } catch (error) {
+        console.error("Failed to fetch timer:", error);
+      }
+    };
+
+    fetchTimer();
+  }, []);
 
   useEffect(() => {
+    if (!matchDate) return;
+
     const timer = setInterval(() => {
       const now = new Date();
       const difference = matchDate - now;
@@ -34,7 +55,7 @@ export default function CountdownTimer() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [matchDate]);
 
   return (
     <div className="flex gap-2 items-center text-[10px] sm:text-xs">
