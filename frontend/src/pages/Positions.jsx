@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
-import config from "../config/api";
 
 /**
  * Positions Page
@@ -8,35 +7,63 @@ import config from "../config/api";
  * Display all hockey positions with descriptions
  */
 export default function Positions() {
-  const [positions, setPositions] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchPositions();
-  }, []);
-
-  const fetchPositions = async () => {
-    try {
-      const response = await fetch(`${config.apiUrl}/additional/positions`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      // Map API fields: id→pos_id, position→pos_name
-      const mappedPositions = Array.isArray(data)
-        ? data.map((p) => ({
-            pos_id: p.id,
-            pos_name: p.position,
-            status: p.status,
-          }))
-        : [];
-      setPositions(mappedPositions);
-    } catch (error) {
-      console.error("Failed to fetch positions:", error);
-    } finally {
-      setLoading(false);
+  // Enhanced position data with descriptions and responsibilities
+  const positionsData = [
+    {
+      id: 1,
+      name: "Goal Keeper",
+      abbreviation: "GK",
+      description: "The last line of defense, responsible for protecting the goal and preventing the opposition from scoring.",
+      responsibilities: [
+        "Stop shots on goal using pads, stick, or any legal part of the body",
+        "Clear the ball from the defensive circle",
+        "Communicate with defenders to organize the defense",
+        "Initiate counter-attacks with accurate passes"
+      ],
+      keySkills: ["Reflexes", "Positioning", "Communication", "Aerial ability"]
+    },
+    {
+      id: 2,
+      name: "Full Back",
+      abbreviation: "FB",
+      description: "Defensive players positioned closest to the goalkeeper, forming the primary defensive line.",
+      responsibilities: [
+        "Mark opposition forwards and prevent scoring opportunities",
+        "Intercept passes and clear the ball from danger zones",
+        "Support the goalkeeper in defensive organization",
+        "Transition play from defense to midfield"
+      ],
+      keySkills: ["Tackling", "Positioning", "Strength", "Distribution"]
+    },
+    {
+      id: 3,
+      name: "Half Back",
+      abbreviation: "HB",
+      description: "Versatile midfield players who link defense and attack, crucial for both phases of play.",
+      responsibilities: [
+        "Control the midfield and dictate the tempo of the game",
+        "Break up opposition attacks and win ball possession",
+        "Distribute the ball to forwards and create scoring opportunities",
+        "Track back to support the defense when needed"
+      ],
+      keySkills: ["Vision", "Passing", "Stamina", "Ball control"]
+    },
+    {
+      id: 4,
+      name: "Forward",
+      abbreviation: "FW",
+      description: "Attacking players whose primary role is to score goals and create chances for the team.",
+      responsibilities: [
+        "Score goals and convert scoring opportunities",
+        "Press opposition defenders and force turnovers",
+        "Create space for teammates through intelligent movement",
+        "Execute penalty corners and set-piece routines"
+      ],
+      keySkills: ["Shooting", "Speed", "Dribbling", "Finishing"]
     }
-  };
+  ];
+
+  const [loading] = useState(false);
 
   if (loading) {
     return (
@@ -64,32 +91,69 @@ export default function Positions() {
         </motion.div>
 
         {/* Positions Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {positions.map((position, index) => (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {positionsData.map((position, index) => (
             <motion.div
-              key={position.pos_id}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-[#1b2b4a] rounded-lg p-6 border border-white/10 hover:border-[#ffd700]/50 transition"
+              key={position.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.15 }}
+              className="bg-gradient-to-br from-[#1b2b4a] to-[#0f1a2e] rounded-xl p-8 border border-[#ffd700]/20 hover:border-[#ffd700]/50 transition shadow-lg"
             >
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-[#ffd700] rounded-full flex items-center justify-center text-[#0b152d] font-bold text-xl">
-                  {position.pos_name?.charAt(0) || "?"}
+              {/* Position Header */}
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-[#ffd700] to-[#ffa500] rounded-full flex items-center justify-center text-[#0b152d] font-bold text-2xl shadow-lg">
+                  {position.abbreviation}
                 </div>
-                <h3 className="text-2xl font-bold text-white">
-                  {position.pos_name}
-                </h3>
+                <div>
+                  <h3 className="text-3xl font-bold text-white">
+                    {position.name}
+                  </h3>
+                  <p className="text-[#ffd700] text-sm font-semibold">
+                    {position.abbreviation}
+                  </p>
+                </div>
+              </div>
+
+              {/* Description */}
+              <p className="text-white/80 mb-6 leading-relaxed">
+                {position.description}
+              </p>
+
+              {/* Responsibilities */}
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold text-[#ffd700] mb-3">
+                  Key Responsibilities
+                </h4>
+                <ul className="space-y-2">
+                  {position.responsibilities.map((resp, idx) => (
+                    <li key={idx} className="flex items-start gap-2 text-white/70 text-sm">
+                      <span className="text-[#ffd700] mt-1">•</span>
+                      <span>{resp}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Key Skills */}
+              <div>
+                <h4 className="text-lg font-semibold text-[#ffd700] mb-3">
+                  Essential Skills
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {position.keySkills.map((skill, idx) => (
+                    <span
+                      key={idx}
+                      className="px-3 py-1 bg-[#ffd700]/10 border border-[#ffd700]/30 rounded-full text-white/80 text-sm"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
               </div>
             </motion.div>
           ))}
         </div>
-
-        {positions.length === 0 && (
-          <div className="text-center text-white/50 py-12">
-            No positions data available
-          </div>
-        )}
       </div>
     </div>
   );

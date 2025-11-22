@@ -203,7 +203,10 @@ export default function TeamDetail() {
                   {player.profile_image && (
                     <div className="mb-4 flex justify-center">
                       <img
-                        src={config.getUploadUrl("players", player.profile_image)}
+                        src={config.getUploadUrl(
+                          "players",
+                          player.profile_image
+                        )}
                         alt={player.full_name}
                         className="w-32 h-32 rounded-full object-cover border-4 border-[#ffd700]/30"
                       />
