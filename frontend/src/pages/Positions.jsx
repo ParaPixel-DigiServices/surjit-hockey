@@ -13,54 +13,58 @@ export default function Positions() {
       id: 1,
       name: "Goal Keeper",
       abbreviation: "GK",
-      description: "The last line of defense, responsible for protecting the goal and preventing the opposition from scoring.",
+      description:
+        "The last line of defense, responsible for protecting the goal and preventing the opposition from scoring.",
       responsibilities: [
         "Stop shots on goal using pads, stick, or any legal part of the body",
         "Clear the ball from the defensive circle",
         "Communicate with defenders to organize the defense",
-        "Initiate counter-attacks with accurate passes"
+        "Initiate counter-attacks with accurate passes",
       ],
-      keySkills: ["Reflexes", "Positioning", "Communication", "Aerial ability"]
+      keySkills: ["Reflexes", "Positioning", "Communication", "Aerial ability"],
     },
     {
       id: 2,
       name: "Full Back",
       abbreviation: "FB",
-      description: "Defensive players positioned closest to the goalkeeper, forming the primary defensive line.",
+      description:
+        "Defensive players positioned closest to the goalkeeper, forming the primary defensive line.",
       responsibilities: [
         "Mark opposition forwards and prevent scoring opportunities",
         "Intercept passes and clear the ball from danger zones",
         "Support the goalkeeper in defensive organization",
-        "Transition play from defense to midfield"
+        "Transition play from defense to midfield",
       ],
-      keySkills: ["Tackling", "Positioning", "Strength", "Distribution"]
+      keySkills: ["Tackling", "Positioning", "Strength", "Distribution"],
     },
     {
       id: 3,
       name: "Half Back",
       abbreviation: "HB",
-      description: "Versatile midfield players who link defense and attack, crucial for both phases of play.",
+      description:
+        "Versatile midfield players who link defense and attack, crucial for both phases of play.",
       responsibilities: [
         "Control the midfield and dictate the tempo of the game",
         "Break up opposition attacks and win ball possession",
         "Distribute the ball to forwards and create scoring opportunities",
-        "Track back to support the defense when needed"
+        "Track back to support the defense when needed",
       ],
-      keySkills: ["Vision", "Passing", "Stamina", "Ball control"]
+      keySkills: ["Vision", "Passing", "Stamina", "Ball control"],
     },
     {
       id: 4,
       name: "Forward",
       abbreviation: "FW",
-      description: "Attacking players whose primary role is to score goals and create chances for the team.",
+      description:
+        "Attacking players whose primary role is to score goals and create chances for the team.",
       responsibilities: [
         "Score goals and convert scoring opportunities",
         "Press opposition defenders and force turnovers",
         "Create space for teammates through intelligent movement",
-        "Execute penalty corners and set-piece routines"
+        "Execute penalty corners and set-piece routines",
       ],
-      keySkills: ["Shooting", "Speed", "Dribbling", "Finishing"]
-    }
+      keySkills: ["Shooting", "Speed", "Dribbling", "Finishing"],
+    },
   ];
 
   const [loading] = useState(false);
@@ -127,7 +131,10 @@ export default function Positions() {
                 </h4>
                 <ul className="space-y-2">
                   {position.responsibilities.map((resp, idx) => (
-                    <li key={idx} className="flex items-start gap-2 text-white/70 text-sm">
+                    <li
+                      key={idx}
+                      className="flex items-start gap-2 text-white/70 text-sm"
+                    >
                       <span className="text-[#ffd700] mt-1">•</span>
                       <span>{resp}</span>
                     </li>
