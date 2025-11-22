@@ -1,6 +1,8 @@
 // src/App.jsx
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./contexts/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import MainLayout from "./components/layout/MainLayout";
 import Home from "./pages/Home";
@@ -12,6 +14,7 @@ import Gallery from "./pages/Gallery";
 import News from "./pages/News";
 import NewsDetail from "./pages/NewsDetail";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
 
 // New Pages
 import Pools from "./pages/Pools";
@@ -36,17 +39,21 @@ import ResultsAdmin from "./admin/pages/Results";
 
 export default function App() {
   return (
-    <Routes>
-      {/** ========= MAIN WEBSITE ROUTES ========= **/}
+    <AuthProvider>
+      <Routes>
+        {/** ========= AUTH ROUTES ========= **/}
+        <Route path="/login" element={<Login />} />
 
-      <Route
-        path="/"
-        element={
-          <MainLayout>
-            <Home />
-          </MainLayout>
-        }
-      />
+        {/** ========= MAIN WEBSITE ROUTES ========= **/}
+
+        <Route
+          path="/"
+          element={
+            <MainLayout>
+              <Home />
+            </MainLayout>
+          }
+        />
 
       <Route
         path="/gallery"
@@ -200,18 +207,26 @@ export default function App() {
         }
       />
 
-      {/** ========= ADMIN ROUTES ========= **/}
+        {/** ========= ADMIN ROUTES (PROTECTED) ========= **/}
 
-      <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<Dashboard />} />
-        <Route path="teams" element={<TeamsAdmin />} />
-        <Route path="pools" element={<PoolsAdmin />} />
-        <Route path="fixtures" element={<Fixtures />} />
-        <Route path="results" element={<ResultsAdmin />} />
-      </Route>
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<Dashboard />} />
+          <Route path="teams" element={<TeamsAdmin />} />
+          <Route path="pools" element={<PoolsAdmin />} />
+          <Route path="fixtures" element={<Fixtures />} />
+          <Route path="results" element={<ResultsAdmin />} />
+        </Route>
 
-      {/** ========= 404 ========= **/}
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+        {/** ========= 404 ========= **/}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </AuthProvider>
   );
 }
