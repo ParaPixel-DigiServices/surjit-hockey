@@ -33,7 +33,9 @@ export default function ParticipatingTeams() {
         
         const formattedTeams = teamsData.map(team => ({
           name: team.team_name,
-          logo: team.team_logo, // You might need to prepend base URL
+          logo: team.team_logo 
+            ? `http://localhost:8000/uploads/teams/${team.team_logo}`
+            : null,
           id: team.id
         }));
         
