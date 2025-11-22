@@ -126,15 +126,19 @@ export default function MobileNav({ isOpen, onClose }) {
 
             // Simple link item
             const isActive = location.pathname === item.path;
+            const isContact = item.label === "Contact";
+
             return (
               <li key={item.path}>
                 <Link
                   to={item.path}
                   onClick={onClose}
-                  className={`flex items-center justify-between px-3 py-3 rounded-md text-sm font-semibold ${
-                    isActive
-                      ? "bg-white/10 text-white"
-                      : "text-white/80 hover:text-white hover:bg-white/5"
+                  className={`flex items-center justify-center px-3 py-3 rounded-md text-sm font-semibold ${
+                    isContact
+                      ? "bg-[#ffd700] text-[#1b2b4a] hover:bg-[#ffd700]/90"
+                      : isActive
+                        ? "bg-white/10 text-white"
+                        : "text-white/80 hover:text-white hover:bg-white/5"
                   }`}
                 >
                   <span>{item.label}</span>

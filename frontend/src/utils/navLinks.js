@@ -47,8 +47,8 @@ export const NAV_LINKS = [
     ],
   },
   {
-    label: "Sponsors",
-    path: "/sponsors",
+    label: "Contact",
+    path: "/contact",
   },
 ];
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import MobileNav from "./MobileNav";
 import DropdownMenu from "./DropdownMenu";
+import CountdownTimer from "./CountdownTimer";
 import { NAV_LINKS } from "../../utils/navLinks";
 import logo from "../../assets/icon.png";
 
@@ -60,7 +61,7 @@ export default function Header() {
           </nav>
 
           {/* ---------- CENTER HEX LOGO ---------- */}
-          <div className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[99%] w-56 sm:w-64 h-40 sm:h-44 overflow-visible flex items-center justify-center">
+          <div className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[99%] w-56 sm:w-64 h-40 sm:h-44 overflow-visible flex flex-col items-center justify-center">
             {/* Blended Hex Shape */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -80,10 +81,15 @@ export default function Header() {
               <img
                 src={logo}
                 alt="Surjit Hockey Logo"
-                className="relative z-10 w-[55%] sm:w-[50%] h-auto object-contain translate-y-[-80%]"
+                className="relative z-10 w-[55%] sm:w-[50%] h-auto object-contain translate-y-[-90%]"
                 draggable="false"
               />
             </Link>
+
+            {/* Timer inside hexagon shape */}
+            <div className="absolute top-[20%] left-1/2 -translate-x-1/2 z-20 text-[#ffd700] text-[10px] sm:text-xs font-bold whitespace-nowrap">
+              <CountdownTimer />
+            </div>
           </div>
 
           {/* ---------- RIGHT NAV ---------- */}
@@ -95,6 +101,14 @@ export default function Header() {
                   label={item.label}
                   children={item.children}
                 />
+              ) : item.label === "Contact" ? (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className="inline-flex items-center justify-center bg-[#ffd700] text-[#1b2b4a] font-extrabold px-5 py-2 rounded-md hover:bg-[#ffd700]/90 transition"
+                >
+                  {item.label}
+                </Link>
               ) : (
                 <Link
                   key={item.path}
