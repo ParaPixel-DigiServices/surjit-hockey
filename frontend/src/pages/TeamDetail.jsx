@@ -38,25 +38,29 @@ export default function TeamDetail() {
         const playersRes = await fetch(`${config.apiUrl}/teams/${id}/players`);
         if (playersRes.ok) {
           const playersData = await playersRes.json();
-          
+
           // Deduplicate players by jersey number - keep the most recent (highest playing_year or id)
           const uniquePlayersMap = new Map();
-          playersData.forEach(player => {
+          playersData.forEach((player) => {
             const key = player.jersey_no || `no_jersey_${player.id}`;
             const existing = uniquePlayersMap.get(key);
-            
+
             // Keep the player with the highest playing_year, or highest id if playing_year is the same
-            if (!existing || 
-                (player.playing_year > existing.playing_year) ||
-                (player.playing_year === existing.playing_year && player.id > existing.id)) {
+            if (
+              !existing ||
+              player.playing_year > existing.playing_year ||
+              (player.playing_year === existing.playing_year &&
+                player.id > existing.id)
+            ) {
               uniquePlayersMap.set(key, player);
             }
           });
-          
+
           // Convert back to array and sort by jersey number
-          const uniquePlayers = Array.from(uniquePlayersMap.values())
-            .sort((a, b) => (a.jersey_no || 999) - (b.jersey_no || 999));
-          
+          const uniquePlayers = Array.from(uniquePlayersMap.values()).sort(
+            (a, b) => (a.jersey_no || 999) - (b.jersey_no || 999)
+          );
+
           setPlayers(uniquePlayers);
         } else {
           console.warn("Players endpoint failed, status:", playersRes.status);
@@ -195,6 +199,17 @@ export default function TeamDetail() {
                   transition={{ delay: index * 0.05 }}
                   className="bg-[#1b2b4a] rounded-lg p-6 border border-white/10 hover:border-[#ffd700]/50 transition"
                 >
+                  {/* Player Profile Image */}
+                  {player.profile_image && (
+                    <div className="mb-4 flex justify-center">
+                      <img
+                        src={config.getUploadUrl("players", player.profile_image)}
+                        alt={player.full_name}
+                        className="w-32 h-32 rounded-full object-cover border-4 border-[#ffd700]/30"
+                      />
+                    </div>
+                  )}
+
                   <div className="flex items-start gap-4">
                     {/* Jersey Number Circle */}
                     {player.jersey_no && (
