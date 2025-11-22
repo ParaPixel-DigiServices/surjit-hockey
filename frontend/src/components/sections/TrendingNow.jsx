@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import config from "../../config/api";
 
 /**
@@ -102,15 +103,17 @@ export default function TrendingNow() {
                 {article.excerpt}
               </motion.p>
 
-              <motion.span
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                viewport={{ once: true }}
-                className="text-[#ffd700] font-semibold cursor-pointer hover:underline tracking-wide"
-              >
-                Read More →
-              </motion.span>
+              <Link to="/news">
+                <motion.span
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                  viewport={{ once: true }}
+                  className="text-[#ffd700] font-semibold cursor-pointer hover:underline tracking-wide inline-block"
+                >
+                  Read More →
+                </motion.span>
+              </Link>
             </div>
           </div>
         ))}

@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { api } from "../../services/api";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -198,12 +199,12 @@ export default function MatchSchedule() {
                     </div>
                   </div>
                   <div className="mt-3 md:mt-0">
-                    <button
-                      type="button"
-                      className="bg-[#ffd700] text-[#1b2b4a] font-semibold px-4 py-2 rounded-md hover:brightness-95 transition"
+                    <Link
+                      to="/results"
+                      className="inline-block bg-[#ffd700] text-[#1b2b4a] font-semibold px-4 py-2 rounded-md hover:brightness-95 transition"
                     >
                       View Details
-                    </button>
+                    </Link>
                   </div>
                 </motion.div>
               ))

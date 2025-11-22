@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import {
   FaFacebookF,
   FaInstagram,
@@ -53,18 +54,22 @@ export default function Footer() {
           <h3 className="text-2xl md:text-3xl font-bold mb-3">Quick Links</h3>
           <div className="h-[3px] w-16 bg-[#ffd700] mb-5 rounded-full"></div>
           <ul className="space-y-3 text-gray-300 text-sm md:text-base">
-            {["Home", "Tournament", "Gallery", "Messages", "Contact Us"].map(
-              (link, i) => (
-                <li key={i}>
-                  <a
-                    href="#"
-                    className="relative inline-block hover:text-[#ffd700] transition-all duration-300 after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#ffd700] hover:after:w-full after:transition-all after:duration-300"
-                  >
-                    {link}
-                  </a>
-                </li>
-              )
-            )}
+            {[
+              { label: "Home", path: "/" },
+              { label: "Tournament", path: "/tournament" },
+              { label: "Gallery", path: "/gallery" },
+              { label: "News", path: "/news" },
+              { label: "Contact Us", path: "/contact" },
+            ].map((link, i) => (
+              <li key={i}>
+                <Link
+                  to={link.path}
+                  className="relative inline-block hover:text-[#ffd700] transition-all duration-300 after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#ffd700] hover:after:w-full after:transition-all after:duration-300"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </motion.div>
 
@@ -103,17 +108,22 @@ export default function Footer() {
 
           {/* Social Media Icons */}
           <div className="flex gap-4 mt-6">
-            {[FaFacebookF, FaInstagram, FaTwitter, FaYoutube].map(
-              (Icon, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  className="w-9 h-9 flex items-center justify-center rounded-full border border-[#ffd700]/40 text-[#ffd700] hover:bg-[#ffd700] hover:text-[#1b2b4a] transition-all duration-300"
-                >
-                  <Icon size={16} />
-                </a>
-              )
-            )}
+            {[
+              { Icon: FaFacebookF, url: "https://www.facebook.com/surjithockeyjal" },
+              { Icon: FaInstagram, url: "https://www.instagram.com/surjit_hockey_tournament" },
+              { Icon: FaTwitter, url: "https://twitter.com/surjit_hockey" },
+              { Icon: FaYoutube, url: "https://www.youtube.com/@surjithockeytournament" },
+            ].map(({ Icon, url }, i) => (
+              <a
+                key={i}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-9 h-9 flex items-center justify-center rounded-full border border-[#ffd700]/40 text-[#ffd700] hover:bg-[#ffd700] hover:text-[#1b2b4a] transition-all duration-300"
+              >
+                <Icon size={16} />
+              </a>
+            ))}
           </div>
         </motion.div>
       </div>
