@@ -32,7 +32,7 @@ export default function Teams() {
             team_name: t.team_name,
             team_name_short: t.team_name_short,
             team_logo: t.team_logo
-              ? `http://localhost:8000/uploads/${t.team_logo}`
+              ? `http://localhost:8000/uploads/teams/${t.team_logo}`
               : null,
             team_coach: t.team_coach,
             team_manager: t.team_manager,

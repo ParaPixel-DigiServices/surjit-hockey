@@ -33,7 +33,7 @@ export default function Officials() {
             off_email: o.email,
             off_mobile: o.mobile_no,
             off_photo: o.profile_image
-              ? `http://localhost:8000/uploads/${o.profile_image}`
+              ? `http://localhost:8000/uploads/officials/${o.profile_image}`
               : null,
           }))
         : [];

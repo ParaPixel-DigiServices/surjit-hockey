@@ -1,6 +1,6 @@
-import React from 'react';
-import heroImage from '../../assets/hero.jpg';
-
+import React from "react";
+import { Link } from "react-router-dom";
+import heroImage from "../../assets/hero.jpg";
 
 export default function Hero() {
   return (
@@ -25,7 +25,8 @@ export default function Hero() {
 
         {/* Main Heading */}
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white uppercase leading-[1.1] tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)]">
-          The <span className="text-[var(--color-accent, #ffd700)]">Spirit</span> of  
+          The{" "}
+          <span className="text-[var(--color-accent, #ffd700)]">Spirit</span> of
           <br className="hidden sm:block" />
           Surjit Hockey Lives On
         </h1>
@@ -40,9 +41,12 @@ export default function Hero() {
 
         {/* CTA */}
         <div className="mt-10 flex justify-center">
-          <button className="bg-[var(--color-accent,#ffd700)] text-[#1b2b4a] font-extrabold uppercase tracking-wide px-8 py-3 rounded-md hover:bg-yellow-400 transition-all duration-300 shadow-lg hover:shadow-xl">
+          <Link
+            to="/tournament"
+            className="inline-block bg-[var(--color-accent,#ffd700)] text-[#1b2b4a] font-extrabold uppercase tracking-wide px-8 py-3 rounded-md hover:bg-yellow-400 transition-all duration-300 shadow-lg hover:shadow-xl"
+          >
             Explore Tournament
-          </button>
+          </Link>
         </div>
       </div>
     </section>

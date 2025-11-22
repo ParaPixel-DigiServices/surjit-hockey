@@ -80,7 +80,7 @@ export default function Players() {
             ply_id: p.id,
             ply_name: p.full_name,
             ply_photo: p.profile_image
-              ? `http://localhost:8000/uploads/${p.profile_image}`
+              ? `http://localhost:8000/uploads/players/${p.profile_image}`
               : null,
             ply_mobile: p.mobile_no,
             position_name:

@@ -30,7 +30,7 @@ export default function Sponsors() {
             spo_id: s.id,
             spo_name: s.sponser_name,
             spo_logo: s.sponser_image
-              ? `http://localhost:8000/uploads/${s.sponser_image}`
+              ? `http://localhost:8000/uploads/sponsors/${s.sponser_image}`
               : null,
             spo_detail: s.detail,
           }))
