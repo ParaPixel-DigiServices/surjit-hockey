@@ -101,8 +101,7 @@ async def get_news_by_id(
         )
 
     # Fetch image
-    image = db.query(NewsImage).filter(NewsImage.news_id ==
-                                       news.id, NewsImage.status.is_(True)).first()
+    image = db.query(NewsImage).filter(NewsImage.news_id == news.id).first()
 
     return {
         "id": news.id,
@@ -156,8 +155,7 @@ async def create_news(
         # Create NewsImage record
         db_image = NewsImage(
             news_id=db_news.id,
-            news_image=filename,
-            status=True
+            news_image=filename
         )
         db.add(db_image)
         db.commit()
@@ -228,18 +226,17 @@ async def update_news(
                 except Exception:
                     pass
             db_image.news_image = filename
-            db_image.status = True
+            # db_image.status = True
         else:
             db_image = NewsImage(
                 news_id=news_id,
-                news_image=filename,
-                status=True
+                news_image=filename
             )
             db.add(db_image)
     else:
         # Get existing image
         db_image = db.query(NewsImage).filter(
-            NewsImage.news_id == news_id, NewsImage.status.is_(True)).first()
+            NewsImage.news_id == news_id).first()
         if db_image:
             news_image_name = db_image.news_image
 
