@@ -18,3 +18,6 @@ pydantic-settings==2.6.1
 # Utilities
 python-dateutil==2.9.0
 pytz==2024.2
+
+# Production
+gunicorn==23.0.0
