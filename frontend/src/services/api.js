@@ -54,6 +54,23 @@ export const api = {
     return response.json();
   },
 
+  createGallery: async (formData) => {
+    const response = await fetch(`${API_BASE_URL}/content/gallery`, {
+      method: "POST",
+      body: formData,
+    });
+    if (!response.ok) throw new Error("Failed to create gallery item");
+    return response.json();
+  },
+
+  deleteGallery: async (id) => {
+    const response = await fetch(`${API_BASE_URL}/content/gallery/${id}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) throw new Error("Failed to delete gallery item");
+    return true;
+  },
+
   getMemories: async (skip = 0, limit = 50) => {
     const response = await fetch(
       `${API_BASE_URL}/content/memories?skip=${skip}&limit=${limit}`

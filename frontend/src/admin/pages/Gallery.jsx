@@ -3,41 +3,86 @@ import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
 import { api } from "@/services/api";
 import config from "../../config/api";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function Gallery() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    title: "",
+  });
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const fetchGallery = async () => {
+    try {
+      setLoading(true);
+      const data = await api.getGallery(0, 100);
+      setImages(data);
+    } catch (error) {
+      console.error("Failed to fetch gallery:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchGallery = async () => {
-      try {
-        setLoading(true);
-        const data = await api.getGallery(0, 100);
-        setImages(data);
-      } catch (error) {
-        console.error("Failed to fetch gallery:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchGallery();
   }, []);
 
-  const handleDelete = (id) => {
-    console.log(
-      "⚠️ DELETE IMAGE: Backend DELETE endpoint required - /content/gallery/{id}"
-    );
-    console.log("Image ID:", id);
-    // TODO: Implement backend endpoint
-    setImages(images.filter((img) => img.id !== id));
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this image?")) {
+      try {
+        await api.deleteGallery(id);
+        setImages(images.filter((img) => img.id !== id));
+      } catch (error) {
+        console.error("Failed to delete image:", error);
+      }
+    }
   };
 
   const handleAdd = () => {
-    console.log(
-      "⚠️ ADD IMAGE: Backend POST endpoint required - /content/gallery"
-    );
-    // TODO: Implement backend endpoint
+    setFormData({
+      title: "",
+    });
+    setSelectedFile(null);
+    setIsDialogOpen(true);
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedFile(e.target.files[0]);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!selectedFile) {
+      alert("Please select an image");
+      return;
+    }
+
+    try {
+      const data = new FormData();
+      data.append("title", formData.title);
+      data.append("image", selectedFile);
+      data.append("parent_image", 0);
+      data.append("status", true);
+
+      await api.createGallery(data);
+      setIsDialogOpen(false);
+      fetchGallery();
+    } catch (error) {
+      console.error("Failed to save image:", error);
+    }
   };
 
   return (
@@ -62,9 +107,6 @@ export default function Gallery() {
       ) : images.length === 0 ? (
         <div className="text-center py-20 text-white/60">
           <p>No images found</p>
-          <p className="text-xs mt-2 text-white/40">
-            Note: Add/Delete requires backend endpoints
-          </p>
         </div>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -74,7 +116,7 @@ export default function Gallery() {
               className="relative group aspect-square bg-white/5 rounded-lg overflow-hidden border border-white/10"
             >
               <img
-                src={config.getUploadUrl("gallery", img.image_url)}
+                src={config.getUploadUrl("gallery", img.image_name)}
                 alt={img.title || "Gallery Image"}
                 className="w-full h-full object-cover"
                 onError={(e) => (e.target.src = "/icon.png")}
@@ -96,6 +138,57 @@ export default function Gallery() {
           ))}
         </div>
       )}
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="bg-[#08162e] border-white/10 text-white">
+          <DialogHeader>
+            <DialogTitle>Add Image</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="title">Title</Label>
+              <Input
+                id="title"
+                value={formData.title}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
+                className="bg-white/5 border-white/10 text-white"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="image">Image</Label>
+              <Input
+                id="image"
+                type="file"
+                onChange={handleFileChange}
+                className="bg-white/5 border-white/10 text-white"
+                accept="image/*"
+                required
+              />
+            </div>
+
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => setIsDialogOpen(false)}
+                className="hover:bg-white/10 hover:text-white"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                className="bg-[#ffd700] text-black hover:bg-[#ffd700]/90"
+              >
+                Upload
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

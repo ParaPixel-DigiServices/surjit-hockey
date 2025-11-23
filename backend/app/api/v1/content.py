@@ -1,8 +1,12 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from fastapi import APIRouter, Depends, HTTPException, status, Query, UploadFile, File, Form
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
+import shutil
+import os
+from datetime import datetime
 
 from app.core import get_db
+from app.core.config import settings
 from app.models.content import Gallery, Memory, Advertisement
 from app.schemas.content import (
     GalleryResponse,
@@ -95,33 +99,6 @@ async def get_gallery_images(
     return images
 
 
-@router.get("/memories", response_model=List[MemoryResponse])
-async def get_memories(
-    skip: int = Query(0, ge=0),
-    limit: int = Query(50, ge=1, le=100),
-    db: Session = Depends(get_db)
-):
-    """
-    Get memory posts.
-
-    Args:
-        skip: Number of records to skip
-        limit: Maximum number of records to return
-        db: Database session
-
-    Returns:
-        List of memory posts
-    """
-    memories = db.query(Memory)\
-        .filter(Memory.status == True)\
-        .order_by(Memory.date_created.desc())\
-        .offset(skip)\
-        .limit(limit)\
-        .all()
-
-    return memories
-
-
 @router.post("/memories", response_model=MemoryResponse, status_code=status.HTTP_201_CREATED)
 async def create_memory(
     memory_data: MemoryCreate,
@@ -180,3 +157,66 @@ async def get_advertisements(
     ads = query.offset(skip).limit(limit).all()
 
     return ads
+
+
+@router.post("/gallery", response_model=GalleryResponse, status_code=status.HTTP_201_CREATED)
+async def create_gallery(
+    title: str = Form(...),
+    image: UploadFile = File(...),
+    parent_image: int = Form(0),
+    status: bool = Form(True),
+    db: Session = Depends(get_db)
+):
+    """Create a new gallery item."""
+    upload_dir = os.path.join(settings.UPLOAD_DIR, "gallery")
+    os.makedirs(upload_dir, exist_ok=True)
+
+    timestamp = int(datetime.now().timestamp())
+    filename = f"{timestamp}_{image.filename}"
+    file_path = os.path.join(upload_dir, filename)
+
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(image.file, buffer)
+
+    db_gallery = Gallery(
+        title=title,
+        image_name=filename,
+        parent_image=parent_image,
+        status=status,
+        date_created=datetime.now(),
+        date_updated=datetime.now(),
+        user_created_by=1,  # Default admin
+        user_updated_by=1
+    )
+    db.add(db_gallery)
+    db.commit()
+    db.refresh(db_gallery)
+
+    return db_gallery
+
+
+@router.delete("/gallery/{gallery_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_gallery(
+    gallery_id: int,
+    db: Session = Depends(get_db)
+):
+    """Delete a gallery item."""
+    db_gallery = db.query(Gallery).filter(Gallery.id == gallery_id).first()
+    if not db_gallery:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Gallery item not found"
+        )
+
+    # Delete file
+    upload_dir = os.path.join(settings.UPLOAD_DIR, "gallery")
+    file_path = os.path.join(upload_dir, db_gallery.image_name)
+    if os.path.exists(file_path):
+        try:
+            os.remove(file_path)
+        except Exception:
+            pass
+
+    db.delete(db_gallery)
+    db.commit()
+    return None
