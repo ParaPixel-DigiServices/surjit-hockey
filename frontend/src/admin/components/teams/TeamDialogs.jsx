@@ -16,7 +16,8 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 
-const darkInput = "bg-[#0f1e3a] text-white border-white/20";
+const darkInput =
+  "bg-[#0f1e3a] text-white border-white/20 focus:border-[#ffd700] focus:ring-1 focus:ring-[#ffd700] placeholder:text-white/40";
 
 export function AddTeamDialog({ open, onClose, onSave }) {
   const [team, setTeam] = useState({
@@ -46,47 +47,74 @@ export function AddTeamDialog({ open, onClose, onSave }) {
         </DialogHeader>
 
         <div className="space-y-4 mt-4">
-          <Input
-            className={darkInput}
-            placeholder="Team Name"
-            value={team.name}
-            onChange={(e) => setTeam({ ...team, name: e.target.value })}
-          />
-          <Input
-            className={darkInput}
-            placeholder="Short Name (e.g. IOCL)"
-            value={team.shortName}
-            onChange={(e) => setTeam({ ...team, shortName: e.target.value })}
-          />
+          <div className="space-y-1">
+            <label className="text-xs text-gray-400">Team Name</label>
+            <Input
+              className={darkInput}
+              placeholder="e.g. Indian Oil"
+              value={team.name}
+              onChange={(e) => setTeam({ ...team, name: e.target.value })}
+            />
+          </div>
 
-          <Input
-            className={darkInput}
-            placeholder="Coach Name"
-            value={team.coach}
-            onChange={(e) => setTeam({ ...team, coach: e.target.value })}
-          />
-          <Input
-            className={darkInput}
-            placeholder="Manager Name"
-            value={team.manager}
-            onChange={(e) => setTeam({ ...team, manager: e.target.value })}
-          />
+          <div className="space-y-1">
+            <label className="text-xs text-gray-400">Short Name</label>
+            <Input
+              className={darkInput}
+              placeholder="e.g. IOCL"
+              value={team.shortName}
+              onChange={(e) => setTeam({ ...team, shortName: e.target.value })}
+            />
+          </div>
 
-          <Select onValueChange={(v) => setTeam({ ...team, category: v })}>
-            <SelectTrigger className={darkInput}>
-              <SelectValue placeholder="Select Category" />
-            </SelectTrigger>
-            <SelectContent className="bg-[#0f1e3a] text-white">
-              <SelectItem value="Men">Men</SelectItem>
-              <SelectItem value="Women">Women</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="space-y-1">
+            <label className="text-xs text-gray-400">Coach Name</label>
+            <Input
+              className={darkInput}
+              placeholder="Coach Name"
+              value={team.coach}
+              onChange={(e) => setTeam({ ...team, coach: e.target.value })}
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs text-gray-400">Manager Name</label>
+            <Input
+              className={darkInput}
+              placeholder="Manager Name"
+              value={team.manager}
+              onChange={(e) => setTeam({ ...team, manager: e.target.value })}
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs text-gray-400">Category</label>
+            <Select onValueChange={(v) => setTeam({ ...team, category: v })}>
+              <SelectTrigger className={darkInput}>
+                <SelectValue placeholder="Select Category" />
+              </SelectTrigger>
+              <SelectContent className="bg-[#0f1e3a] text-white border-white/20">
+                <SelectItem
+                  value="Men"
+                  className="focus:bg-[#ffd700] focus:text-black"
+                >
+                  Men
+                </SelectItem>
+                <SelectItem
+                  value="Women"
+                  className="focus:bg-[#ffd700] focus:text-black"
+                >
+                  Women
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
           <div className="space-y-2">
             <label className="text-sm text-white/60">Team Logo</label>
             <Input
               type="file"
-              className={darkInput}
+              className={`${darkInput} file:text-white file:bg-[#ffffff1a] file:border-0 file:mr-4 file:py-1 file:px-2 file:rounded-md hover:file:bg-[#ffffff30]`}
               onChange={handleFile}
               accept="image/*"
             />
@@ -96,12 +124,15 @@ export function AddTeamDialog({ open, onClose, onSave }) {
         <DialogFooter className="mt-6">
           <Button
             variant="outline"
-            className="border-white/20 text-white"
+            className="border-white/20 text-white hover:bg-white/10"
             onClick={onClose}
           >
             Cancel
           </Button>
-          <Button className="bg-[#ffd700] text-[#071226]" onClick={handleSave}>
+          <Button
+            className="bg-[#ffd700] text-[#071226] hover:bg-[#e6c200]"
+            onClick={handleSave}
+          >
             Save Team
           </Button>
         </DialogFooter>
@@ -146,44 +177,71 @@ export function EditTeamDialog({ open, onClose, onSave, initial }) {
         </DialogHeader>
 
         <div className="space-y-4 mt-4">
-          <Input
-            className={darkInput}
-            placeholder="Team Name"
-            value={team.name || ""}
-            onChange={(e) => setTeam({ ...team, name: e.target.value })}
-          />
-          <Input
-            className={darkInput}
-            placeholder="Short Name"
-            value={team.shortName || ""}
-            onChange={(e) => setTeam({ ...team, shortName: e.target.value })}
-          />
+          <div className="space-y-1">
+            <label className="text-xs text-gray-400">Team Name</label>
+            <Input
+              className={darkInput}
+              placeholder="Team Name"
+              value={team.name || ""}
+              onChange={(e) => setTeam({ ...team, name: e.target.value })}
+            />
+          </div>
 
-          <Input
-            className={darkInput}
-            placeholder="Coach Name"
-            value={team.coach || ""}
-            onChange={(e) => setTeam({ ...team, coach: e.target.value })}
-          />
-          <Input
-            className={darkInput}
-            placeholder="Manager Name"
-            value={team.manager || ""}
-            onChange={(e) => setTeam({ ...team, manager: e.target.value })}
-          />
+          <div className="space-y-1">
+            <label className="text-xs text-gray-400">Short Name</label>
+            <Input
+              className={darkInput}
+              placeholder="Short Name"
+              value={team.shortName || ""}
+              onChange={(e) => setTeam({ ...team, shortName: e.target.value })}
+            />
+          </div>
 
-          <Select
-            value={team.category}
-            onValueChange={(v) => setTeam({ ...team, category: v })}
-          >
-            <SelectTrigger className={darkInput}>
-              <SelectValue placeholder="Select Category" />
-            </SelectTrigger>
-            <SelectContent className="bg-[#0f1e3a] text-white">
-              <SelectItem value="Men">Men</SelectItem>
-              <SelectItem value="Women">Women</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="space-y-1">
+            <label className="text-xs text-gray-400">Coach Name</label>
+            <Input
+              className={darkInput}
+              placeholder="Coach Name"
+              value={team.coach || ""}
+              onChange={(e) => setTeam({ ...team, coach: e.target.value })}
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs text-gray-400">Manager Name</label>
+            <Input
+              className={darkInput}
+              placeholder="Manager Name"
+              value={team.manager || ""}
+              onChange={(e) => setTeam({ ...team, manager: e.target.value })}
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs text-gray-400">Category</label>
+            <Select
+              value={team.category}
+              onValueChange={(v) => setTeam({ ...team, category: v })}
+            >
+              <SelectTrigger className={darkInput}>
+                <SelectValue placeholder="Select Category" />
+              </SelectTrigger>
+              <SelectContent className="bg-[#0f1e3a] text-white border-white/20">
+                <SelectItem
+                  value="Men"
+                  className="focus:bg-[#ffd700] focus:text-black"
+                >
+                  Men
+                </SelectItem>
+                <SelectItem
+                  value="Women"
+                  className="focus:bg-[#ffd700] focus:text-black"
+                >
+                  Women
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
           <div className="space-y-2">
             <label className="text-sm text-white/60">
@@ -191,7 +249,7 @@ export function EditTeamDialog({ open, onClose, onSave, initial }) {
             </label>
             <Input
               type="file"
-              className={darkInput}
+              className={`${darkInput} file:text-white file:bg-[#ffffff1a] file:border-0 file:mr-4 file:py-1 file:px-2 file:rounded-md hover:file:bg-[#ffffff30]`}
               onChange={handleFile}
               accept="image/*"
             />
@@ -201,12 +259,15 @@ export function EditTeamDialog({ open, onClose, onSave, initial }) {
         <DialogFooter className="mt-6">
           <Button
             variant="outline"
-            className="border-white/20 text-white"
+            className="border-white/20 text-white hover:bg-white/10"
             onClick={onClose}
           >
             Cancel
           </Button>
-          <Button className="bg-[#ffd700] text-[#071226]" onClick={handleSave}>
+          <Button
+            className="bg-[#ffd700] text-[#071226] hover:bg-[#e6c200]"
+            onClick={handleSave}
+          >
             Save Changes
           </Button>
         </DialogFooter>

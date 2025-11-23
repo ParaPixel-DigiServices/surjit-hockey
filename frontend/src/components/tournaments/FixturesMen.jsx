@@ -7,46 +7,52 @@ import rcf from "../../assets/teams/rcf.png";
 export default function FixturesMen() {
   const [fixtures, setFixtures] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [category, setCategory] = useState("Men");
 
   useEffect(() => {
     const fetchFixtures = async () => {
       try {
         setLoading(true);
-        // TODO: Replace with actual tournament ID dynamically
-        const tournamentId = 100; 
+        // TODO: Replace with actual tournament ID dynamically based on category
+        const tournamentId = category === "Men" ? 100 : 101;
         const fixturesData = await api.getTournamentFixtures(tournamentId);
-        
-        const formattedFixtures = fixturesData.map(match => ({
+
+        const formattedFixtures = fixturesData.map((match) => ({
           date: new Date(match.date_match).toLocaleString(),
           matchNo: match.match_no,
-          pool: match.pool_type === 1 ? "Pool - A (M)" : "Pool - B (M)", // Adjust logic based on pool type
+          pool:
+            match.pool_type === 1
+              ? `Pool - A (${category === "Men" ? "M" : "W"})`
+              : `Pool - B (${category === "Men" ? "M" : "W"})`,
           team1: { name: `Team ${match.team_id_1}`, logo: indianNavy }, // Placeholder for team name/logo lookup
           team2: { name: `Team ${match.team_id_2}`, logo: rcf }, // Placeholder
         }));
-        
+
         setFixtures(formattedFixtures);
       } catch (error) {
         console.error("Failed to fetch fixtures:", error);
         // Fallback data
         setFixtures([
-            {
-              date: "2025-11-05 12:34:00",
-              matchNo: 1,
-              pool: "Pool - A (M)",
-              team1: { name: "Indian Navy", logo: indianNavy },
-              team2: { name: "R C F Kapurthala", logo: rcf },
-            },
-          ]);
+          {
+            date: "2025-11-05 12:34:00",
+            matchNo: 1,
+            pool: `Pool - A (${category === "Men" ? "M" : "W"})`,
+            team1: { name: "Indian Navy", logo: indianNavy },
+            team2: { name: "R C F Kapurthala", logo: rcf },
+          },
+        ]);
       } finally {
         setLoading(false);
       }
     };
 
     fetchFixtures();
-  }, []);
+  }, [category]);
 
   if (loading) {
-    return <div className="text-white text-center py-20">Loading fixtures...</div>;
+    return (
+      <div className="text-white text-center py-20">Loading fixtures...</div>
+    );
   }
 
   const leaderboard = [
@@ -86,10 +92,16 @@ export default function FixturesMen() {
         {/* --- Control Bar --- */}
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8">
           <div className="flex gap-2 text-sm font-semibold uppercase">
-            <button className="px-6 py-2 bg-[#ffd700] text-[#1b2b4a] rounded-md hover:bg-[#e6c200] transition">
+            <button
+              onClick={() => setCategory("Men")}
+              className={`px-6 py-2 rounded-md transition ${category === "Men" ? "bg-[#ffd700] text-[#1b2b4a] hover:bg-[#e6c200]" : "bg-[#ffffff1a] text-white/60 hover:bg-white/20"}`}
+            >
               Men
             </button>
-            <button className="px-6 py-2 bg-[#ffffff1a] text-white/60 rounded-md cursor-not-allowed">
+            <button
+              onClick={() => setCategory("Women")}
+              className={`px-6 py-2 rounded-md transition ${category === "Women" ? "bg-[#ffd700] text-[#1b2b4a] hover:bg-[#e6c200]" : "bg-[#ffffff1a] text-white/60 hover:bg-white/20"}`}
+            >
               Women
             </button>
           </div>
@@ -205,11 +217,8 @@ export default function FixturesMen() {
           <div className="bg-[#1b2b4a]/60 rounded-xl p-6 shadow-md">
             <div className="flex items-center gap-3 mb-4">
               <h3 className="text-xl font-bold uppercase text-[#ffd700]">
-                Men
+                {category}
               </h3>
-              <button className="px-3 py-1 bg-[#ffffff1a] text-white/60 rounded cursor-not-allowed text-sm">
-                Women
-              </button>
             </div>
 
             <table className="w-full text-sm">
