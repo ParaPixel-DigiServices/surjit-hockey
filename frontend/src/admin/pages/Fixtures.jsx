@@ -13,6 +13,7 @@ export default function Fixtures() {
   const [fixtures, setFixtures] = useState([]);
   const [loading, setLoading] = useState(true);
   const [teams, setTeams] = useState({});
+  const [teamsList, setTeamsList] = useState([]);
 
   // Fetch fixtures and teams from API
   useEffect(() => {
@@ -21,6 +22,7 @@ export default function Fixtures() {
         setLoading(true);
         // Fetch teams for name lookup
         const teamsData = await api.getTeams(0, 1000);
+        setTeamsList(teamsData);
         const teamMap = {};
         teamsData.forEach((t) => {
           teamMap[t.id] = t.team_name;
@@ -36,9 +38,11 @@ export default function Fixtures() {
             ? new Date(f.match_date).toISOString().split("T")[0]
             : "",
           time: f.match_time || "TBD",
-          pool: f.pool_id ? `Pool ${f.pool_id}` : "N/A",
+          pool: f.pool_id ? String(f.pool_id) : "",
           teamA: teamMap[f.team_id_1] || `Team ${f.team_id_1}`,
           teamB: teamMap[f.team_id_2] || `Team ${f.team_id_2}`,
+          teamA_id: f.team_id_1,
+          teamB_id: f.team_id_2,
           venue: f.venue || "TBD",
           status: f.match_status ? "completed" : "upcoming",
         }));
@@ -68,21 +72,62 @@ export default function Fixtures() {
     setDialogOpen(true);
   };
 
-  const handleSave = (data) => {
-    // Note: Backend doesn't have POST/PUT endpoints yet
-    console.log("Save fixture (backend endpoint needed):", data);
-    if (editData) {
-      setFixtures(fixtures.map((f) => (f.id === data.id ? data : f)));
-    } else {
-      setFixtures([...fixtures, { id: Date.now(), ...data }]);
+  const handleSave = async (data) => {
+    try {
+      const payload = {
+        year_id: 100,
+        date_match: data.date,
+        match_time: data.time,
+        match_name: "League Match",
+        pool_category_type: 1,
+        match_no: 0,
+        pool_type: 1,
+        pool_id: parseInt(data.pool),
+        team_id_1: parseInt(data.teamA),
+        team_id_2: parseInt(data.teamB),
+        match_status: data.status === "completed",
+        venue: data.venue,
+      };
+
+      if (editData) {
+        await api.updateFixture(editData.id, payload);
+      } else {
+        await api.createFixture(payload);
+      }
+      setDialogOpen(false);
+      // Refresh data
+      const fixturesData = await api.getTournamentFixtures(100);
+      const formattedFixtures = fixturesData.map((f) => ({
+        id: f.id,
+        date: f.match_date
+          ? new Date(f.match_date).toISOString().split("T")[0]
+          : "",
+        time: f.match_time || "TBD",
+        pool: f.pool_id ? String(f.pool_id) : "",
+        teamA: teams[f.team_id_1] || `Team ${f.team_id_1}`,
+        teamB: teams[f.team_id_2] || `Team ${f.team_id_2}`,
+        teamA_id: f.team_id_1,
+        teamB_id: f.team_id_2,
+        venue: f.venue || "TBD",
+        status: f.match_status ? "completed" : "upcoming",
+      }));
+      setFixtures(formattedFixtures);
+    } catch (error) {
+      console.error("Failed to save fixture:", error);
+      alert("Failed to save fixture");
     }
-    setDialogOpen(false);
   };
 
-  const deleteFixture = (id) => {
-    // Note: Backend doesn't have DELETE endpoint yet
-    console.log("Delete fixture (backend endpoint needed):", id);
-    setFixtures(fixtures.filter((f) => f.id !== id));
+  const deleteFixture = async (id) => {
+    if (window.confirm("Are you sure you want to delete this fixture?")) {
+      try {
+        await api.deleteFixture(id);
+        setFixtures(fixtures.filter((f) => f.id !== id));
+      } catch (error) {
+        console.error("Failed to delete fixture:", error);
+        alert("Failed to delete fixture");
+      }
+    }
   };
 
   if (loading) {
@@ -166,6 +211,7 @@ export default function Fixtures() {
         onClose={() => setDialogOpen(false)}
         onSave={handleSave}
         initial={editData}
+        teams={teamsList}
       />
     </div>
   );

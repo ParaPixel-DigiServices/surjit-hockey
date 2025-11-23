@@ -176,7 +176,7 @@ async def create_gallery(
     for image in images:
         timestamp = int(datetime.now().timestamp())
         # Use a counter or uuid to ensure uniqueness if multiple files are processed in same second
-        # But for simplicity, we rely on the loop speed not being infinite, 
+        # But for simplicity, we rely on the loop speed not being infinite,
         # though adding a small random suffix or index is safer.
         # Let's just append the original filename which should be distinct in a batch usually.
         filename = f"{timestamp}_{image.filename}"

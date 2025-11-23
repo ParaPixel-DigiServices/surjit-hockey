@@ -80,11 +80,11 @@ export default function Gallery() {
     try {
       const data = new FormData();
       data.append("title", formData.title);
-      
+
       selectedFiles.forEach((file) => {
         data.append("images", file);
       });
-      
+
       data.append("parent_image", currentAlbum ? currentAlbum.id : 0);
       data.append("status", true);
 

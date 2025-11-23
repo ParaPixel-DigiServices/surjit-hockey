@@ -30,6 +30,62 @@ export const api = {
     return response.json();
   },
 
+  createFixture: async (data) => {
+    const response = await fetch(`${API_BASE_URL}/tournaments/fixtures`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error("Failed to create fixture");
+    return response.json();
+  },
+
+  updateFixture: async (id, data) => {
+    const response = await fetch(`${API_BASE_URL}/tournaments/fixtures/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error("Failed to update fixture");
+    return response.json();
+  },
+
+  deleteFixture: async (id) => {
+    const response = await fetch(`${API_BASE_URL}/tournaments/fixtures/${id}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) throw new Error("Failed to delete fixture");
+    return true;
+  },
+
+  createResult: async (data) => {
+    const response = await fetch(`${API_BASE_URL}/tournaments/results`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error("Failed to create result");
+    return response.json();
+  },
+
+  updateResult: async (id, data) => {
+    const response = await fetch(`${API_BASE_URL}/tournaments/results/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error("Failed to update result");
+    return response.json();
+  },
+
+  deleteResult: async (id) => {
+    const response = await fetch(`${API_BASE_URL}/tournaments/results/${id}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) throw new Error("Failed to delete result");
+    return true;
+  },
+
   // Teams
   getTeams: async (skip = 0, limit = 100) => {
     const response = await fetch(
@@ -43,6 +99,32 @@ export const api = {
     const response = await fetch(`${API_BASE_URL}/teams/${id}`);
     if (!response.ok) throw new Error("Failed to fetch team details");
     return response.json();
+  },
+
+  createTeam: async (formData) => {
+    const response = await fetch(`${API_BASE_URL}/teams`, {
+      method: "POST",
+      body: formData,
+    });
+    if (!response.ok) throw new Error("Failed to create team");
+    return response.json();
+  },
+
+  updateTeam: async (id, formData) => {
+    const response = await fetch(`${API_BASE_URL}/teams/${id}`, {
+      method: "PUT",
+      body: formData,
+    });
+    if (!response.ok) throw new Error("Failed to update team");
+    return response.json();
+  },
+
+  deleteTeam: async (id) => {
+    const response = await fetch(`${API_BASE_URL}/teams/${id}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) throw new Error("Failed to delete team");
+    return true;
   },
 
   // Content
@@ -233,6 +315,47 @@ export const api = {
       `${API_BASE_URL}/additional/pools/${yearId}/teams`
     );
     if (!response.ok) throw new Error("Failed to fetch pool teams");
+    return response.json();
+  },
+
+  createPool: async (data) => {
+    const response = await fetch(`${API_BASE_URL}/additional/pools`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error("Failed to create pool");
+    return response.json();
+  },
+
+  updatePool: async (id, data) => {
+    const response = await fetch(`${API_BASE_URL}/additional/pools/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error("Failed to update pool");
+    return response.json();
+  },
+
+  deletePool: async (id) => {
+    const response = await fetch(`${API_BASE_URL}/additional/pools/${id}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) throw new Error("Failed to delete pool");
+    return true;
+  },
+
+  updatePoolTeams: async (poolId, teamIds, yearId = 100) => {
+    const response = await fetch(
+      `${API_BASE_URL}/additional/pools/${poolId}/teams`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ team_ids: teamIds, year_id: yearId }),
+      }
+    );
+    if (!response.ok) throw new Error("Failed to update pool teams");
     return response.json();
   },
 

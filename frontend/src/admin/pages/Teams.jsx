@@ -19,27 +19,30 @@ export default function Teams() {
   const [editData, setEditData] = useState(null);
 
   // Fetch teams from API
+  const fetchTeams = async () => {
+    try {
+      setLoading(true);
+      const data = await api.getTeams(0, 1000);
+      // Map API data to component format
+      const formattedTeams = data.map((t) => ({
+        id: t.id,
+        name: t.team_name,
+        shortName: t.team_name_short,
+        coach: t.team_coach || "N/A",
+        manager: t.team_manager || "N/A",
+        category:
+          t.team_type === 1 ? "Men" : t.team_type === 2 ? "Women" : "Other",
+        logo: t.team_logo ? config.getUploadUrl("teams", t.team_logo) : null,
+      }));
+      setTeams(formattedTeams);
+    } catch (error) {
+      console.error("Failed to fetch teams:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchTeams = async () => {
-      try {
-        setLoading(true);
-        const data = await api.getTeams(0, 1000);
-        // Map API data to component format
-        const formattedTeams = data.map((t) => ({
-          id: t.id,
-          name: t.team_name,
-          coach: t.team_coach || "N/A",
-          category:
-            t.team_type === 1 ? "Men" : t.team_type === 2 ? "Women" : "Other",
-          logo: t.team_logo ? config.getUploadUrl("teams", t.team_logo) : null,
-        }));
-        setTeams(formattedTeams);
-      } catch (error) {
-        console.error("Failed to fetch teams:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchTeams();
   }, []);
 
@@ -47,18 +50,52 @@ export default function Teams() {
     t.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  const handleAdd = (team) => {
-    // Note: Backend doesn't have POST endpoint yet
-    console.log("Add team (backend endpoint needed):", team);
-    setTeams([...teams, { id: Date.now(), ...team }]);
-    setAddOpen(false);
+  const handleAdd = async (team) => {
+    try {
+      const formData = new FormData();
+      formData.append("team_name", team.name);
+      formData.append(
+        "team_name_short",
+        team.shortName || team.name.substring(0, 3).toUpperCase()
+      );
+      formData.append("team_type", team.category === "Men" ? 1 : 2);
+      formData.append("team_coach", team.coach || "");
+      formData.append("team_manager", team.manager || "");
+      if (team.file) {
+        formData.append("team_logo", team.file);
+      }
+
+      await api.createTeam(formData);
+      setAddOpen(false);
+      fetchTeams();
+    } catch (error) {
+      console.error("Failed to create team:", error);
+      alert("Failed to create team");
+    }
   };
 
-  const handleEdit = (team) => {
-    // Note: Backend doesn't have PUT endpoint yet
-    console.log("Edit team (backend endpoint needed):", team);
-    setTeams(teams.map((t) => (t.id === team.id ? team : t)));
-    setEditOpen(false);
+  const handleEdit = async (team) => {
+    try {
+      const formData = new FormData();
+      formData.append("team_name", team.name);
+      formData.append(
+        "team_name_short",
+        team.shortName || team.name.substring(0, 3).toUpperCase()
+      );
+      formData.append("team_type", team.category === "Men" ? 1 : 2);
+      formData.append("team_coach", team.coach || "");
+      formData.append("team_manager", team.manager || "");
+      if (team.file) {
+        formData.append("team_logo", team.file);
+      }
+
+      await api.updateTeam(team.id, formData);
+      setEditOpen(false);
+      fetchTeams();
+    } catch (error) {
+      console.error("Failed to update team:", error);
+      alert("Failed to update team");
+    }
   };
 
   const openEdit = (team) => {
@@ -66,10 +103,16 @@ export default function Teams() {
     setEditOpen(true);
   };
 
-  const deleteTeam = (team) => {
-    // Note: Backend doesn't have DELETE endpoint yet
-    console.log("Delete team (backend endpoint needed):", team);
-    setTeams(teams.filter((t) => t.id !== team.id));
+  const deleteTeam = async (team) => {
+    if (window.confirm(`Are you sure you want to delete ${team.name}?`)) {
+      try {
+        await api.deleteTeam(team.id);
+        fetchTeams();
+      } catch (error) {
+        console.error("Failed to delete team:", error);
+        alert("Failed to delete team");
+      }
+    }
   };
 
   if (loading) {
@@ -86,8 +129,7 @@ export default function Teams() {
         <div>
           <h1 className="text-3xl font-extrabold text-white">Teams</h1>
           <p className="text-sm text-white/60 mt-1">
-            {teams.length} teams registered • Note: Add/Edit/Delete requires
-            backend endpoints
+            {teams.length} teams registered
           </p>
         </div>
         <Button

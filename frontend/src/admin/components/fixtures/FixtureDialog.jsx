@@ -1,10 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
 
-export default function FixtureDialog({ open, onClose, onSave, initial }) {
+export default function FixtureDialog({
+  open,
+  onClose,
+  onSave,
+  initial,
+  teams = [],
+}) {
   const [form, setForm] = useState({
     date: "",
     time: "",
@@ -16,11 +33,27 @@ export default function FixtureDialog({ open, onClose, onSave, initial }) {
   });
 
   useEffect(() => {
-    if (initial) setForm(initial);
+    if (initial) {
+      setForm({
+        ...initial,
+        teamA: initial.teamA_id ? String(initial.teamA_id) : initial.teamA,
+        teamB: initial.teamB_id ? String(initial.teamB_id) : initial.teamB,
+      });
+    } else {
+      setForm({
+        date: "",
+        time: "",
+        pool: "",
+        teamA: "",
+        teamB: "",
+        venue: "",
+        status: "upcoming",
+      });
+    }
   }, [initial]);
 
   const save = () => {
-    onSave({ id: initial?.id || Date.now(), ...form });
+    onSave({ id: initial?.id, ...form });
   };
 
   return (
@@ -33,7 +66,6 @@ export default function FixtureDialog({ open, onClose, onSave, initial }) {
         </DialogHeader>
 
         <div className="space-y-3 mt-4">
-
           <Input
             type="date"
             value={form.date}
@@ -56,26 +88,44 @@ export default function FixtureDialog({ open, onClose, onSave, initial }) {
               <SelectValue placeholder="Pool" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="A">Pool A</SelectItem>
-              <SelectItem value="B">Pool B</SelectItem>
-              <SelectItem value="C">Pool C</SelectItem>
-              <SelectItem value="D">Pool D</SelectItem>
+              <SelectItem value="1">Pool A</SelectItem>
+              <SelectItem value="2">Pool B</SelectItem>
+              <SelectItem value="3">Pool C</SelectItem>
+              <SelectItem value="4">Pool D</SelectItem>
             </SelectContent>
           </Select>
 
-          <Input
-            placeholder="Team A"
+          <Select
             value={form.teamA}
-            onChange={(e) => setForm({ ...form, teamA: e.target.value })}
-            className="bg-[#0f1e3a] text-white"
-          />
+            onValueChange={(v) => setForm({ ...form, teamA: v })}
+          >
+            <SelectTrigger className="bg-[#0f1e3a] text-white">
+              <SelectValue placeholder="Team A" />
+            </SelectTrigger>
+            <SelectContent>
+              {teams.map((t) => (
+                <SelectItem key={t.id} value={String(t.id)}>
+                  {t.team_name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-          <Input
-            placeholder="Team B"
+          <Select
             value={form.teamB}
-            onChange={(e) => setForm({ ...form, teamB: e.target.value })}
-            className="bg-[#0f1e3a] text-white"
-          />
+            onValueChange={(v) => setForm({ ...form, teamB: v })}
+          >
+            <SelectTrigger className="bg-[#0f1e3a] text-white">
+              <SelectValue placeholder="Team B" />
+            </SelectTrigger>
+            <SelectContent>
+              {teams.map((t) => (
+                <SelectItem key={t.id} value={String(t.id)}>
+                  {t.team_name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
           <Input
             placeholder="Venue"
@@ -97,7 +147,6 @@ export default function FixtureDialog({ open, onClose, onSave, initial }) {
               <SelectItem value="live">Live</SelectItem>
             </SelectContent>
           </Select>
-
         </div>
 
         <div className="mt-5 flex justify-end gap-3">

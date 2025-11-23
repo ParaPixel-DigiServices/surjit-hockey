@@ -21,14 +21,21 @@ const darkInput = "bg-[#0f1e3a] text-white border-white/20";
 export function AddTeamDialog({ open, onClose, onSave }) {
   const [team, setTeam] = useState({
     name: "",
+    shortName: "",
     coach: "",
+    manager: "",
     category: "",
-    logo: "",
   });
+  const [file, setFile] = useState(null);
 
   const handleFile = (e) => {
-    const imageUrl = URL.createObjectURL(e.target.files[0]);
-    setTeam({ ...team, logo: imageUrl });
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const handleSave = () => {
+    onSave({ ...team, file });
   };
 
   return (
@@ -42,13 +49,27 @@ export function AddTeamDialog({ open, onClose, onSave }) {
           <Input
             className={darkInput}
             placeholder="Team Name"
+            value={team.name}
             onChange={(e) => setTeam({ ...team, name: e.target.value })}
+          />
+          <Input
+            className={darkInput}
+            placeholder="Short Name (e.g. IOCL)"
+            value={team.shortName}
+            onChange={(e) => setTeam({ ...team, shortName: e.target.value })}
           />
 
           <Input
             className={darkInput}
             placeholder="Coach Name"
+            value={team.coach}
             onChange={(e) => setTeam({ ...team, coach: e.target.value })}
+          />
+          <Input
+            className={darkInput}
+            placeholder="Manager Name"
+            value={team.manager}
+            onChange={(e) => setTeam({ ...team, manager: e.target.value })}
           />
 
           <Select onValueChange={(v) => setTeam({ ...team, category: v })}>
@@ -58,18 +79,29 @@ export function AddTeamDialog({ open, onClose, onSave }) {
             <SelectContent className="bg-[#0f1e3a] text-white">
               <SelectItem value="Men">Men</SelectItem>
               <SelectItem value="Women">Women</SelectItem>
-              <SelectItem value="Junior">Junior</SelectItem>
             </SelectContent>
           </Select>
 
-          <Input type="file" className={darkInput} onChange={handleFile} />
+          <div className="space-y-2">
+            <label className="text-sm text-white/60">Team Logo</label>
+            <Input
+              type="file"
+              className={darkInput}
+              onChange={handleFile}
+              accept="image/*"
+            />
+          </div>
         </div>
 
         <DialogFooter className="mt-6">
-          <Button variant="outline" className="border-white/20 text-white" onClick={onClose}>
+          <Button
+            variant="outline"
+            className="border-white/20 text-white"
+            onClick={onClose}
+          >
             Cancel
           </Button>
-          <Button className="bg-[#ffd700] text-[#071226]" onClick={() => onSave(team)}>
+          <Button className="bg-[#ffd700] text-[#071226]" onClick={handleSave}>
             Save Team
           </Button>
         </DialogFooter>
@@ -79,41 +111,69 @@ export function AddTeamDialog({ open, onClose, onSave }) {
 }
 
 export function EditTeamDialog({ open, onClose, onSave, initial }) {
-  const [team, setTeam] = useState(initial);
+  const [team, setTeam] = useState(initial || {});
+  const [file, setFile] = useState(null);
 
   useEffect(() => {
-    setTeam(initial);
+    if (initial) {
+      setTeam({
+        ...initial,
+        shortName: initial.shortName || "", // Ensure shortName exists
+        manager: initial.manager || "",
+      });
+    }
   }, [initial]);
 
   if (!team) return null;
 
   const handleFile = (e) => {
-    const imageUrl = URL.createObjectURL(e.target.files[0]);
-    setTeam({ ...team, logo: imageUrl });
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const handleSave = () => {
+    onSave({ ...team, file });
   };
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="bg-[#0a152b] text-white border-white/10 max-w-lg">
         <DialogHeader>
-          <DialogTitle className="text-[#ffd700] text-xl">Edit Team</DialogTitle>
+          <DialogTitle className="text-[#ffd700] text-xl">
+            Edit Team
+          </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4 mt-4">
           <Input
             className={darkInput}
-            value={team.name}
+            placeholder="Team Name"
+            value={team.name || ""}
             onChange={(e) => setTeam({ ...team, name: e.target.value })}
+          />
+          <Input
+            className={darkInput}
+            placeholder="Short Name"
+            value={team.shortName || ""}
+            onChange={(e) => setTeam({ ...team, shortName: e.target.value })}
           />
 
           <Input
             className={darkInput}
-            value={team.coach}
+            placeholder="Coach Name"
+            value={team.coach || ""}
             onChange={(e) => setTeam({ ...team, coach: e.target.value })}
+          />
+          <Input
+            className={darkInput}
+            placeholder="Manager Name"
+            value={team.manager || ""}
+            onChange={(e) => setTeam({ ...team, manager: e.target.value })}
           />
 
           <Select
-            defaultValue={team.category}
+            value={team.category}
             onValueChange={(v) => setTeam({ ...team, category: v })}
           >
             <SelectTrigger className={darkInput}>
@@ -122,18 +182,31 @@ export function EditTeamDialog({ open, onClose, onSave, initial }) {
             <SelectContent className="bg-[#0f1e3a] text-white">
               <SelectItem value="Men">Men</SelectItem>
               <SelectItem value="Women">Women</SelectItem>
-              <SelectItem value="Junior">Junior</SelectItem>
             </SelectContent>
           </Select>
 
-          <Input type="file" className={darkInput} onChange={handleFile} />
+          <div className="space-y-2">
+            <label className="text-sm text-white/60">
+              Team Logo (Leave empty to keep current)
+            </label>
+            <Input
+              type="file"
+              className={darkInput}
+              onChange={handleFile}
+              accept="image/*"
+            />
+          </div>
         </div>
 
         <DialogFooter className="mt-6">
-          <Button variant="outline" className="border-white/20 text-white" onClick={onClose}>
+          <Button
+            variant="outline"
+            className="border-white/20 text-white"
+            onClick={onClose}
+          >
             Cancel
           </Button>
-          <Button className="bg-[#ffd700] text-[#071226]" onClick={() => onSave(team)}>
+          <Button className="bg-[#ffd700] text-[#071226]" onClick={handleSave}>
             Save Changes
           </Button>
         </DialogFooter>

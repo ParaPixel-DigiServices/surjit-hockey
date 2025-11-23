@@ -1,7 +1,9 @@
 """Additional API endpoints for tournament features."""
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from fastapi import APIRouter, Depends, HTTPException, status, Query, Body
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
+from datetime import datetime
+from pydantic import BaseModel
 
 from app.core import get_db
 from app.models.additional import (
@@ -19,6 +21,21 @@ from app.schemas.additional import (
 )
 
 router = APIRouter()
+
+
+class PoolCreate(BaseModel):
+    pool_name: str
+    pool_category_type: int
+
+
+class PoolUpdate(BaseModel):
+    pool_name: Optional[str] = None
+    pool_category_type: Optional[int] = None
+
+
+class PoolTeamsUpdate(BaseModel):
+    team_ids: List[int]
+    year_id: int = 100  # Default to current year if not provided
 
 
 # ===== MATCH SCORING DETAILS =====
@@ -97,6 +114,94 @@ async def get_pool_teams(
         PoolDetails.pool_id, PoolDetails.team_id).all()
 
     return pool_details
+
+
+@router.post("/pools", response_model=PoolMasterResponse, status_code=status.HTTP_201_CREATED)
+async def create_pool(
+    pool: PoolCreate,
+    db: Session = Depends(get_db)
+):
+    """Create a new pool."""
+    new_pool = PoolMaster(
+        pool_name=pool.pool_name,
+        pool_category_type=pool.pool_category_type,
+        status=True
+    )
+    db.add(new_pool)
+    db.commit()
+    db.refresh(new_pool)
+    return new_pool
+
+
+@router.put("/pools/{pool_id}", response_model=PoolMasterResponse)
+async def update_pool(
+    pool_id: int,
+    pool: PoolUpdate,
+    db: Session = Depends(get_db)
+):
+    """Update a pool."""
+    db_pool = db.query(PoolMaster).filter(PoolMaster.id == pool_id).first()
+    if not db_pool:
+        raise HTTPException(status_code=404, detail="Pool not found")
+
+    if pool.pool_name:
+        db_pool.pool_name = pool.pool_name
+    if pool.pool_category_type:
+        db_pool.pool_category_type = pool.pool_category_type
+
+    db.commit()
+    db.refresh(db_pool)
+    return db_pool
+
+
+@router.delete("/pools/{pool_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_pool(
+    pool_id: int,
+    db: Session = Depends(get_db)
+):
+    """Delete a pool."""
+    db_pool = db.query(PoolMaster).filter(PoolMaster.id == pool_id).first()
+    if not db_pool:
+        raise HTTPException(status_code=404, detail="Pool not found")
+
+    db_pool.status = False
+    db.commit()
+    return None
+
+
+@router.put("/pools/{pool_id}/teams", status_code=status.HTTP_200_OK)
+async def update_pool_teams(
+    pool_id: int,
+    data: PoolTeamsUpdate,
+    db: Session = Depends(get_db)
+):
+    """Update teams in a pool."""
+    # Verify pool exists
+    pool = db.query(PoolMaster).filter(PoolMaster.id == pool_id).first()
+    if not pool:
+        raise HTTPException(status_code=404, detail="Pool not found")
+
+    # Remove existing teams for this pool and year
+    db.query(PoolDetails).filter(
+        PoolDetails.pool_id == pool_id,
+        PoolDetails.year_id == data.year_id
+    ).delete()
+
+    # Add new teams
+    for team_id in data.team_ids:
+        new_detail = PoolDetails(
+            year_id=data.year_id,
+            pool_id=pool_id,
+            pool_category_type=pool.pool_category_type,
+            team_id=team_id,
+            date_created=datetime.now(),
+            user_created="admin",
+            status=1
+        )
+        db.add(new_detail)
+
+    db.commit()
+    return {"message": "Pool teams updated"}
 
 
 # ===== TOURNAMENT YEARS =====

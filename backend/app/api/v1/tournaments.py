@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 from datetime import datetime
+from pydantic import BaseModel
 
 from app.core import get_db
 from app.models.tournament import Tournament, Fixture, MatchResult, Category
@@ -9,10 +10,35 @@ from app.schemas.tournament import (
     TournamentResponse,
     FixtureResponse,
     MatchResultResponse,
-    CategoryResponse
+    CategoryResponse,
+    FixtureCreate
 )
 
 router = APIRouter()
+
+
+class FixtureUpdate(BaseModel):
+    date_match: Optional[datetime] = None
+    match_name: Optional[str] = None
+    pool_category_type: Optional[int] = None
+    match_no: Optional[int] = None
+    pool_type: Optional[int] = None
+    team_id_1: Optional[int] = None
+    team_id_2: Optional[int] = None
+    match_status: Optional[bool] = None
+
+
+class MatchResultCreate(BaseModel):
+    fixture_id: int
+    team1_score: int
+    team2_score: int
+    match_summary: Optional[str] = None
+
+
+class MatchResultUpdate(BaseModel):
+    team1_score: Optional[int] = None
+    team2_score: Optional[int] = None
+    match_summary: Optional[str] = None
 
 
 def sanitize_tournament(tournament):
@@ -155,3 +181,105 @@ async def get_categories(
         .all()
 
     return categories
+
+
+@router.post("/fixtures", response_model=FixtureResponse, status_code=status.HTTP_201_CREATED)
+async def create_fixture(
+    fixture: FixtureCreate,
+    db: Session = Depends(get_db)
+):
+    """Create a new fixture."""
+    new_fixture = Fixture(
+        **fixture.dict(),
+        pool_id_1=0, match_id_1=0, pool_id_2=0, match_id_2=0,
+        winner_id=0, match_status=False, match_report_file=""
+    )
+    db.add(new_fixture)
+    db.commit()
+    db.refresh(new_fixture)
+    return new_fixture
+
+
+@router.put("/fixtures/{fixture_id}", response_model=FixtureResponse)
+async def update_fixture(
+    fixture_id: int,
+    fixture: FixtureUpdate,
+    db: Session = Depends(get_db)
+):
+    """Update a fixture."""
+    db_fixture = db.query(Fixture).filter(Fixture.id == fixture_id).first()
+    if not db_fixture:
+        raise HTTPException(status_code=404, detail="Fixture not found")
+
+    update_data = fixture.dict(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(db_fixture, key, value)
+
+    db.commit()
+    db.refresh(db_fixture)
+    return db_fixture
+
+
+@router.delete("/fixtures/{fixture_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_fixture(
+    fixture_id: int,
+    db: Session = Depends(get_db)
+):
+    """Delete a fixture."""
+    db_fixture = db.query(Fixture).filter(Fixture.id == fixture_id).first()
+    if not db_fixture:
+        raise HTTPException(status_code=404, detail="Fixture not found")
+
+    db.delete(db_fixture)
+    db.commit()
+    return None
+
+
+@router.post("/results", response_model=MatchResultResponse, status_code=status.HTTP_201_CREATED)
+async def create_result(
+    result: MatchResultCreate,
+    db: Session = Depends(get_db)
+):
+    """Create a match result."""
+    new_result = MatchResult(**result.dict())
+    db.add(new_result)
+    db.commit()
+    db.refresh(new_result)
+    return new_result
+
+
+@router.put("/results/{result_id}", response_model=MatchResultResponse)
+async def update_result(
+    result_id: int,
+    result: MatchResultUpdate,
+    db: Session = Depends(get_db)
+):
+    """Update a match result."""
+    db_result = db.query(MatchResult).filter(
+        MatchResult.id == result_id).first()
+    if not db_result:
+        raise HTTPException(status_code=404, detail="Result not found")
+
+    update_data = result.dict(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(db_result, key, value)
+
+    db.commit()
+    db.refresh(db_result)
+    return db_result
+
+
+@router.delete("/results/{result_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_result(
+    result_id: int,
+    db: Session = Depends(get_db)
+):
+    """Delete a match result."""
+    db_result = db.query(MatchResult).filter(
+        MatchResult.id == result_id).first()
+    if not db_result:
+        raise HTTPException(status_code=404, detail="Result not found")
+
+    db.delete(db_result)
+    db.commit()
+    return None

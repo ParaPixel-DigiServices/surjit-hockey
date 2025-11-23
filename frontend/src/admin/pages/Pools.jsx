@@ -112,58 +112,46 @@ export default function Pools() {
   const [sortDir, setSortDir] = useState("asc");
   const [search, setSearch] = useState("");
 
-  const createPool = (form) => {
-    console.log(
-      "⚠️ CREATE POOL: Backend POST endpoint required - /additional/pools"
-    );
-    console.log("Pool data:", form);
-    // TODO: Implement backend endpoint
-    const p = {
-      id: Date.now(),
-      name: form.name,
-      category: form.category,
-      teams: form.teams || [],
-      description: form.description || "",
-      stats: {
-        matches: 0,
-        wins: 0,
-        losses: 0,
-        draws: 0,
-        goals_for: 0,
-        goals_against: 0,
-      },
-    };
-    setPools((prev) => [p, ...prev]);
+  const createPool = async (form) => {
+    try {
+      const data = {
+        pool_name: form.name,
+        pool_category_type: form.category === "Men" ? 1 : 2,
+      };
+      await api.createPool(data);
+      setCreateOpen(false);
+      window.location.reload();
+    } catch (error) {
+      console.error("Failed to create pool", error);
+      alert("Failed to create pool");
+    }
   };
 
-  const updatePool = (form) => {
-    console.log(
-      "⚠️ UPDATE POOL: Backend PUT endpoint required - /additional/pools/{id}"
-    );
-    console.log("Pool data:", form);
-    // TODO: Implement backend endpoint
-    setPools((prev) =>
-      prev.map((p) =>
-        p.id === editingPool.id
-          ? {
-              ...p,
-              name: form.name,
-              category: form.category,
-              teams: form.teams,
-              description: form.description,
-            }
-          : p
-      )
-    );
+  const updatePool = async (form) => {
+    try {
+      const data = {
+        pool_name: form.name,
+        pool_category_type: form.category === "Men" ? 1 : 2,
+      };
+      await api.updatePool(editingPool.id, data);
+      setCreateOpen(false);
+      window.location.reload();
+    } catch (error) {
+      console.error("Failed to update pool", error);
+      alert("Failed to update pool");
+    }
   };
 
-  const removePool = (pool) => {
-    console.log(
-      "⚠️ DELETE POOL: Backend DELETE endpoint required - /additional/pools/{id}"
-    );
-    console.log("Pool ID:", pool.id);
-    // TODO: Implement backend endpoint
-    setPools((prev) => prev.filter((p) => p.id !== pool.id));
+  const removePool = async (pool) => {
+    if (window.confirm(`Delete pool ${pool.name}?`)) {
+      try {
+        await api.deletePool(pool.id);
+        setPools((prev) => prev.filter((p) => p.id !== pool.id));
+      } catch (error) {
+        console.error("Failed to delete pool", error);
+        alert("Failed to delete pool");
+      }
+    }
   };
 
   const openEdit = (pool) => {
@@ -176,15 +164,16 @@ export default function Pools() {
     setManageOpen(true);
   };
 
-  const saveManagedTeams = (newTeams) => {
-    console.log(
-      "⚠️ UPDATE POOL TEAMS: Backend PUT endpoint required - /additional/pools/{pool_id}/teams"
-    );
-    console.log("Pool ID:", editingPool.id, "Teams:", newTeams);
-    // TODO: Implement backend endpoint
-    setPools((prev) =>
-      prev.map((p) => (p.id === editingPool.id ? { ...p, teams: newTeams } : p))
-    );
+  const saveManagedTeams = async (newTeams) => {
+    try {
+      const teamIds = newTeams.map((t) => t.id);
+      await api.updatePoolTeams(editingPool.id, teamIds);
+      setManageOpen(false);
+      window.location.reload();
+    } catch (error) {
+      console.error("Failed to update pool teams", error);
+      alert("Failed to update pool teams");
+    }
   };
 
   const openStats = (pool) => {

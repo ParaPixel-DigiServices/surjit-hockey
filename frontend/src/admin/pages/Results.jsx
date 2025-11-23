@@ -17,22 +17,13 @@ import config from "../../config/api";
 export default function Results() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [fixturesList, setFixturesList] = useState([]);
 
   // Fetch results from backend
   useEffect(() => {
     const fetchResults = async () => {
       try {
         setLoading(true);
-
-        // Fetch results from tournament 100 (same as fixtures)
-        const resultsData = await api.getTournamentResults(100);
-
-        // Fetch fixtures to get match details
-        const fixturesData = await api.getTournamentFixtures(100);
-        const fixtureMap = {};
-        fixturesData.forEach((f) => {
-          fixtureMap[f.id] = f;
-        });
 
         // Fetch teams for logos and names
         const teamsData = await api.getTeams(0, 1000);
@@ -43,6 +34,32 @@ export default function Results() {
             logo: config.getUploadUrl("teams", t.team_logo),
           };
         });
+
+        // Fetch fixtures to get match details
+        const fixturesData = await api.getTournamentFixtures(100);
+        const fixtureMap = {};
+        const fixturesListFormatted = [];
+
+        fixturesData.forEach((f) => {
+          fixtureMap[f.id] = f;
+          const tA = teamMap[f.team_id_1]
+            ? teamMap[f.team_id_1].name
+            : `Team ${f.team_id_1}`;
+          const tB = teamMap[f.team_id_2]
+            ? teamMap[f.team_id_2].name
+            : `Team ${f.team_id_2}`;
+          fixturesListFormatted.push({
+            id: f.id,
+            date: f.match_date,
+            teamA: tA,
+            teamB: tB,
+            pool: f.pool_id,
+          });
+        });
+        setFixturesList(fixturesListFormatted);
+
+        // Fetch results from tournament 100 (same as fixtures)
+        const resultsData = await api.getTournamentResults(100);
 
         // Format results with fixture and team data
         const formatted = resultsData.map((r) => {
@@ -59,13 +76,13 @@ export default function Results() {
           return {
             id: r.id,
             fixtureId: r.fixture_id,
-            pool: fixture.pool_name || "N/A",
+            pool: fixture.pool_id ? `Pool ${fixture.pool_id}` : "N/A",
             teamA: teamA.name,
             teamB: teamB.name,
             scoreA: r.team1_score || 0,
             scoreB: r.team2_score || 0,
             type: "League Match",
-            description: `${fixture.pool_name ? `Pool ${fixture.pool_name} — ` : ""}${fixture.venue || "Stadium"}`,
+            description: `${fixture.pool_id ? `Pool ${fixture.pool_id} — ` : ""}${fixture.venue || "Stadium"}`,
             logoA: teamA.logo,
             logoB: teamB.logo,
             summary: r.match_summary || "",
@@ -96,27 +113,41 @@ export default function Results() {
     setDialogOpen(true);
   };
 
-  const handleSave = (data) => {
-    console.log("⚠️ SAVE RESULT: Backend POST/PUT endpoint required");
-    console.log("Result data:", data);
-    // TODO: POST /tournaments/{id}/results or PUT /tournaments/{id}/results/{result_id}
-    if (editData) {
-      setResults(results.map((r) => (r.id === data.id ? data : r)));
-    } else {
-      setResults([...results, { id: Date.now(), ...data }]);
+  const handleSave = async (data) => {
+    try {
+      const payload = {
+        fixture_id: parseInt(data.fixtureId),
+        team1_score: parseInt(data.scoreA),
+        team2_score: parseInt(data.scoreB),
+        match_summary: data.summary,
+        winner_team_id: 0,
+        man_of_the_match: "",
+      };
+
+      if (editData) {
+        await api.updateResult(editData.id, payload);
+      } else {
+        await api.createResult(payload);
+      }
+      setDialogOpen(false);
+      window.location.reload();
+    } catch (error) {
+      console.error("Failed to save result:", error);
+      alert("Failed to save result");
     }
-    setDialogOpen(false);
   };
 
-  const deleteResult = (id) => {
-    console.log(
-      "⚠️ DELETE RESULT: Backend DELETE endpoint required - /tournaments/{id}/results/{result_id}"
-    );
-    console.log("Result ID:", id);
-    // TODO: Implement backend endpoint
-    setResults(results.filter((r) => r.id !== id));
+  const deleteResult = async (id) => {
+    if (window.confirm("Are you sure you want to delete this result?")) {
+      try {
+        await api.deleteResult(id);
+        setResults(results.filter((r) => r.id !== id));
+      } catch (error) {
+        console.error("Failed to delete result:", error);
+        alert("Failed to delete result");
+      }
+    }
   };
-
   return (
     <div className="space-y-6 text-white">
       <div className="flex items-center justify-between">
@@ -165,9 +196,7 @@ export default function Results() {
                     <div className="text-white font-semibold text-sm">
                       {r.teamA}
                     </div>
-                    <div className="text-[10px] text-white/40">
-                      Pool {r.pool}
-                    </div>
+                    <div className="text-[10px] text-white/40">{r.pool}</div>
                   </div>
                 </div>
 
@@ -227,6 +256,7 @@ export default function Results() {
         onClose={() => setDialogOpen(false)}
         onSave={handleSave}
         initial={editData}
+        fixtures={fixturesList}
       />
     </div>
   );
