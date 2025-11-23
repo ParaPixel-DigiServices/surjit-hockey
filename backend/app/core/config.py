@@ -22,6 +22,9 @@ class Settings(BaseSettings):
     # CORS_ORIGINS: str = "http://localhost:5173,http://localhost:3000"
     CORS_ORIGINS: str = "*"
 
+    # File Uploads
+    UPLOAD_DIR: str = "uploads"
+
     @property
     def cors_origins_list(self) -> List[str]:
         """Convert CORS origins string to list. Returns ['*'] to allow all origins."""

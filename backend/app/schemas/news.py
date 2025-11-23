@@ -86,3 +86,18 @@ class StandingResponse(StandingBase):
 
     class Config:
         from_attributes = True
+
+
+class SponsorCreate(SponsorBase):
+    """Schema for creating sponsor."""
+    status: bool = True
+    order_by: Optional[int] = 0
+
+
+class SponsorUpdate(BaseModel):
+    """Schema for updating sponsor."""
+    sponser_name: Optional[str] = None
+    sponser_image: Optional[str] = None
+    detail: Optional[str] = None
+    status: Optional[bool] = None
+    order_by: Optional[int] = None

@@ -40,9 +40,9 @@ export default function Settings() {
       setLoading(true);
 
       // Prepare payload
-      // If disabled, we send null or empty to clear it
+      // If disabled, we send empty string to clear it (backend expects string)
       const payload = {
-        timer_time: manualTimerEnabled && manualDate ? manualDate : null,
+        timer_time: manualTimerEnabled && manualDate ? manualDate : "",
       };
 
       await api.updateTimer(payload);

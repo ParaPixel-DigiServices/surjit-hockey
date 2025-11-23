@@ -79,10 +79,6 @@ export default function Sidebar({ open = false, onOpenChange = () => {} }) {
             <DollarSign /> Sponsors
           </NavLink>
 
-          <NavLink to="/admin/ads" className={linkCls}>
-            <Film /> Ads
-          </NavLink>
-
           <NavLink to="/admin/settings" className={linkCls}>
             <Settings /> Settings
           </NavLink>
@@ -130,10 +126,6 @@ export default function Sidebar({ open = false, onOpenChange = () => {} }) {
 
           <NavLink to="/admin/sponsors" className={linkCls}>
             <DollarSign /> Sponsors
-          </NavLink>
-
-          <NavLink to="/admin/ads" className={linkCls}>
-            <Film /> Ads
           </NavLink>
         </nav>
 

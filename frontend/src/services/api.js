@@ -107,10 +107,53 @@ export const api = {
     return response.json();
   },
 
+  createSponsor: async (formData) => {
+    const response = await fetch(`${API_BASE_URL}/sponsors`, {
+      method: "POST",
+      body: formData,
+    });
+    if (!response.ok) throw new Error("Failed to create sponsor");
+    return response.json();
+  },
+
+  updateSponsor: async (id, formData) => {
+    const response = await fetch(`${API_BASE_URL}/sponsors/${id}`, {
+      method: "PUT",
+      body: formData,
+    });
+    if (!response.ok) throw new Error("Failed to update sponsor");
+    return response.json();
+  },
+
+  deleteSponsor: async (id) => {
+    const response = await fetch(`${API_BASE_URL}/sponsors/${id}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) throw new Error("Failed to delete sponsor");
+    return true;
+  },
+
   // Banners
   getBanners: async () => {
     const response = await fetch(`${API_BASE_URL}/banners/active`);
     if (!response.ok) throw new Error("Failed to fetch banners");
+    return response.json();
+  },
+
+  addBanner: async (formData) => {
+    const response = await fetch(`${API_BASE_URL}/banners`, {
+      method: "POST",
+      body: formData,
+    });
+    if (!response.ok) throw new Error("Failed to add banner");
+    return response.json();
+  },
+
+  deleteBanner: async (id) => {
+    const response = await fetch(`${API_BASE_URL}/banners/${id}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) throw new Error("Failed to delete banner");
     return response.json();
   },
 

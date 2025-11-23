@@ -11,6 +11,15 @@ class BannerBase(BaseModel):
     title_3: Optional[str] = None
 
 
+class BannerCreate(BaseModel):
+    """Schema for creating a banner."""
+    title_1: str
+    title_2: Optional[str] = None
+    title_3: Optional[str] = None
+    title_status: bool = True
+    status: bool = True
+
+
 class BannerResponse(BannerBase):
     """Schema for banner response."""
     id: int

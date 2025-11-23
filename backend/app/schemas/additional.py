@@ -157,6 +157,11 @@ class TimerResponse(BaseModel):
         from_attributes = True
 
 
+class TimerUpdate(BaseModel):
+    """Timer update schema."""
+    timer_time: Optional[str] = None
+
+
 class CapacityMasterResponse(BaseModel):
     """Capacity master response."""
     id: int

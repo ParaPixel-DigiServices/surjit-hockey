@@ -39,7 +39,6 @@ import ResultsAdmin from "./admin/pages/Results";
 import GalleryAdmin from "./admin/pages/Gallery";
 import NewsAdmin from "./admin/pages/News";
 import SponsorsAdmin from "./admin/pages/Sponsors";
-import AdsAdmin from "./admin/pages/Ads";
 import SettingsAdmin from "./admin/pages/Settings";
 
 export default function App() {
@@ -230,7 +229,6 @@ export default function App() {
           <Route path="gallery" element={<GalleryAdmin />} />
           <Route path="news" element={<NewsAdmin />} />
           <Route path="sponsors" element={<SponsorsAdmin />} />
-          <Route path="ads" element={<AdsAdmin />} />
           <Route path="settings" element={<SettingsAdmin />} />
         </Route>
 

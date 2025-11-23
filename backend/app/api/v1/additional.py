@@ -15,7 +15,7 @@ from app.schemas.additional import (
     YearMasterResponse, HonourResponse, DedicatedResponse, TickerResponse,
     ImageOfDayResponse, PositionMasterResponse, MatchReportResponse,
     StreamingResponse, TimerResponse, CapacityMasterResponse, LevelMasterResponse,
-    IdentityMasterResponse, TeamPlayerScoringDetailResponse
+    IdentityMasterResponse, TeamPlayerScoringDetailResponse, TimerUpdate
 )
 
 router = APIRouter()
@@ -337,6 +337,39 @@ async def get_timer(
             detail="No timer found"
         )
 
+    return timer
+
+
+@router.post("/timer", response_model=TimerResponse)
+async def update_timer(
+    timer_data: TimerUpdate,
+    db: Session = Depends(get_db)
+):
+    """
+    Update tournament countdown timer.
+
+    Args:
+        timer_data: Timer data to update
+        db: Database session
+
+    Returns:
+        Updated timer information
+    """
+    timer = db.query(Timer).first()
+
+    # Ensure we have a string, default to empty if None
+    new_time = timer_data.timer_time if timer_data.timer_time is not None else ""
+
+    if not timer:
+        # Create new timer if none exists
+        timer = Timer(timer_time=new_time)
+        db.add(timer)
+    else:
+        # Update existing timer
+        timer.timer_time = new_time
+
+    db.commit()
+    db.refresh(timer)
     return timer
 
 

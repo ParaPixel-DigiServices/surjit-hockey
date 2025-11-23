@@ -56,9 +56,9 @@ class Sponsor(Base):
     detail = Column(Text, nullable=True)
     order_by = Column(Integer, nullable=True)
     date_created = Column(DateTime, nullable=True)
-    date_updated = Column(DateTime, nullable=True)
+    date_updated = Column(DateTime, nullable=False)
     user_created = Column(Integer, nullable=True)
-    user_updated = Column(Integer, nullable=True)
+    user_updated = Column(Integer, nullable=False)
     status = Column(Boolean, nullable=False)
 
 
