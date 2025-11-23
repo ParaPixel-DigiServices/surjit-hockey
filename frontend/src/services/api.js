@@ -414,4 +414,31 @@ export const api = {
     if (!response.ok) throw new Error("Failed to fetch gallery images");
     return response.json();
   },
+
+  // Auth
+  registerUser: async (data, token) => {
+    const response = await fetch(`${API_BASE_URL}/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error("Failed to register user");
+    return response.json();
+  },
+
+  changePassword: async (data, token) => {
+    const response = await fetch(`${API_BASE_URL}/auth/password`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error("Failed to change password");
+    return response.json();
+  },
 };

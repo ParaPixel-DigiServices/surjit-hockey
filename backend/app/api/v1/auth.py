@@ -6,20 +6,25 @@ from datetime import timedelta
 from app.core import get_db, create_access_token, verify_password, get_password_hash
 from app.core.config import settings
 from app.models.user import User, UserProfile
-from app.schemas.user import UserCreate, UserResponse, UserLogin, Token
+from app.schemas.user import UserCreate, UserResponse, UserLogin, Token, UserPasswordUpdate
 from app.api.deps import get_current_active_user
 
 router = APIRouter()
 
 
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
-async def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
+async def register_user(
+    user_data: UserCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_active_user)
+):
     """
-    Register a new user.
+    Register a new user. Only authenticated users (admins) can register new users.
 
     Args:
         user_data: User registration data
         db: Database session
+        current_user: The admin user performing the registration
 
     Returns:
         Created user object
@@ -125,3 +130,35 @@ async def get_current_user_info(
         Current user data
     """
     return current_user
+
+
+@router.put("/password", status_code=status.HTTP_200_OK)
+async def change_password(
+    password_data: UserPasswordUpdate,
+    current_user: User = Depends(get_current_active_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Change current user's password.
+
+    Args:
+        password_data: New password data
+        current_user: Current authenticated user
+        db: Database session
+
+    Returns:
+        Success message
+
+    Raises:
+        HTTPException: If current password is incorrect
+    """
+    if not verify_password(password_data.current_password, current_user.password):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Incorrect current password"
+        )
+
+    current_user.password = get_password_hash(password_data.new_password)
+    db.commit()
+
+    return {"message": "Password updated successfully"}

@@ -26,6 +26,36 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
+  // Inactivity Timer
+  useEffect(() => {
+    let timeout;
+    const resetTimer = () => {
+      if (timeout) clearTimeout(timeout);
+      if (user) {
+        timeout = setTimeout(
+          () => {
+            logout();
+            alert("Session expired due to inactivity.");
+          },
+          30 * 60 * 1000
+        ); // 30 minutes
+      }
+    };
+
+    window.addEventListener("mousemove", resetTimer);
+    window.addEventListener("keypress", resetTimer);
+    window.addEventListener("click", resetTimer);
+
+    resetTimer(); // Start timer
+
+    return () => {
+      if (timeout) clearTimeout(timeout);
+      window.removeEventListener("mousemove", resetTimer);
+      window.removeEventListener("keypress", resetTimer);
+      window.removeEventListener("click", resetTimer);
+    };
+  }, [user]);
+
   const login = async (username, password) => {
     try {
       // Create form data for OAuth2 password flow

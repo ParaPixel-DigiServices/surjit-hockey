@@ -41,16 +41,6 @@ export default function Topbar({ onOpenMobile }) {
         </div>
 
         <div className="flex items-center gap-3">
-          {/* search (visual) */}
-          <button className="p-2 rounded hover:bg-white/5 transition hidden sm:inline-flex">
-            <Search className="w-5 h-5 text-white/90" />
-          </button>
-
-          {/* notifications */}
-          <button className="p-2 rounded hover:bg-white/5 transition">
-            <Bell className="w-5 h-5 text-white/90" />
-          </button>
-
           {/* profile dropdown */}
           <ProfileDropdown />
         </div>

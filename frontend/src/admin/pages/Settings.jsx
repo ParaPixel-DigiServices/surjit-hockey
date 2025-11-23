@@ -2,13 +2,26 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Save, Clock } from "lucide-react";
+import { Save, Clock, UserPlus, Lock } from "lucide-react";
 import { api } from "../../services/api";
 
 export default function Settings() {
   const [manualTimerEnabled, setManualTimerEnabled] = useState(false);
   const [manualDate, setManualDate] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // User Management States
+  const [newUser, setNewUser] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+  const [passwordData, setPasswordData] = useState({
+    current_password: "",
+    new_password: "",
+    confirm_password: "",
+  });
+  const [userLoading, setUserLoading] = useState(false);
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -55,12 +68,60 @@ export default function Settings() {
     }
   };
 
+  const handleCreateUser = async (e) => {
+    e.preventDefault();
+    try {
+      setUserLoading(true);
+      const token = localStorage.getItem("token");
+      await api.registerUser(newUser, token);
+      alert("New admin user created successfully!");
+      setNewUser({ username: "", email: "", password: "" });
+    } catch (error) {
+      console.error("Failed to create user:", error);
+      alert("Failed to create user: " + error.message);
+    } finally {
+      setUserLoading(false);
+    }
+  };
+
+  const handleChangePassword = async (e) => {
+    e.preventDefault();
+    if (passwordData.new_password !== passwordData.confirm_password) {
+      alert("New passwords do not match!");
+      return;
+    }
+    try {
+      setUserLoading(true);
+      const token = localStorage.getItem("token");
+      await api.changePassword(
+        {
+          current_password: passwordData.current_password,
+          new_password: passwordData.new_password,
+        },
+        token
+      );
+      alert("Password changed successfully!");
+      setPasswordData({
+        current_password: "",
+        new_password: "",
+        confirm_password: "",
+      });
+    } catch (error) {
+      console.error("Failed to change password:", error);
+      alert("Failed to change password: " + error.message);
+    } finally {
+      setUserLoading(false);
+    }
+  };
+
   return (
     <div className="space-y-6 text-white">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-extrabold">Settings</h1>
-          <p className="text-sm text-white/60">General configuration</p>
+          <p className="text-sm text-white/60">
+            General configuration & User Management
+          </p>
         </div>
         <Button
           onClick={handleSave}
@@ -150,13 +211,122 @@ export default function Settings() {
             )}
           </div>
         </div>
-      </div>
 
-      <div className="pt-4 border-t border-white/10">
-        <p className="text-xs text-white/40">
-          Note: These settings are currently mock data. Backend integration
-          required for persistence.
-        </p>
+        {/* Create New Admin */}
+        <div className="bg-[#08162e] border border-white/10 rounded-lg p-6 space-y-6">
+          <div className="flex items-center gap-2 border-b border-white/10 pb-2">
+            <UserPlus className="text-[#ffd700]" size={20} />
+            <h3 className="text-lg font-bold">Create New Admin</h3>
+          </div>
+          <form onSubmit={handleCreateUser} className="space-y-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Username</label>
+              <Input
+                value={newUser.username}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, username: e.target.value })
+                }
+                className="bg-[#0f1e3a] border-white/10 text-white"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Email</label>
+              <Input
+                type="email"
+                value={newUser.email}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, email: e.target.value })
+                }
+                className="bg-[#0f1e3a] border-white/10 text-white"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Password</label>
+              <Input
+                type="password"
+                value={newUser.password}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, password: e.target.value })
+                }
+                className="bg-[#0f1e3a] border-white/10 text-white"
+                required
+              />
+            </div>
+            <Button
+              type="submit"
+              disabled={userLoading}
+              className="w-full bg-[#ffd700] text-black hover:bg-[#e6c200]"
+            >
+              {userLoading ? "Creating..." : "Create Admin User"}
+            </Button>
+          </form>
+        </div>
+
+        {/* Change Password */}
+        <div className="bg-[#08162e] border border-white/10 rounded-lg p-6 space-y-6">
+          <div className="flex items-center gap-2 border-b border-white/10 pb-2">
+            <Lock className="text-[#ffd700]" size={20} />
+            <h3 className="text-lg font-bold">Change Password</h3>
+          </div>
+          <form onSubmit={handleChangePassword} className="space-y-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Current Password</label>
+              <Input
+                type="password"
+                value={passwordData.current_password}
+                onChange={(e) =>
+                  setPasswordData({
+                    ...passwordData,
+                    current_password: e.target.value,
+                  })
+                }
+                className="bg-[#0f1e3a] border-white/10 text-white"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">New Password</label>
+              <Input
+                type="password"
+                value={passwordData.new_password}
+                onChange={(e) =>
+                  setPasswordData({
+                    ...passwordData,
+                    new_password: e.target.value,
+                  })
+                }
+                className="bg-[#0f1e3a] border-white/10 text-white"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">
+                Confirm New Password
+              </label>
+              <Input
+                type="password"
+                value={passwordData.confirm_password}
+                onChange={(e) =>
+                  setPasswordData({
+                    ...passwordData,
+                    confirm_password: e.target.value,
+                  })
+                }
+                className="bg-[#0f1e3a] border-white/10 text-white"
+                required
+              />
+            </div>
+            <Button
+              type="submit"
+              disabled={userLoading}
+              className="w-full bg-[#ffd700] text-black hover:bg-[#e6c200]"
+            >
+              {userLoading ? "Updating..." : "Update Password"}
+            </Button>
+          </form>
+        </div>
       </div>
     </div>
   );
