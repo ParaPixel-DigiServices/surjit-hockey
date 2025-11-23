@@ -1,8 +1,9 @@
 // src/admin/pages/Dashboard.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import EditResultDialog from "../components/results/EditResultDialog"; // <-- ADD THIS IMPORT
+import EditResultDialog from "../components/results/EditResultDialog";
+import { api } from "../../services/api";
 import {
   AddTeamDialog,
   CreateFixtureDialog,
@@ -10,7 +11,7 @@ import {
   AnnouncementDialog,
 } from "@/admin/components/quickactions/QuickActionDialogs";
 
-function Stat({ label, value, hint, icon }) {
+function Stat({ label, value, hint, icon, loading }) {
   return (
     <div className="bg-[#071226] border border-white/6 rounded-xl p-4 flex items-start gap-4">
       <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#ffd700] to-[#ffdd66] text-[#071226] flex items-center justify-center font-bold">
@@ -18,7 +19,9 @@ function Stat({ label, value, hint, icon }) {
       </div>
       <div className="flex-1">
         <div className="text-xs text-white/60">{label}</div>
-        <div className="mt-1 text-2xl font-extrabold text-white">{value}</div>
+        <div className="mt-1 text-2xl font-extrabold text-white">
+          {loading ? "..." : value}
+        </div>
         {hint && <div className="text-xs text-white/50 mt-1">{hint}</div>}
       </div>
     </div>
@@ -27,6 +30,13 @@ function Stat({ label, value, hint, icon }) {
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({
+    teams: 0,
+    matches: 0,
+    results: 0,
+    gallery: 0,
+  });
 
   // ----------------------------------------
   // 🔥 EDIT POPUP STATE
@@ -44,7 +54,7 @@ export default function Dashboard() {
 
   const handleSave = (updated) => {
     console.log("Updated Upcoming Match:", updated);
-    // TODO: connect backend update
+    // Note: Backend doesn't have UPDATE endpoints yet
   };
 
   const [addTeamOpen, setAddTeamOpen] = useState(false);
@@ -52,13 +62,44 @@ export default function Dashboard() {
   const [uploadOpen, setUploadOpen] = useState(false);
   const [announceOpen, setAnnounceOpen] = useState(false);
 
+  // Fetch real stats from API
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        setLoading(true);
+        const [teamsData, fixturesData, galleryData] = await Promise.all([
+          api.getTeams(0, 1000),
+          api.getTournamentFixtures(100).catch(() => []), // Use tournament ID 100 or adjust
+          api.getGallery(0, 5000),
+        ]);
+
+        setStats({
+          teams: teamsData.length,
+          matches: fixturesData.length,
+          results: fixturesData.filter((f) => f.match_status === true).length,
+          gallery: galleryData.length,
+        });
+      } catch (error) {
+        console.error("Failed to fetch dashboard stats:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStats();
+  }, []);
+
   // ----------------------------------------
 
-  const stats = [
-    { label: "Total Teams", value: 48, hint: "Men & Women", icon: "T" },
-    { label: "Matches", value: 92, hint: "Scheduled", icon: "M" },
-    { label: "Results", value: 76, hint: "Published", icon: "R" },
-    { label: "Gallery", value: 1240, hint: "Photos", icon: "G" },
+  const statItems = [
+    {
+      label: "Total Teams",
+      value: stats.teams,
+      hint: "Men & Women",
+      icon: "T",
+    },
+    { label: "Matches", value: stats.matches, hint: "Scheduled", icon: "M" },
+    { label: "Results", value: stats.results, hint: "Published", icon: "R" },
+    { label: "Gallery", value: stats.gallery, hint: "Photos", icon: "G" },
   ];
 
   return (
@@ -73,8 +114,8 @@ export default function Dashboard() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((s) => (
-          <Stat key={s.label} {...s} />
+        {statItems.map((s) => (
+          <Stat key={s.label} {...s} loading={loading} />
         ))}
       </div>
 

@@ -73,7 +73,7 @@ export default function Login() {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <User className="w-5 h-5 text-white/40" />
+                  <User className="w-5 h-5 text-[#ffd700]" />
                 </div>
                 <input
                   id="username"
@@ -81,7 +81,7 @@ export default function Login() {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required
-                  className="w-full bg-[#0b152d]/50 border border-white/10 rounded-lg pl-12 pr-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-[#ffd700] focus:ring-2 focus:ring-[#ffd700]/20 transition"
+                  className="w-full bg-[#1b2b4a] border border-white/20 rounded-lg pl-12 pr-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-[#ffd700] focus:ring-2 focus:ring-[#ffd700]/20 transition"
                   placeholder="Enter your username"
                 />
               </div>
@@ -97,7 +97,7 @@ export default function Login() {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Lock className="w-5 h-5 text-white/40" />
+                  <Lock className="w-5 h-5 text-[#ffd700]" />
                 </div>
                 <input
                   id="password"
@@ -105,13 +105,13 @@ export default function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full bg-[#0b152d]/50 border border-white/10 rounded-lg pl-12 pr-12 py-3 text-white placeholder-white/30 focus:outline-none focus:border-[#ffd700] focus:ring-2 focus:ring-[#ffd700]/20 transition"
+                  className="w-full bg-[#1b2b4a] border border-white/20 rounded-lg pl-12 pr-12 py-3 text-white placeholder-white/40 focus:outline-none focus:border-[#ffd700] focus:ring-2 focus:ring-[#ffd700]/20 transition"
                   placeholder="Enter your password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-white/40 hover:text-white/60 transition"
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-[#ffd700]/60 hover:text-[#ffd700] transition"
                 >
                   {showPassword ? (
                     <EyeOff className="w-5 h-5" />

@@ -1,97 +1,46 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-
-// --- Sponsor logos ---
-import sponsor1 from "../../assets/sponsors/aig.jpeg";
-import sponsor2 from "../../assets/sponsors/autogas.jpg";
-import sponsor3 from "../../assets/sponsors/galib.jpg";
-import sponsor4 from "../../assets/sponsors/garry.jpeg";
-import sponsor5 from "../../assets/sponsors/gigs.jpeg";
-import sponsor6 from "../../assets/sponsors/hdfc.jpeg";
-import sponsor7 from "../../assets/sponsors/ij.jpeg";
-import sponsor8 from "../../assets/sponsors/in.jpg";
-import sponsor9 from "../../assets/sponsors/iocl.jpeg";
-import sponsor10 from "../../assets/sponsors/iov.jpeg";
-import sponsor11 from "../../assets/sponsors/lic.jpg";
-import sponsor12 from "../../assets/sponsors/markfd.jpeg";
-import sponsor13 from "../../assets/sponsors/nakidar.jpg";
-import sponsor14 from "../../assets/sponsors/pnb.jpeg";
-import sponsor15 from "../../assets/sponsors/pp.jpg";
-import sponsor16 from "../../assets/sponsors/psb.jpeg";
-import sponsor17 from "../../assets/sponsors/ptc.jpeg";
-import sponsor18 from "../../assets/sponsors/ptc.jpg";
-import sponsor19 from "../../assets/sponsors/ptc3.jpeg";
-import sponsor20 from "../../assets/sponsors/ptcg.jpg";
-import sponsor21 from "../../assets/sponsors/pukhraaj.jpeg";
-import sponsor22 from "../../assets/sponsors/pyramid.jpeg";
-import sponsor23 from "../../assets/sponsors/sonalika.jpeg";
-import sponsor24 from "../../assets/sponsors/sts.jpeg";
-import sponsor25 from "../../assets/sponsors/ucb.jpeg";
-import sponsor26 from "../../assets/sponsors/upal.jpeg";
-import sponsor27 from "../../assets/sponsors/victoria.jpeg";
+import { api } from "../../services/api";
+import config from "../../config/api";
 
 /**
  * SponsorsMarquee - Auto-scrolling sponsor logos
  * Displayed below hero section with continuous animation
+ * Fetches real sponsors from API
  */
 export default function SponsorsMarquee() {
-  const sponsors = [
-    sponsor1,
-    sponsor2,
-    sponsor3,
-    sponsor4,
-    sponsor5,
-    sponsor6,
-    sponsor7,
-    sponsor8,
-    sponsor9,
-    sponsor10,
-    sponsor11,
-    sponsor12,
-    sponsor13,
-    sponsor14,
-    sponsor15,
-    sponsor16,
-    sponsor17,
-    sponsor18,
-    sponsor19,
-    sponsor20,
-    sponsor21,
-    sponsor22,
-    sponsor23,
-    sponsor24,
-    sponsor25,
-    sponsor26,
-    sponsor27,
-    // Duplicate for smooth infinite loop
-    sponsor1,
-    sponsor2,
-    sponsor3,
-    sponsor4,
-    sponsor5,
-    sponsor6,
-    sponsor7,
-    sponsor8,
-    sponsor9,
-    sponsor10,
-    sponsor11,
-    sponsor12,
-    sponsor13,
-    sponsor14,
-    sponsor15,
-    sponsor16,
-    sponsor17,
-    sponsor18,
-    sponsor19,
-    sponsor20,
-    sponsor21,
-    sponsor22,
-    sponsor23,
-    sponsor24,
-    sponsor25,
-    sponsor26,
-    sponsor27,
-  ];
+  const [sponsors, setSponsors] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSponsors = async () => {
+      try {
+        setLoading(true);
+        const data = await api.getSponsors(0, 100);
+        // Filter active sponsors and get their images
+        const activeSponsors = data
+          .filter((s) => s.status === true)
+          .map((s) => ({
+            id: s.id,
+            name: s.name,
+            image: s.logo ? config.getUploadUrl("sponsors", s.logo) : null,
+          }))
+          .filter((s) => s.image);
+
+        // Duplicate sponsors for smooth infinite loop
+        setSponsors([...activeSponsors, ...activeSponsors]);
+      } catch (error) {
+        console.error("Failed to fetch sponsors:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSponsors();
+  }, []);
+
+  if (loading || sponsors.length === 0) {
+    return null; // Don't show section while loading or if no sponsors
+  }
 
   return (
     <section className="w-full bg-[#0b152d] py-8 overflow-hidden border-y border-[#ffd700]/20">
@@ -110,11 +59,11 @@ export default function SponsorsMarquee() {
               repeat: Infinity,
             }}
           >
-            {sponsors.map((logo, i) => (
+            {sponsors.map((sponsor, i) => (
               <img
-                key={i}
-                src={logo}
-                alt={`Sponsor ${i + 1}`}
+                key={`${sponsor.id}-${i}`}
+                src={sponsor.image}
+                alt={sponsor.name}
                 className="h-16 md:h-20 object-contain brightness-110 hover:brightness-125 transition"
               />
             ))}
