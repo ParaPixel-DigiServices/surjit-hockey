@@ -20,9 +20,17 @@ class NewsResponse(NewsBase):
     date_created: datetime
     date_updated: Optional[datetime] = None
     status: bool
+    news_image: Optional[str] = None
 
     class Config:
         from_attributes = True
+
+
+class NewsUpdate(BaseModel):
+    """Schema for updating news."""
+    title: Optional[str] = None
+    description: Optional[str] = None
+    status: Optional[bool] = None
 
 
 class OfficialBase(BaseModel):

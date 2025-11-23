@@ -22,7 +22,7 @@ class NewsImage(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     news_id = Column(Integer, index=True, nullable=False)
-    image_name = Column(String(250), nullable=False)
+    news_image = Column(String(250), nullable=False)
     status = Column(Boolean, default=True)
 
 

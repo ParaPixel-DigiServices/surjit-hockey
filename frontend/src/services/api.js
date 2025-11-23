@@ -77,6 +77,32 @@ export const api = {
     return response.json();
   },
 
+  createNews: async (formData) => {
+    const response = await fetch(`${API_BASE_URL}/news`, {
+      method: "POST",
+      body: formData,
+    });
+    if (!response.ok) throw new Error("Failed to create news");
+    return response.json();
+  },
+
+  updateNews: async (id, formData) => {
+    const response = await fetch(`${API_BASE_URL}/news/${id}`, {
+      method: "PUT",
+      body: formData,
+    });
+    if (!response.ok) throw new Error("Failed to update news");
+    return response.json();
+  },
+
+  deleteNews: async (id) => {
+    const response = await fetch(`${API_BASE_URL}/news/${id}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) throw new Error("Failed to delete news");
+    return true;
+  },
+
   // Officials
   getOfficials: async (skip = 0, limit = 100) => {
     const response = await fetch(

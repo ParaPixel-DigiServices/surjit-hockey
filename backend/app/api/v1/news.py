@@ -7,13 +7,14 @@ from datetime import datetime
 
 from app.core import get_db
 from app.core.config import settings
-from app.models.news import News, Official, Sponsor, Standing
+from app.models.news import News, NewsImage, Official, Sponsor, Standing
 from app.models.content import Banner
 from app.schemas.news import (
     NewsResponse,
     OfficialResponse,
     SponsorResponse,
-    StandingResponse
+    StandingResponse,
+    NewsUpdate
 )
 from app.schemas.content import BannerCreate
 
@@ -46,22 +47,27 @@ async def get_news(
         List of news articles
     """
     news_list = db.query(News)\
-        .filter(News.status == True)\
+        .filter(News.status.is_(True))\
         .order_by(News.date_created.desc())\
         .offset(skip)\
         .limit(limit)\
         .all()
 
-    # Sanitize datetime fields
+    # Sanitize datetime fields and get images
     result = []
     for news in news_list:
+        # Fetch image
+        image = db.query(NewsImage).filter(NewsImage.news_id ==
+                                           news.id, NewsImage.status.is_(True)).first()
+
         result.append({
             "id": news.id,
             "title": news.title,
             "description": news.description,
             "date_created": news.date_created,
             "date_updated": sanitize_datetime(news, 'date_updated'),
-            "status": news.status
+            "status": news.status,
+            "news_image": image.news_image if image else None
         })
 
     return result
@@ -86,7 +92,7 @@ async def get_news_by_id(
         HTTPException: If news not found
     """
     news = db.query(News)\
-        .filter(News.id == news_id, News.status == True)\
+        .filter(News.id == news_id, News.status.is_(True))\
         .first()
 
     if not news:
@@ -95,14 +101,192 @@ async def get_news_by_id(
             detail="News article not found"
         )
 
+    # Fetch image
+    image = db.query(NewsImage).filter(NewsImage.news_id ==
+                                       news.id, NewsImage.status.is_(True)).first()
+
     return {
         "id": news.id,
         "title": news.title,
         "description": news.description,
         "date_created": news.date_created,
         "date_updated": sanitize_datetime(news, 'date_updated'),
-        "status": news.status
+        "status": news.status,
+        "news_image": image.news_image if image else None
     }
+
+
+@router.post("/news", response_model=NewsResponse, status_code=http_status.HTTP_201_CREATED)
+async def create_news(
+    title: str = Form(...),
+    description: Optional[str] = Form(None),
+    status: bool = Form(True),
+    image: Optional[UploadFile] = File(None),
+    db: Session = Depends(get_db)
+):
+    """Create a new news article."""
+    # Create news record
+    db_news = News(
+        title=title,
+        description=description,
+        status=status,
+        date_created=datetime.now(),
+        date_updated=datetime.now(),
+        user_created=1,  # Default user
+        user_updated=1
+    )
+    db.add(db_news)
+    db.commit()
+    db.refresh(db_news)
+
+    # Handle image upload
+    news_image_name = None
+    if image:
+        upload_dir = os.path.join(settings.UPLOAD_DIR, "news")
+        os.makedirs(upload_dir, exist_ok=True)
+
+        timestamp = int(datetime.now().timestamp())
+        filename = f"{timestamp}_{image.filename}"
+        file_path = os.path.join(upload_dir, filename)
+
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(image.file, buffer)
+
+        news_image_name = filename
+
+        # Create NewsImage record
+        db_image = NewsImage(
+            news_id=db_news.id,
+            news_image=filename,
+            status=True
+        )
+        db.add(db_image)
+        db.commit()
+
+    return {
+        "id": db_news.id,
+        "title": db_news.title,
+        "description": db_news.description,
+        "date_created": db_news.date_created,
+        "date_updated": db_news.date_updated,
+        "status": db_news.status,
+        "news_image": news_image_name
+    }
+
+
+@router.put("/news/{news_id}", response_model=NewsResponse)
+async def update_news(
+    news_id: int,
+    title: Optional[str] = Form(None),
+    description: Optional[str] = Form(None),
+    status: Optional[bool] = Form(None),
+    image: Optional[UploadFile] = File(None),
+    db: Session = Depends(get_db)
+):
+    """Update a news article."""
+    db_news = db.query(News).filter(News.id == news_id).first()
+    if not db_news:
+        raise HTTPException(
+            status_code=http_status.HTTP_404_NOT_FOUND,
+            detail="News article not found"
+        )
+
+    if title is not None:
+        db_news.title = title
+    if description is not None:
+        db_news.description = description
+    if status is not None:
+        db_news.status = status
+
+    db_news.date_updated = datetime.now()
+    db_news.user_updated = 1
+
+    news_image_name = None
+
+    # Handle image upload
+    if image:
+        upload_dir = os.path.join(settings.UPLOAD_DIR, "news")
+        os.makedirs(upload_dir, exist_ok=True)
+
+        timestamp = int(datetime.now().timestamp())
+        filename = f"{timestamp}_{image.filename}"
+        file_path = os.path.join(upload_dir, filename)
+
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(image.file, buffer)
+
+        news_image_name = filename
+
+        # Check if image exists
+        db_image = db.query(NewsImage).filter(
+            NewsImage.news_id == news_id).first()
+        if db_image:
+            # Delete old file if exists
+            old_file_path = os.path.join(upload_dir, db_image.news_image)
+            if os.path.exists(old_file_path):
+                try:
+                    os.remove(old_file_path)
+                except Exception:
+                    pass
+            db_image.news_image = filename
+            db_image.status = True
+        else:
+            db_image = NewsImage(
+                news_id=news_id,
+                news_image=filename,
+                status=True
+            )
+            db.add(db_image)
+    else:
+        # Get existing image
+        db_image = db.query(NewsImage).filter(
+            NewsImage.news_id == news_id, NewsImage.status.is_(True)).first()
+        if db_image:
+            news_image_name = db_image.news_image
+
+    db.commit()
+    db.refresh(db_news)
+
+    return {
+        "id": db_news.id,
+        "title": db_news.title,
+        "description": db_news.description,
+        "date_created": db_news.date_created,
+        "date_updated": db_news.date_updated,
+        "status": db_news.status,
+        "news_image": news_image_name
+    }
+
+
+@router.delete("/news/{news_id}", status_code=http_status.HTTP_204_NO_CONTENT)
+async def delete_news(
+    news_id: int,
+    db: Session = Depends(get_db)
+):
+    """Delete a news article."""
+    db_news = db.query(News).filter(News.id == news_id).first()
+    if not db_news:
+        raise HTTPException(
+            status_code=http_status.HTTP_404_NOT_FOUND,
+            detail="News article not found"
+        )
+
+    # Delete associated images
+    db_images = db.query(NewsImage).filter(NewsImage.news_id == news_id).all()
+    upload_dir = os.path.join(settings.UPLOAD_DIR, "news")
+
+    for img in db_images:
+        file_path = os.path.join(upload_dir, img.news_image)
+        if os.path.exists(file_path):
+            try:
+                os.remove(file_path)
+            except Exception:
+                pass
+        db.delete(img)
+
+    db.delete(db_news)
+    db.commit()
+    return None
 
 
 @router.get("/officials", response_model=List[OfficialResponse])
