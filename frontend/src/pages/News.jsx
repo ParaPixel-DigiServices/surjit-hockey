@@ -51,36 +51,7 @@ export default function News() {
     fetchNews();
   }, []);
 
-  const staticNewsItems = [
-    {
-      title: "Indian Oil Mumbai Wins 2024 Surjit Hockey Tournament",
-      date: "November 2, 2024",
-      image: news1,
-      excerpt:
-        "In an intense final clash, Indian Oil Mumbai defeated Bharat Petroleum to claim the Surjit Hockey Trophy 2024. The match showcased world-class skills, lightning-fast plays, and a crowd roaring till the final whistle.",
-    },
-    {
-      title: "Rising Stars Shine in Junior Hockey Segment",
-      date: "October 25, 2024",
-      image: news2,
-      excerpt:
-        "The junior players from Punjab displayed immense potential during this year’s tournament. Coaches are calling them the future of Indian hockey, with several standout performances in the group stages.",
-    },
-    {
-      title: "Chief Guest Dr. Himanshu Aggarwal Commends Players’ Spirit",
-      date: "October 20, 2024",
-      image: news3,
-      excerpt:
-        "During the opening ceremony, Dr. Himanshu Aggarwal, IAS, highlighted the importance of sportsmanship and Surjit Hockey Society’s contribution to nurturing hockey talent across India.",
-    },
-    {
-      title: "New Artificial Turf Unveiled at Surjit Hockey Stadium",
-      date: "October 10, 2024",
-      image: news4,
-      excerpt:
-        "The new turf was inaugurated ahead of the tournament to ensure international-level playing conditions. Officials say it’s one of the fastest surfaces ever installed in North India.",
-    },
-  ];
+  // Static items removed
 
   return (
     <div className="relative min-h-screen bg-white text-[#111] font-[Sora] overflow-hidden">

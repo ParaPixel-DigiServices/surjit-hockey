@@ -283,4 +283,12 @@ export const api = {
     if (!response.ok) throw new Error("Failed to fetch image of day");
     return response.json();
   },
+
+  getGalleryImages: async (id) => {
+    const response = await fetch(
+      `${API_BASE_URL}/content/gallery/${id}/images`
+    );
+    if (!response.ok) throw new Error("Failed to fetch gallery images");
+    return response.json();
+  },
 };

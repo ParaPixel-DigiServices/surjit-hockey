@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, Folder, ArrowLeft } from "lucide-react";
 import { api } from "@/services/api";
 import config from "../../config/api";
 import {
@@ -14,19 +14,25 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export default function Gallery() {
-  const [images, setImages] = useState([]);
+  const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [currentAlbum, setCurrentAlbum] = useState(null); // null = root (albums), object = inside album
   const [formData, setFormData] = useState({
     title: "",
   });
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFiles, setSelectedFiles] = useState([]);
 
   const fetchGallery = async () => {
     try {
       setLoading(true);
-      const data = await api.getGallery(0, 100);
-      setImages(data);
+      let data;
+      if (currentAlbum) {
+        data = await api.getGalleryImages(currentAlbum.id);
+      } else {
+        data = await api.getGallery(0, 100);
+      }
+      setItems(data);
     } catch (error) {
       console.error("Failed to fetch gallery:", error);
     } finally {
@@ -36,15 +42,16 @@ export default function Gallery() {
 
   useEffect(() => {
     fetchGallery();
-  }, []);
+  }, [currentAlbum]);
 
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this image?")) {
+  const handleDelete = async (id, e) => {
+    e.stopPropagation();
+    if (window.confirm("Are you sure you want to delete this item?")) {
       try {
         await api.deleteGallery(id);
-        setImages(images.filter((img) => img.id !== id));
+        setItems(items.filter((item) => item.id !== id));
       } catch (error) {
-        console.error("Failed to delete image:", error);
+        console.error("Failed to delete item:", error);
       }
     }
   };
@@ -53,50 +60,71 @@ export default function Gallery() {
     setFormData({
       title: "",
     });
-    setSelectedFile(null);
+    setSelectedFiles([]);
     setIsDialogOpen(true);
   };
 
   const handleFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setSelectedFile(e.target.files[0]);
+    if (e.target.files) {
+      setSelectedFiles(Array.from(e.target.files));
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!selectedFile) {
-      alert("Please select an image");
+    if (selectedFiles.length === 0) {
+      alert("Please select at least one image");
       return;
     }
 
     try {
       const data = new FormData();
       data.append("title", formData.title);
-      data.append("image", selectedFile);
-      data.append("parent_image", 0);
+      
+      selectedFiles.forEach((file) => {
+        data.append("images", file);
+      });
+      
+      data.append("parent_image", currentAlbum ? currentAlbum.id : 0);
       data.append("status", true);
 
       await api.createGallery(data);
       setIsDialogOpen(false);
       fetchGallery();
     } catch (error) {
-      console.error("Failed to save image:", error);
+      console.error("Failed to save item:", error);
     }
   };
 
   return (
     <div className="space-y-6 text-white">
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-extrabold">Gallery</h1>
-          <p className="text-sm text-white/60">Manage gallery images</p>
+        <div className="flex items-center gap-4">
+          {currentAlbum && (
+            <Button
+              variant="ghost"
+              onClick={() => setCurrentAlbum(null)}
+              className="text-white hover:bg-white/10"
+            >
+              <ArrowLeft size={20} />
+            </Button>
+          )}
+          <div>
+            <h1 className="text-3xl font-extrabold">
+              {currentAlbum ? currentAlbum.title : "Gallery Albums"}
+            </h1>
+            <p className="text-sm text-white/60">
+              {currentAlbum
+                ? "Manage images in this album"
+                : "Manage gallery albums"}
+            </p>
+          </div>
         </div>
         <Button
           onClick={handleAdd}
           className="bg-[#ffd700] text-black flex gap-2"
         >
-          <Plus size={16} /> Add Image
+          <Plus size={16} /> {currentAlbum ? "Add Image" : "Create Album"}
         </Button>
       </div>
 
@@ -104,34 +132,46 @@ export default function Gallery() {
         <div className="flex justify-center items-center py-20">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#ffd700]"></div>
         </div>
-      ) : images.length === 0 ? (
+      ) : items.length === 0 ? (
         <div className="text-center py-20 text-white/60">
-          <p>No images found</p>
+          <p>No {currentAlbum ? "images" : "albums"} found</p>
         </div>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {images.map((img) => (
+          {items.map((item) => (
             <div
-              key={img.id}
-              className="relative group aspect-square bg-white/5 rounded-lg overflow-hidden border border-white/10"
+              key={item.id}
+              onClick={() => !currentAlbum && setCurrentAlbum(item)}
+              className={`relative group aspect-square bg-white/5 rounded-lg overflow-hidden border border-white/10 ${
+                !currentAlbum ? "cursor-pointer hover:border-[#ffd700]/50" : ""
+              }`}
             >
               <img
-                src={config.getUploadUrl("gallery", img.image_name)}
-                alt={img.title || "Gallery Image"}
+                src={config.getUploadUrl("gallery", item.image_name)}
+                alt={item.title || "Gallery Item"}
                 className="w-full h-full object-cover"
                 onError={(e) => (e.target.src = "/icon.png")}
               />
+
+              {/* Overlay */}
               <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-2">
+                {!currentAlbum && (
+                  <div className="text-white font-bold flex flex-col items-center">
+                    <Folder size={32} className="text-[#ffd700] mb-2" />
+                    <span>Open Album</span>
+                  </div>
+                )}
                 <button
-                  onClick={() => handleDelete(img.id)}
-                  className="p-2 rounded-full bg-red-500/20 text-red-400 hover:bg-red-500/40 transition"
+                  onClick={(e) => handleDelete(item.id, e)}
+                  className="absolute top-2 right-2 p-2 rounded-full bg-red-500/20 text-red-400 hover:bg-red-500/40 transition"
                 >
                   <Trash2 size={20} />
                 </button>
               </div>
-              {img.title && (
+
+              {item.title && (
                 <div className="absolute bottom-0 left-0 right-0 p-2 bg-black/80 text-xs text-center truncate">
-                  {img.title}
+                  {item.title}
                 </div>
               )}
             </div>
@@ -142,7 +182,9 @@ export default function Gallery() {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="bg-[#08162e] border-white/10 text-white">
           <DialogHeader>
-            <DialogTitle>Add Image</DialogTitle>
+            <DialogTitle>
+              {currentAlbum ? "Add Image" : "Create Album"}
+            </DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
@@ -159,15 +201,23 @@ export default function Gallery() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="image">Image</Label>
+              <Label htmlFor="image">
+                {currentAlbum ? "Images (Select Multiple)" : "Cover Image"}
+              </Label>
               <Input
                 id="image"
                 type="file"
                 onChange={handleFileChange}
                 className="bg-white/5 border-white/10 text-white"
                 accept="image/*"
+                multiple={!!currentAlbum}
                 required
               />
+              {currentAlbum && (
+                <p className="text-xs text-white/60">
+                  Hold Ctrl/Cmd to select multiple images
+                </p>
+              )}
             </div>
 
             <DialogFooter>

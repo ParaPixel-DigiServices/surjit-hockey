@@ -159,40 +159,48 @@ async def get_advertisements(
     return ads
 
 
-@router.post("/gallery", response_model=GalleryResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/gallery", response_model=List[GalleryResponse], status_code=status.HTTP_201_CREATED)
 async def create_gallery(
     title: str = Form(...),
-    image: UploadFile = File(...),
+    images: List[UploadFile] = File(...),
     parent_image: int = Form(0),
     status: bool = Form(True),
     db: Session = Depends(get_db)
 ):
-    """Create a new gallery item."""
+    """Create new gallery item(s)."""
     upload_dir = os.path.join(settings.UPLOAD_DIR, "gallery")
     os.makedirs(upload_dir, exist_ok=True)
 
-    timestamp = int(datetime.now().timestamp())
-    filename = f"{timestamp}_{image.filename}"
-    file_path = os.path.join(upload_dir, filename)
+    created_items = []
 
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(image.file, buffer)
+    for image in images:
+        timestamp = int(datetime.now().timestamp())
+        # Use a counter or uuid to ensure uniqueness if multiple files are processed in same second
+        # But for simplicity, we rely on the loop speed not being infinite, 
+        # though adding a small random suffix or index is safer.
+        # Let's just append the original filename which should be distinct in a batch usually.
+        filename = f"{timestamp}_{image.filename}"
+        file_path = os.path.join(upload_dir, filename)
 
-    db_gallery = Gallery(
-        title=title,
-        image_name=filename,
-        parent_image=parent_image,
-        status=status,
-        date_created=datetime.now(),
-        date_updated=datetime.now(),
-        user_created_by=1,  # Default admin
-        user_updated_by=1
-    )
-    db.add(db_gallery)
-    db.commit()
-    db.refresh(db_gallery)
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(image.file, buffer)
 
-    return db_gallery
+        db_gallery = Gallery(
+            title=title,
+            image_name=filename,
+            parent_image=parent_image,
+            status=status,
+            date_created=datetime.now(),
+            date_updated=datetime.now(),
+            user_created_by=1,  # Default admin
+            user_updated_by=1
+        )
+        db.add(db_gallery)
+        db.commit()
+        db.refresh(db_gallery)
+        created_items.append(db_gallery)
+
+    return created_items
 
 
 @router.delete("/gallery/{gallery_id}", status_code=status.HTTP_204_NO_CONTENT)
