@@ -70,61 +70,26 @@ export default function Sponsors() {
         </motion.div>
 
         {/* Sponsors Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {sponsors.map((sponsor, index) => (
             <motion.div
               key={sponsor.spo_id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: index * 0.05 }}
-              className="bg-[#1b2b4a] rounded-lg p-6 border border-white/10 hover:border-[#ffd700]/50 transition group"
+              className="bg-[#1b2b4a] rounded-xl p-8 flex items-center justify-center hover:shadow-xl hover:shadow-[#ffd700]/10 transition duration-300 group h-48 border border-white/10"
             >
-              {/* Logo */}
-              {sponsor.spo_logo && (
-                <div className="mb-4 flex justify-center bg-white/5 p-6 rounded-lg">
-                  <img
-                    src={sponsor.spo_logo}
-                    alt={sponsor.spo_name}
-                    className="h-24 object-contain"
-                  />
-                </div>
-              )}
-
-              {/* Name */}
-              <h3 className="text-xl font-bold text-center text-white mb-2 group-hover:text-[#ffd700] transition">
-                {sponsor.spo_name}
-              </h3>
-
-              {/* Category */}
-              {sponsor.spo_category && (
-                <div className="flex items-center justify-center gap-2 mb-3">
-                  <Award size={14} className="text-[#ffd700]" />
-                  <span className="text-sm text-white/60">
-                    {sponsor.spo_category}
-                  </span>
-                </div>
-              )}
-
-              {/* Description */}
-              {sponsor.spo_description && (
-                <p className="text-sm text-white/60 text-center mb-4 line-clamp-3">
-                  {sponsor.spo_description}
-                </p>
-              )}
-
-              {/* Website Link */}
-              {sponsor.spo_website && (
-                <div className="text-center pt-4 border-t border-white/10">
-                  <a
-                    href={sponsor.spo_website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-[#ffd700] text-sm font-semibold hover:underline"
-                  >
-                    Visit Website
-                    <ExternalLink size={14} />
-                  </a>
-                </div>
+              {/* Logo Only */}
+              {sponsor.spo_logo ? (
+                <img
+                  src={sponsor.spo_logo}
+                  alt={sponsor.spo_name}
+                  className="max-w-full max-h-full object-contain"
+                />
+              ) : (
+                <span className="text-white/20 font-bold text-xl">
+                  {sponsor.spo_name}
+                </span>
               )}
             </motion.div>
           ))}

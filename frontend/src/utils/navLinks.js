@@ -44,6 +44,7 @@ export const NAV_LINKS = [
       { label: "Gallery", path: "/gallery" },
       { label: "News", path: "/news" },
       { label: "Live Streaming", path: "/streaming" },
+      { label: "Sponsors", path: "/sponsors" },
     ],
   },
   {

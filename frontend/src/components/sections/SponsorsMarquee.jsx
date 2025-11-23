@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { api } from "../../services/api";
 import config from "../../config/api";
 
@@ -22,8 +23,10 @@ export default function SponsorsMarquee() {
           .filter((s) => s.status === true)
           .map((s) => ({
             id: s.id,
-            name: s.name,
-            image: s.logo ? config.getUploadUrl("sponsors", s.logo) : null,
+            name: s.sponser_name,
+            image: s.sponser_image
+              ? config.getUploadUrl("sponsors", s.sponser_image)
+              : null,
           }))
           .filter((s) => s.image);
 
@@ -43,11 +46,28 @@ export default function SponsorsMarquee() {
   }
 
   return (
-    <section className="w-full bg-[#0b152d] py-8 overflow-hidden border-y border-[#ffd700]/20">
+    <section className="w-full bg-[#0b152d] py-12 overflow-hidden border-y border-[#ffd700]/20">
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-2xl font-bold text-[#ffd700] text-center mb-6 uppercase tracking-wide">
-          Our Proud Sponsors
-        </h2>
+        {/* Section Heading */}
+        <div className="text-center mb-10 relative">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-4xl font-bold tracking-wider font-[Sora] text-white uppercase"
+          >
+            Our Proud Sponsors
+          </motion.h2>
+          <div className="mt-3 h-[3px] w-20 bg-[#ffd700] mx-auto rounded-full" />
+
+          <Link
+            to="/sponsors"
+            className="absolute right-0 top-1/2 -translate-y-1/2 text-sm font-semibold text-white/60 hover:text-[#ffd700] transition hidden md:block"
+          >
+            View All &rarr;
+          </Link>
+        </div>
 
         <div className="relative w-full overflow-hidden">
           <motion.div
@@ -68,6 +88,15 @@ export default function SponsorsMarquee() {
               />
             ))}
           </motion.div>
+        </div>
+
+        <div className="text-center mt-8 md:hidden">
+          <Link
+            to="/sponsors"
+            className="text-sm font-semibold text-white/60 hover:text-[#ffd700] transition"
+          >
+            View All Sponsors &rarr;
+          </Link>
         </div>
       </div>
     </section>
