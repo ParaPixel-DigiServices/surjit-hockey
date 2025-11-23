@@ -180,6 +180,18 @@ export const api = {
     return response.json();
   },
 
+  updateTimer: async (data) => {
+    const response = await fetch(`${API_BASE_URL}/additional/timer`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error("Failed to update timer");
+    return response.json();
+  },
+
   getImageOfDay: async () => {
     const response = await fetch(`${API_BASE_URL}/additional/image-of-day`);
     if (!response.ok) throw new Error("Failed to fetch image of day");

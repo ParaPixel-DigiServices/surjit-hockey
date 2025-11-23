@@ -2,6 +2,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
+import logo from "../../assets/icon.png";
 import {
   Home,
   Users,
@@ -18,7 +19,9 @@ import {
 export default function Sidebar({ open = false, onOpenChange = () => {} }) {
   const linkCls = ({ isActive }) =>
     `flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition ${
-      isActive ? "bg-[#ffd700] text-[#071226]" : "text-white/90 hover:bg-white/6"
+      isActive
+        ? "bg-[#ffd700] text-[#071226]"
+        : "text-white/90 hover:bg-white/6"
     }`;
 
   return (
@@ -32,7 +35,7 @@ export default function Sidebar({ open = false, onOpenChange = () => {} }) {
       >
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <img src="/src/assets/icon.png" className="w-10 h-10" />
+            <img src={logo} className="w-10 h-10" alt="Surjit Admin" />
             <div className="text-white font-semibold">Surjit Admin</div>
           </div>
           <button
@@ -89,7 +92,7 @@ export default function Sidebar({ open = false, onOpenChange = () => {} }) {
       {/* DESKTOP SIDEBAR */}
       <aside className="hidden md:flex md:flex-col w-64 bg-[#08162e]/80 border-r border-white/6 min-h-screen p-4">
         <div className="flex items-center gap-3 mb-6">
-          <img src="/src/assets/icon.png" className="w-10 h-10" />
+          <img src={logo} className="w-10 h-10" alt="Surjit Admin" />
           <div>
             <div className="text-white font-bold">Surjit Admin</div>
             <div className="text-xs text-white/60">Control Panel</div>
@@ -135,9 +138,7 @@ export default function Sidebar({ open = false, onOpenChange = () => {} }) {
         </nav>
 
         <div className="mt-auto">
-          <div className="text-xs text-white/60 mb-2 uppercase">
-            Settings
-          </div>
+          <div className="text-xs text-white/60 mb-2 uppercase">Settings</div>
           <NavLink to="/admin/settings" className={linkCls}>
             <Settings /> Settings
           </NavLink>

@@ -156,9 +156,10 @@ export default function Results() {
                 {/* Team A block */}
                 <div className="flex items-center gap-3">
                   <img
-                    src={r.logoA}
+                    src={r.logoA || "/icon.png"}
                     alt={r.teamA}
                     className="w-12 h-12 object-contain drop-shadow-md rounded"
+                    onError={(e) => (e.target.src = "/icon.png")}
                   />
                   <div>
                     <div className="text-white font-semibold text-sm">
@@ -187,9 +188,10 @@ export default function Results() {
                   </div>
 
                   <img
-                    src={r.logoB}
+                    src={r.logoB || "/icon.png"}
                     alt={r.teamB}
                     className="w-12 h-12 object-contain drop-shadow-md rounded"
+                    onError={(e) => (e.target.src = "/icon.png")}
                   />
                 </div>
               </div>

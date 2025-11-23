@@ -252,9 +252,10 @@ export default function Dashboard() {
               <div className="mt-6 flex items-center gap-6">
                 <div className="flex items-center gap-4">
                   <img
-                    src={upcomingMatch.teamALogo || "/placeholder.png"}
+                    src={upcomingMatch.teamALogo || "/icon.png"}
                     alt={upcomingMatch.teamAName}
                     className="w-20 h-20 object-contain"
+                    onError={(e) => (e.target.src = "/icon.png")}
                   />
                   <div>
                     <div className="text-lg font-bold text-white">
@@ -268,13 +269,16 @@ export default function Dashboard() {
 
                 <div className="flex items-center gap-4">
                   <div className="text-right">
-                    <div className="text-lg font-bold text-white">{upcomingMatch.teamBName}</div>
+                    <div className="text-lg font-bold text-white">
+                      {upcomingMatch.teamBName}
+                    </div>
                     <div className="text-sm text-white/60">Away</div>
                   </div>
                   <img
-                    src={upcomingMatch.teamBLogo || "/placeholder.png"}
+                    src={upcomingMatch.teamBLogo || "/icon.png"}
                     alt={upcomingMatch.teamBName}
                     className="w-20 h-20 object-contain"
+                    onError={(e) => (e.target.src = "/icon.png")}
                   />
                 </div>
               </div>
@@ -325,7 +329,10 @@ export default function Dashboard() {
             <ul className="mt-3 space-y-3">
               {recentResults.length > 0 ? (
                 recentResults.map((r) => (
-                  <li key={r.id} className="flex items-center justify-between text-sm">
+                  <li
+                    key={r.id}
+                    className="flex items-center justify-between text-sm"
+                  >
                     <div className="text-white">
                       {r.teamA} {r.scoreA} - {r.scoreB} {r.teamB}
                     </div>
@@ -368,7 +375,9 @@ export default function Dashboard() {
                 </div>
               ))
             ) : (
-              <div className="col-span-4 text-center py-8 text-white/40">No images found</div>
+              <div className="col-span-4 text-center py-8 text-white/40">
+                No images found
+              </div>
             )}
           </div>
         </div>
@@ -380,8 +389,8 @@ export default function Dashboard() {
               sponsorsPreview.map((s) => (
                 <div key={s.id} className="flex items-center gap-3">
                   <div className="w-12 h-8 bg-white/10 rounded flex items-center justify-center overflow-hidden">
-                    <img 
-                      src={config.getUploadUrl("sponsors", s.sponser_image)} 
+                    <img
+                      src={config.getUploadUrl("sponsors", s.sponser_image)}
                       alt={s.sponser_name}
                       className="w-full h-full object-contain"
                     />
@@ -390,7 +399,9 @@ export default function Dashboard() {
                 </div>
               ))
             ) : (
-              <div className="text-center py-4 text-white/40">No sponsors found</div>
+              <div className="text-center py-4 text-white/40">
+                No sponsors found
+              </div>
             )}
           </div>
         </div>
@@ -400,7 +411,7 @@ export default function Dashboard() {
       <EditResultDialog
         open={open}
         onClose={() => setOpen(false)}
-        result={match}
+        result={upcomingMatch || {}}
         onSave={handleSave}
       />
 

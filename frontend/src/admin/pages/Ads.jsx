@@ -76,6 +76,7 @@ export default function Ads() {
                   src={config.getUploadUrl("banners", b.image_url)}
                   alt="Banner"
                   className="w-full h-full object-cover"
+                  onError={(e) => (e.target.src = "/icon.png")}
                 />
               </div>
               <div className="flex-1">

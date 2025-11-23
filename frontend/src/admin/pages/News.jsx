@@ -86,6 +86,7 @@ export default function News() {
                   }
                   alt={item.news_heading}
                   className="w-full h-full object-cover"
+                  onError={(e) => (e.target.src = "/icon.png")}
                 />
               </div>
               <div className="flex-1 min-w-0">

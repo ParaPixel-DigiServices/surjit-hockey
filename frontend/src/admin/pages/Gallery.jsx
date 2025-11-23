@@ -77,6 +77,7 @@ export default function Gallery() {
                 src={config.getUploadUrl("gallery", img.image_url)}
                 alt={img.title || "Gallery Image"}
                 className="w-full h-full object-cover"
+                onError={(e) => (e.target.src = "/icon.png")}
               />
               <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-2">
                 <button

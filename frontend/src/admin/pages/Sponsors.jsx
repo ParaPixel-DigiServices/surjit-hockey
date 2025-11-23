@@ -84,10 +84,11 @@ export default function Sponsors() {
                   src={
                     s.sponser_image
                       ? config.getUploadUrl("sponsors", s.sponser_image)
-                      : "/placeholder.png"
+                      : "/icon.png"
                   }
                   alt={s.sponser_name}
                   className="max-w-full max-h-full object-contain"
+                  onError={(e) => (e.target.src = "/icon.png")}
                 />
               </div>
               <div className="text-center w-full">

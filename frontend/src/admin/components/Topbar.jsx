@@ -11,29 +11,6 @@ import { useAuth } from "../../contexts/AuthContext";
  * - brand, command-search (visual), next-match timer, notifications, profile
  */
 export default function Topbar({ onOpenMobile }) {
-  const [timer, setTimer] = useState("00:00:00");
-  const [countdownTarget] = useState(() => {
-    // placeholder next match time — can be replaced by backend
-    const dt = new Date();
-    dt.setHours(dt.getHours() + 5);
-    return dt;
-  });
-
-  // basic countdown
-  useEffect(() => {
-    const tick = () => {
-      const now = new Date();
-      const diff = Math.max(0, countdownTarget - now);
-      const h = String(Math.floor(diff / 3600000)).padStart(2, "0");
-      const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2, "0");
-      const s = String(Math.floor((diff % 60000) / 1000)).padStart(2, "0");
-      setTimer(`${h}:${m}:${s}`);
-    };
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, [countdownTarget]);
-
   return (
     <motion.header
       className="sticky top-0 z-40 backdrop-blur-md bg-[#08162e]/60 border-b border-white/6"
@@ -64,12 +41,6 @@ export default function Topbar({ onOpenMobile }) {
         </div>
 
         <div className="flex items-center gap-3">
-          {/* Next match chip */}
-          <div className="hidden sm:flex items-center gap-3 bg-[#ffd700]/10 text-[#ffd700] px-3 py-1 rounded-md font-semibold">
-            <Clock className="w-4 h-4" />
-            <div className="font-mono">{timer}</div>
-          </div>
-
           {/* search (visual) */}
           <button className="p-2 rounded hover:bg-white/5 transition hidden sm:inline-flex">
             <Search className="w-5 h-5 text-white/90" />
