@@ -57,8 +57,7 @@ async def get_news(
     result = []
     for news in news_list:
         # Fetch image
-        image = db.query(NewsImage).filter(NewsImage.news_id ==
-                                           news.id, NewsImage.status.is_(True)).first()
+        image = db.query(NewsImage).filter(NewsImage.news_id == news.id).first()
 
         result.append({
             "id": news.id,
