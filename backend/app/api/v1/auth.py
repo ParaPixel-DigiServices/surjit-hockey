@@ -1,74 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from app.core import get_db, create_access_token, verify_password, get_password_hash
 from app.core.config import settings
 from app.models.user import User, UserProfile
-from app.schemas.user import UserCreate, UserResponse, UserLogin, Token, UserPasswordUpdate
+from app.schemas.user import UserResponse, UserLogin, Token, UserPasswordUpdate
 from app.api.deps import get_current_active_user
 
 router = APIRouter()
-
-
-@router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
-async def register_user(
-    user_data: UserCreate,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user)
-):
-    """
-    Register a new user. Only authenticated users (admins) can register new users.
-
-    Args:
-        user_data: User registration data
-        db: Database session
-        current_user: The admin user performing the registration
-
-    Returns:
-        Created user object
-
-    Raises:
-        HTTPException: If username or email already exists
-    """
-    # Check if username exists
-    existing_user = db.query(User).filter(
-        User.username == user_data.username).first()
-    if existing_user:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Username already registered"
-        )
-
-    # Check if email exists
-    existing_email = db.query(User).filter(
-        User.email == user_data.email).first()
-    if existing_email:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Email already registered"
-        )
-
-    # Create new user
-    hashed_password = get_password_hash(user_data.password)
-    new_user = User(
-        username=user_data.username,
-        email=user_data.email,
-        password=hashed_password,
-        status=True
-    )
-
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-
-    # Create empty user profile
-    user_profile = UserProfile(user_id=new_user.id)
-    db.add(user_profile)
-    db.commit()
-
-    return new_user
 
 
 @router.post("/login", response_model=Token)

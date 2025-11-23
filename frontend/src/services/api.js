@@ -416,19 +416,6 @@ export const api = {
   },
 
   // Auth
-  registerUser: async (data, token) => {
-    const response = await fetch(`${API_BASE_URL}/auth/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    });
-    if (!response.ok) throw new Error("Failed to register user");
-    return response.json();
-  },
-
   changePassword: async (data, token) => {
     const response = await fetch(`${API_BASE_URL}/auth/password`, {
       method: "PUT",
@@ -438,7 +425,10 @@ export const api = {
       },
       body: JSON.stringify(data),
     });
-    if (!response.ok) throw new Error("Failed to change password");
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.detail || "Failed to change password");
+    }
     return response.json();
   },
 };

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Save, Clock, UserPlus, Lock } from "lucide-react";
+import { Save, Clock, Lock } from "lucide-react";
 import { api } from "../../services/api";
 
 export default function Settings() {
@@ -11,11 +11,6 @@ export default function Settings() {
   const [loading, setLoading] = useState(false);
 
   // User Management States
-  const [newUser, setNewUser] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
   const [passwordData, setPasswordData] = useState({
     current_password: "",
     new_password: "",
@@ -65,22 +60,6 @@ export default function Settings() {
       alert("Failed to save settings. Check console for details.");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleCreateUser = async (e) => {
-    e.preventDefault();
-    try {
-      setUserLoading(true);
-      const token = localStorage.getItem("token");
-      await api.registerUser(newUser, token);
-      alert("New admin user created successfully!");
-      setNewUser({ username: "", email: "", password: "" });
-    } catch (error) {
-      console.error("Failed to create user:", error);
-      alert("Failed to create user: " + error.message);
-    } finally {
-      setUserLoading(false);
     }
   };
 
@@ -210,58 +189,6 @@ export default function Settings() {
               </div>
             )}
           </div>
-        </div>
-
-        {/* Create New Admin */}
-        <div className="bg-[#08162e] border border-white/10 rounded-lg p-6 space-y-6">
-          <div className="flex items-center gap-2 border-b border-white/10 pb-2">
-            <UserPlus className="text-[#ffd700]" size={20} />
-            <h3 className="text-lg font-bold">Create New Admin</h3>
-          </div>
-          <form onSubmit={handleCreateUser} className="space-y-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Username</label>
-              <Input
-                value={newUser.username}
-                onChange={(e) =>
-                  setNewUser({ ...newUser, username: e.target.value })
-                }
-                className="bg-[#0f1e3a] border-white/10 text-white"
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Email</label>
-              <Input
-                type="email"
-                value={newUser.email}
-                onChange={(e) =>
-                  setNewUser({ ...newUser, email: e.target.value })
-                }
-                className="bg-[#0f1e3a] border-white/10 text-white"
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Password</label>
-              <Input
-                type="password"
-                value={newUser.password}
-                onChange={(e) =>
-                  setNewUser({ ...newUser, password: e.target.value })
-                }
-                className="bg-[#0f1e3a] border-white/10 text-white"
-                required
-              />
-            </div>
-            <Button
-              type="submit"
-              disabled={userLoading}
-              className="w-full bg-[#ffd700] text-black hover:bg-[#e6c200]"
-            >
-              {userLoading ? "Creating..." : "Create Admin User"}
-            </Button>
-          </form>
         </div>
 
         {/* Change Password */}

@@ -9,7 +9,6 @@ import {
   AddTeamDialog,
   CreateFixtureDialog,
   UploadPhotosDialog,
-  AnnouncementDialog,
 } from "@/admin/components/quickactions/QuickActionDialogs";
 
 function Stat({ label, value, hint, icon, loading }) {
@@ -57,7 +56,6 @@ export default function Dashboard() {
   const [addTeamOpen, setAddTeamOpen] = useState(false);
   const [fixtureOpen, setFixtureOpen] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
-  const [announceOpen, setAnnounceOpen] = useState(false);
 
   // Fetch real stats from API
   useEffect(() => {
@@ -316,12 +314,6 @@ export default function Dashboard() {
             >
               Upload Photos
             </button>
-            <button
-              className="bg-transparent border border-white/8 px-3 py-2 rounded-md"
-              onClick={() => setAnnounceOpen(true)}
-            >
-              New Announcement
-            </button>
           </div>
 
           <div className="mt-6">
@@ -368,7 +360,7 @@ export default function Dashboard() {
                   className="rounded-sm overflow-hidden h-28 bg-white/5"
                 >
                   <img
-                    src={config.getUploadUrl("gallery", img.image_url)}
+                    src={config.getUploadUrl("gallery", img.image_name)}
                     alt={img.title || "Gallery"}
                     className="w-full h-full object-cover"
                   />
@@ -429,11 +421,6 @@ export default function Dashboard() {
         open={uploadOpen}
         onClose={() => setUploadOpen(false)}
         onUpload={(files) => console.log(files)}
-      />
-      <AnnouncementDialog
-        open={announceOpen}
-        onClose={() => setAnnounceOpen(false)}
-        onSave={(t) => console.log(t)}
       />
     </div>
   );
