@@ -1,16 +1,26 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import './index.css';
-import MainLayout from './components/layout/MainLayout';
-import App from './App';
+import React from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import "./index.css";
+import MainLayout from "./components/layout/MainLayout";
+import App from "./App";
+
+// Global fetch override to bypass Ngrok browser warning
+const originalFetch = window.fetch;
+window.fetch = async (url, options = {}) => {
+  const headers = {
+    ...options.headers,
+    "ngrok-skip-browser-warning": "true",
+  };
+  return originalFetch(url, { ...options, headers });
+};
 
 /**
  * Entry point for the application
  * - Wraps App in BrowserRouter for route support.
  * - StrictMode is enabled for development diagnostics.
  */
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
       <App />
