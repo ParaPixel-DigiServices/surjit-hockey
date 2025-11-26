@@ -4,6 +4,11 @@
 
 ### Terminal 1:
 ```bash
+uvicorn app.main:app --reload --port 8000
+```
+
+### Terminal 2:
+```bash
 ngrok http 8000
 ```
 
