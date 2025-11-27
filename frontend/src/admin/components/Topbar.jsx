@@ -5,6 +5,7 @@ import { Search, Bell, Clock, Menu, LogOut, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "@/assets/icon.png";
 import { useAuth } from "../../contexts/AuthContext";
+import SecureImage from "../../components/ui/SecureImage";
 
 /**
  * Topbar
@@ -30,7 +31,11 @@ export default function Topbar({ onOpenMobile }) {
 
           {/* brand */}
           <div className="flex items-center gap-3">
-            <img src={logo} alt="logo" className="w-10 h-10 object-contain" />
+            <SecureImage
+              src={logo}
+              alt="logo"
+              className="w-10 h-10 object-contain"
+            />
             <div className="leading-tight">
               <div className="text-sm font-semibold text-white">
                 Surjit Hockey — Admin

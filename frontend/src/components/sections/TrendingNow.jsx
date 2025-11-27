@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { api } from "../../services/api";
 import config from "../../config/api";
+import SecureImage from "../ui/SecureImage";
 
 /**
  * TrendingNow Section — Cinematic Black Edition
@@ -84,13 +85,10 @@ export default function TrendingNow() {
           >
             {/* Image Side */}
             <div className="w-full md:w-1/2 h-1/2 md:h-full relative overflow-hidden">
-              <motion.img
+              <SecureImage
                 src={article.image}
                 alt={article.title}
                 className="w-full h-full object-cover brightness-[0.85] hover:scale-105 transition-transform duration-700"
-                whileInView={{ opacity: [0, 1], scale: [1.05, 1] }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
               />
             </div>
 

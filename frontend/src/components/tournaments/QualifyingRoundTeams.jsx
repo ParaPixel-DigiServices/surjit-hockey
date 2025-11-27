@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import SecureImage from "../ui/SecureImage";
 
 // Import all team logos here
 import ongc from "../../assets/teams/ongc.png";
@@ -63,7 +64,7 @@ export default function QualifyingRoundTeams() {
                   className="flex flex-col items-center text-center"
                 >
                   <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full border-[4px] border-[#ffd700]/70 shadow-md flex items-center justify-center bg-white hover:scale-105 transition-transform duration-300">
-                    <img
+                    <SecureImage
                       src={team.logo}
                       alt={team.name}
                       className="w-24 h-24 object-contain rounded-full"

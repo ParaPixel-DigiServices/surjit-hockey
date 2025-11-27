@@ -250,11 +250,10 @@ export default function Dashboard() {
               {/* Teams visual */}
               <div className="mt-6 flex items-center gap-6">
                 <div className="flex items-center gap-4">
-                  <img
+                  <SecureImage
                     src={upcomingMatch.teamALogo || "/icon.png"}
                     alt={upcomingMatch.teamAName}
                     className="w-20 h-20 object-contain"
-                    onError={(e) => (e.target.src = "/icon.png")}
                   />
                   <div>
                     <div className="text-lg font-bold text-white">
@@ -273,11 +272,10 @@ export default function Dashboard() {
                     </div>
                     <div className="text-sm text-white/60">Away</div>
                   </div>
-                  <img
+                  <SecureImage
                     src={upcomingMatch.teamBLogo || "/icon.png"}
                     alt={upcomingMatch.teamBName}
                     className="w-20 h-20 object-contain"
-                    onError={(e) => (e.target.src = "/icon.png")}
                   />
                 </div>
               </div>
@@ -360,7 +358,7 @@ export default function Dashboard() {
                   key={img.id || i}
                   className="rounded-sm overflow-hidden h-28 bg-white/5"
                 >
-                  <img
+                  <SecureImage
                     src={config.getUploadUrl("gallery", img.image_name)}
                     alt={img.title || "Gallery"}
                     className="w-full h-full object-cover"

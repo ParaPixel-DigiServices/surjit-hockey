@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/icon.png";
+import SecureImage from "../ui/SecureImage";
 
 /**
  * TournamentHeader.jsx — Auto-scrolling Navbar (Back & Forth)
@@ -88,7 +89,11 @@ export default function TournamentHeader() {
       {/* Top Bar */}
       <div className="flex items-center justify-between h-16 px-4 md:px-8 border-b border-white/10">
         <div className="flex items-center gap-4">
-          <img src={logo} alt="Logo" className="w-10 h-10 object-contain" />
+          <SecureImage
+            src={logo}
+            alt="Logo"
+            className="w-10 h-10 object-contain"
+          />
           <button
             onClick={() => navigate("/")}
             className="text-sm uppercase font-semibold text-white/90 hover:text-[#ffd700] transition"

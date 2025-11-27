@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, Trash2, Folder, ArrowLeft } from "lucide-react";
 import { api } from "@/services/api";
 import config from "../../config/api";
+import SecureImage from "../../components/ui/SecureImage";
 import {
   Dialog,
   DialogContent,
@@ -146,11 +147,10 @@ export default function Gallery() {
                 !currentAlbum ? "cursor-pointer hover:border-[#ffd700]/50" : ""
               }`}
             >
-              <img
+              <SecureImage
                 src={config.getUploadUrl("gallery", item.image_name)}
                 alt={item.title || "Gallery Item"}
                 className="w-full h-full object-cover"
-                onError={(e) => (e.target.src = "/icon.png")}
               />
 
               {/* Overlay */}

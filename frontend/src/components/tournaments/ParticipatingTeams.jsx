@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { api } from "../../services/api";
 import { motion, AnimatePresence } from "framer-motion";
 import config from "../../config/api";
+import SecureImage from "../ui/SecureImage";
 
 // --- Example logos (replace with real imports later) ---
 import rcf from "../../assets/teams/rcf.png";
@@ -140,7 +141,7 @@ export default function ParticipatingTeams() {
                   className="flex flex-col items-center text-center space-y-3"
                 >
                   <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-[#ffd700]/60 shadow-xl bg-black/20 flex items-center justify-center">
-                    <img
+                    <SecureImage
                       src={team.logo}
                       alt={team.name}
                       className="w-full h-full object-contain hover:scale-105 transition-transform duration-500"

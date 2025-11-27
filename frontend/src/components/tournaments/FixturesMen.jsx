@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { api } from "../../services/api";
 import { motion } from "framer-motion";
+import SecureImage from "../ui/SecureImage";
 import indianNavy from "../../assets/teams/navy.png";
 import rcf from "../../assets/teams/rcf.png";
 
@@ -146,7 +147,7 @@ export default function FixturesMen() {
 
                   <td className="text-center py-4">
                     <div className="flex flex-col items-center">
-                      <img
+                      <SecureImage
                         src={match.team1.logo}
                         alt={match.team1.name}
                         className="w-14 h-14 object-contain mb-1 rounded-full border-2 border-[#ffd700]/50"
@@ -161,7 +162,7 @@ export default function FixturesMen() {
 
                   <td className="text-center py-4">
                     <div className="flex flex-col items-center">
-                      <img
+                      <SecureImage
                         src={match.team2.logo}
                         alt={match.team2.name}
                         className="w-14 h-14 object-contain mb-1 rounded-full border-2 border-[#ffd700]/50"
@@ -190,7 +191,7 @@ export default function FixturesMen() {
             </h3>
             <div className="flex items-center justify-center gap-8">
               <div className="flex flex-col items-center">
-                <img
+                <SecureImage
                   src={indianNavy}
                   alt="Indian Navy"
                   className="w-20 h-20 object-contain mb-2"
@@ -203,7 +204,7 @@ export default function FixturesMen() {
               </div>
 
               <div className="flex flex-col items-center">
-                <img
+                <SecureImage
                   src={rcf}
                   alt="RCF"
                   className="w-20 h-20 object-contain mb-2"

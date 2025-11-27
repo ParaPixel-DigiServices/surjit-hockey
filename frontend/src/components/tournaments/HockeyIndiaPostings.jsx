@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import SecureImage from "../ui/SecureImage";
 import officials2 from "../../assets/teams/officials2.jpeg";
 
 export default function HockeyIndiaPostings() {
@@ -36,7 +37,7 @@ export default function HockeyIndiaPostings() {
           viewport={{ once: true }}
           className="relative rounded-2xl overflow-hidden border border-[#ffd700]/30 shadow-[0_0_30px_rgba(255,215,0,0.2)] bg-black/20 p-4 sm:p-6 flex justify-center"
         >
-          <img
+          <SecureImage
             src={officials2}
             alt="Hockey India Postings Circular"
             className="w-full h-auto max-w-3xl rounded-lg object-contain shadow-lg hover:scale-[1.02] transition-transform duration-500"

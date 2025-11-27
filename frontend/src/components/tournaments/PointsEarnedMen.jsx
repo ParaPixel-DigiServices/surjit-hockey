@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import SecureImage from "../ui/SecureImage";
 import rcf from "../../assets/teams/rcf.png";
 import iocl from "../../assets/teams/iocl.png";
 import psb from "../../assets/teams/psb.png";
@@ -100,7 +101,7 @@ export default function PointsEarnedMen() {
                           className="border-t border-[#1b2b4a]/10 hover:bg-[#f9f9f9]"
                         >
                           <td className="flex items-center gap-3 px-4 py-3 font-semibold">
-                            <img
+                            <SecureImage
                               src={team.logo}
                               alt={team.name}
                               className="w-8 h-8 object-contain"

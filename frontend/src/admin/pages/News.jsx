@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, Trash2, Edit } from "lucide-react";
 import { api } from "@/services/api";
 import config from "../../config/api";
+import SecureImage from "../../components/ui/SecureImage";
 import {
   Dialog,
   DialogContent,
@@ -137,7 +138,7 @@ export default function News() {
               className="bg-[#08162e] border border-white/10 rounded-lg p-4 flex gap-4 items-start"
             >
               <div className="w-24 h-24 shrink-0 bg-white/5 rounded overflow-hidden">
-                <img
+                <SecureImage
                   src={
                     item.news_image
                       ? config.getUploadUrl("news", item.news_image)
@@ -145,7 +146,6 @@ export default function News() {
                   }
                   alt={item.title}
                   className="w-full h-full object-cover"
-                  onError={(e) => (e.target.src = "/icon.png")}
                 />
               </div>
               <div className="flex-1 min-w-0">

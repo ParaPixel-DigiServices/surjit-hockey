@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import eoiImage from "../assets/Eoi.jpg";
+import SecureImage from "../components/ui/SecureImage";
 
 /**
  * Streaming Page
@@ -28,7 +29,7 @@ export default function Streaming() {
           animate={{ opacity: 1, y: 0 }}
           className="max-w-6xl mx-auto"
         >
-          <img
+          <SecureImage
             src={eoiImage}
             alt="Expression of Interest - TV Channel Partner"
             className="w-full h-auto object-contain rounded-lg shadow-2xl"

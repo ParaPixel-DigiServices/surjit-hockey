@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import config from "../config/api";
+import SecureImage from "../components/ui/SecureImage";
 
 /**
  * Messages Page
@@ -149,7 +150,7 @@ export default function Messages() {
               onClick={() => setSelectedMessage(message)}
             >
               <div className="aspect-square w-full overflow-hidden">
-                <img
+                <SecureImage
                   src={config.getUploadUrl("messages", message.author_image)}
                   alt={message.author_name}
                   className="w-full h-full object-cover hover:scale-105 transition duration-300"
@@ -197,7 +198,7 @@ export default function Messages() {
                   <X size={24} className="text-[#0b152d]" />
                 </button>
                 <div className="max-h-[75vh] overflow-y-auto">
-                  <img
+                  <SecureImage
                     src={config.getUploadUrl(
                       "messages",
                       selectedMessage.document_image

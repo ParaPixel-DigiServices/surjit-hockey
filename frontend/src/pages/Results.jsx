@@ -179,7 +179,7 @@ export default function ResultsPage() {
                     >
                       <div className="flex justify-between w-full items-center">
                         <div className="flex flex-col items-center">
-                          <img
+                          <SecureImage
                             src={match.team1Logo}
                             alt={match.team1}
                             className="w-16 h-16 object-contain mb-2"
@@ -192,7 +192,7 @@ export default function ResultsPage() {
                         </span>
 
                         <div className="flex flex-col items-center">
-                          <img
+                          <SecureImage
                             src={match.team2Logo}
                             alt={match.team2}
                             className="w-16 h-16 object-contain mb-2"

@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import SecureImage from "../ui/SecureImage";
 import muneer from "../../assets/muneer.jpg";
 import baljit from "../../assets/baljit.jpg";
 import gowda from "../../assets/gowda.jpg";
@@ -72,8 +73,7 @@ export default function HockeyIndiaOfficials() {
       dob: "20-07-1980",
       contact: "8885656667",
       email: "harshahockey@gmail.com",
-      address:
-        "Nethaji Nagar, 1st Line, Lalpuram Road, Guntur, Andhra Pradesh",
+      address: "Nethaji Nagar, 1st Line, Lalpuram Road, Guntur, Andhra Pradesh",
       image: harsha,
     },
     {
@@ -82,8 +82,7 @@ export default function HockeyIndiaOfficials() {
       dob: "01-07-1992",
       contact: "8081335144",
       email: "sumitpal1792@gmail.com",
-      address:
-        "538A/626 Adarshpuram, Triveni Nagar 3, Lucknow, Uttar Pradesh",
+      address: "538A/626 Adarshpuram, Triveni Nagar 3, Lucknow, Uttar Pradesh",
       image: sumit,
     },
   ];
@@ -100,8 +99,7 @@ export default function HockeyIndiaOfficials() {
   ];
 
   // helper: decide text color based on background type
-  const isDarkBackground = (index) =>
-    [0, 3, 5, 7].includes(index); // indices using dark backgrounds
+  const isDarkBackground = (index) => [0, 3, 5, 7].includes(index); // indices using dark backgrounds
 
   return (
     <section
@@ -136,7 +134,7 @@ export default function HockeyIndiaOfficials() {
               {/* --- Image --- */}
               <div className="relative w-full md:w-1/3 flex items-center justify-center bg-black/10 p-4">
                 <div className="aspect-[4/5] w-full max-w-[320px] overflow-hidden rounded-xl shadow-md">
-                  <img
+                  <SecureImage
                     src={person.image}
                     alt={person.name}
                     className="w-full h-full object-cover rounded-xl hover:scale-105 transition-transform duration-700 ease-out"
@@ -148,9 +146,7 @@ export default function HockeyIndiaOfficials() {
               {/* --- Info --- */}
               <div
                 className={`w-full md:w-2/3 p-6 sm:p-10 ${
-                  isDarkBackground(index)
-                    ? "text-white"
-                    : "text-black"
+                  isDarkBackground(index) ? "text-white" : "text-black"
                 }`}
               >
                 <h3
@@ -161,9 +157,7 @@ export default function HockeyIndiaOfficials() {
                 </h3>
                 <p
                   className={`text-lg font-semibold mb-4 ${
-                    isDarkBackground(index)
-                      ? "text-white/90"
-                      : "text-black/80"
+                    isDarkBackground(index) ? "text-white/90" : "text-black/80"
                   }`}
                 >
                   {person.role}
@@ -171,9 +165,7 @@ export default function HockeyIndiaOfficials() {
 
                 <ul
                   className={`text-base space-y-1 ${
-                    isDarkBackground(index)
-                      ? "text-white/80"
-                      : "text-black/80"
+                    isDarkBackground(index) ? "text-white/80" : "text-black/80"
                   }`}
                 >
                   <li>
@@ -189,9 +181,7 @@ export default function HockeyIndiaOfficials() {
                     {person.contact}
                   </li>
                   <li>
-                    <span className="font-semibold text-[#ffd700]">
-                      Email:
-                    </span>{" "}
+                    <span className="font-semibold text-[#ffd700]">Email:</span>{" "}
                     {person.email}
                   </li>
                   <li>

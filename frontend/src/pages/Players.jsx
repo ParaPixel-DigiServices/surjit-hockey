@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import config from "../config/api";
+import SecureImage from "../components/ui/SecureImage";
 
 /**
  * Players Page
@@ -152,7 +153,7 @@ export default function Players() {
               {/* Player Photo */}
               {player.ply_photo && (
                 <div className="mb-4 flex justify-center">
-                  <img
+                  <SecureImage
                     src={player.ply_photo}
                     alt={player.ply_name}
                     className="w-24 h-24 rounded-full object-cover border-2 border-[#ffd700]"

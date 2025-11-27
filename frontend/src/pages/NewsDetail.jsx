@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Calendar, User, ArrowLeft } from "lucide-react";
 import { api } from "../services/api";
 import config from "../config/api";
+import SecureImage from "../components/ui/SecureImage";
 
 /**
  * NewsDetail Page
@@ -116,7 +117,7 @@ export default function NewsDetail() {
             transition={{ duration: 0.7 }}
             className="mb-10 rounded-2xl overflow-hidden shadow-xl"
           >
-            <img
+            <SecureImage
               src={imageUrl}
               alt={news.title}
               className="w-full h-[400px] md:h-[500px] object-cover"

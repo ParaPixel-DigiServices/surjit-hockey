@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Trophy, Medal, Award, Users } from "lucide-react";
 import config from "../config/api";
+import SecureImage from "../components/ui/SecureImage";
 
 /**
  * Honours Page
@@ -168,7 +169,7 @@ export default function Honours() {
                             </div>
                             <div className="flex items-center justify-center gap-4">
                               {winner.logo && (
-                                <img
+                                <SecureImage
                                   src={config.getUploadUrl(
                                     "teams",
                                     winner.logo
@@ -195,7 +196,7 @@ export default function Honours() {
                               </div>
                               <div className="flex flex-col items-center gap-3">
                                 {winner.logo && (
-                                  <img
+                                  <SecureImage
                                     src={config.getUploadUrl(
                                       "teams",
                                       winner.logo
@@ -227,7 +228,7 @@ export default function Honours() {
                               </div>
                               <div className="flex flex-col items-center gap-3">
                                 {runnerUp.logo && (
-                                  <img
+                                  <SecureImage
                                     src={config.getUploadUrl(
                                       "teams",
                                       runnerUp.logo

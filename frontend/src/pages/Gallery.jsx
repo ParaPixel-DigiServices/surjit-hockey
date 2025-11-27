@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { api } from "../services/api";
 import config from "../config/api";
+import SecureImage from "../components/ui/SecureImage";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -139,11 +140,10 @@ export default function Gallery() {
               }}
             >
               {/* Image */}
-              <img
+              <SecureImage
                 src={album.thumbnail}
                 alt={album.title}
                 className="w-full h-64 object-cover transform group-hover:scale-110 transition duration-700"
-                onError={(e) => (e.target.src = "/icon.png")}
               />
 
               {/* Overlay Info */}
@@ -186,11 +186,10 @@ export default function Gallery() {
             >
               {/* Image */}
               {selectedAlbum.images.length > 0 ? (
-                <img
+                <SecureImage
                   src={selectedAlbum.images[currentIndex]}
                   alt="Slide"
                   className="w-full h-[70vh] object-cover"
-                  onError={(e) => (e.target.src = "/icon.png")}
                 />
               ) : (
                 <div className="w-full h-[70vh] flex items-center justify-center text-white">

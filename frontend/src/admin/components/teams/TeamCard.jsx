@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Pencil, Trash2 } from "lucide-react";
+import SecureImage from "../../../components/ui/SecureImage";
 
 export default function TeamCard({ team, onEdit, onDelete }) {
   return (
@@ -9,7 +10,7 @@ export default function TeamCard({ team, onEdit, onDelete }) {
       animate={{ opacity: 1, y: 0 }}
       className="bg-[#071226] border border-white/10 rounded-xl p-4 flex items-center gap-4"
     >
-      <img
+      <SecureImage
         src={team.logo}
         alt={team.name}
         className="w-16 h-16 object-contain rounded-md bg-white/10 p-2"

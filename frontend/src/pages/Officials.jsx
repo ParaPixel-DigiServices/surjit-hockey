@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Phone, Award } from "lucide-react";
 import config from "../config/api";
+import SecureImage from "../components/ui/SecureImage";
 
 /**
  * Officials Page
@@ -84,7 +85,7 @@ export default function Officials() {
               {/* Photo */}
               {official.off_photo && (
                 <div className="mb-4 flex justify-center">
-                  <img
+                  <SecureImage
                     src={official.off_photo}
                     alt={official.off_name}
                     className="w-32 h-32 rounded-full object-cover border-4 border-[#ffd700]"

@@ -8,7 +8,8 @@ import {
   SelectItem,
   SelectContent,
 } from "@/components/ui/select";
-import { Card } from "@/components/ui/card";
+import SecureImage from "../../components/ui/SecureImage";
+import { api } from "@/services/api";
 import { Trash2, Edit } from "lucide-react";
 import ResultDialog from "@/admin/components/results/ResultDialog";
 import { api } from "@/services/api";
@@ -186,11 +187,10 @@ export default function Results() {
               <div className="flex items-center gap-6">
                 {/* Team A block */}
                 <div className="flex items-center gap-3">
-                  <img
+                  <SecureImage
                     src={r.logoA || "/icon.png"}
                     alt={r.teamA}
                     className="w-12 h-12 object-contain drop-shadow-md rounded"
-                    onError={(e) => (e.target.src = "/icon.png")}
                   />
                   <div>
                     <div className="text-white font-semibold text-sm">
@@ -216,11 +216,10 @@ export default function Results() {
                     <div className="text-[10px] text-white/40">{r.type}</div>
                   </div>
 
-                  <img
+                  <SecureImage
                     src={r.logoB || "/icon.png"}
                     alt={r.teamB}
                     className="w-12 h-12 object-contain drop-shadow-md rounded"
-                    onError={(e) => (e.target.src = "/icon.png")}
                   />
                 </div>
               </div>
