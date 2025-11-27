@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Users, MapPin } from "lucide-react";
 import config from "../config/api";
+import SecureImage from "../components/ui/SecureImage";
 
 /**
  * Teams Page
@@ -88,7 +89,7 @@ export default function Teams() {
                 {/* Team Logo */}
                 {team.team_logo && (
                   <div className="mb-4 flex justify-center">
-                    <img
+                    <SecureImage
                       src={team.team_logo}
                       alt={team.team_name}
                       className="w-24 h-24 object-contain"

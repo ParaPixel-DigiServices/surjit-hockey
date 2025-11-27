@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, Users, User, Phone } from "lucide-react";
 import config from "../config/api";
+import SecureImage from "../components/ui/SecureImage";
 
 /**
  * Team Detail Page
@@ -124,7 +125,7 @@ export default function TeamDetail() {
             {/* Team Logo */}
             {team.team_logo && (
               <div className="w-32 h-32 flex-shrink-0">
-                <img
+                <SecureImage
                   src={config.getUploadUrl("teams", team.team_logo)}
                   alt={team.team_name}
                   className="w-full h-full object-contain"
@@ -202,7 +203,7 @@ export default function TeamDetail() {
                   {/* Player Profile Image */}
                   {player.profile_image && (
                     <div className="mb-4 flex justify-center">
-                      <img
+                      <SecureImage
                         src={config.getUploadUrl(
                           "players",
                           player.profile_image

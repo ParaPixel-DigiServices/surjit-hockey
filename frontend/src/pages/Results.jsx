@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { api } from "../services/api";
 import { motion, AnimatePresence } from "framer-motion";
 import config from "../config/api";
+import { useSecureImage } from "../hooks/useSecureImage";
 
 // --- Import Team Logos ---
 // import indianOil from "../assets/teams/iocl.png";
@@ -19,6 +20,8 @@ export default function ResultsPage() {
   const [table, setTable] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const bgImage = useSecureImage(config.getUploadUrl("gallery", "1-494.jpeg"));
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,7 +71,7 @@ export default function ResultsPage() {
         <div
           className="absolute inset-0 bg-cover bg-center opacity-20"
           style={{
-            backgroundImage: `url('${config.getUploadUrl("gallery", "1-494.jpeg")}')`,
+            backgroundImage: `url('${bgImage}')`,
           }}
         />
         <h1 className="relative text-5xl sm:text-6xl font-extrabold uppercase text-[#ffd700] mb-4 drop-shadow-lg">

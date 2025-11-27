@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Newspaper, ArrowRight } from "lucide-react";
 import { api } from "../services/api";
 import config from "../config/api";
+import SecureImage from "../components/ui/SecureImage";
 
 /**
  * NEWS PAGE — Surjit Hockey Society
@@ -90,7 +91,7 @@ export default function News() {
               transition={{ type: "spring", stiffness: 200, damping: 15 }}
               className="relative w-full md:w-1/2 h-[350px] overflow-hidden rounded-2xl shadow-lg group"
             >
-              <img
+              <SecureImage
                 src={news.image}
                 alt={news.title}
                 className="w-full h-full object-cover transform group-hover:scale-110 transition duration-700"
