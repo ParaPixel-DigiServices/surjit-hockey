@@ -12,7 +12,6 @@ import SecureImage from "../../components/ui/SecureImage";
 import { api } from "@/services/api";
 import { Trash2, Edit } from "lucide-react";
 import ResultDialog from "@/admin/components/results/ResultDialog";
-import { api } from "@/services/api";
 import config from "../../config/api";
 
 export default function Results() {
