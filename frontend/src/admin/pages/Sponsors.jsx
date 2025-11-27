@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, Trash2, Edit } from "lucide-react";
 import { api } from "@/services/api";
 import config from "../../config/api";
+import SecureImage from "../../components/ui/SecureImage";
 import {
   Dialog,
   DialogContent,
@@ -139,7 +140,7 @@ export default function Sponsors() {
               className="bg-[#08162e] border border-white/10 rounded-lg p-4 flex flex-col items-center gap-3 relative group"
             >
               <div className="w-full aspect-video bg-white rounded p-2 flex items-center justify-center overflow-hidden">
-                <img
+                <SecureImage
                   src={
                     s.sponser_image
                       ? config.getUploadUrl("sponsors", s.sponser_image)
@@ -147,10 +148,9 @@ export default function Sponsors() {
                   }
                   alt={s.sponser_name}
                   className="max-w-full max-h-full object-contain"
-                  onError={(e) => (e.target.src = "/icon.png")}
                 />
               </div>
-              <div className="text-center w-full">
+              <div className="text-center">
                 <h3 className="font-bold truncate">{s.sponser_name}</h3>
                 <p className="text-xs text-white/50 truncate">
                   {s.detail || "No details"}

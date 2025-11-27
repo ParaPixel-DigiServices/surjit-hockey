@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { api } from "../../services/api";
 import config from "../../config/api";
+import SecureImage from "../ui/SecureImage";
 
 /**
  * SponsorsMarquee - Auto-scrolling sponsor logos
@@ -80,7 +81,7 @@ export default function SponsorsMarquee() {
             }}
           >
             {sponsors.map((sponsor, i) => (
-              <img
+              <SecureImage
                 key={`${sponsor.id}-${i}`}
                 src={sponsor.image}
                 alt={sponsor.name}

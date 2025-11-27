@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import EditResultDialog from "../components/results/EditResultDialog";
 import { api } from "../../services/api";
 import config from "../../config/api";
+import SecureImage from "../../components/ui/SecureImage";
 import {
   AddTeamDialog,
   CreateFixtureDialog,
@@ -381,7 +382,7 @@ export default function Dashboard() {
               sponsorsPreview.map((s) => (
                 <div key={s.id} className="flex items-center gap-3">
                   <div className="w-12 h-8 bg-white/10 rounded flex items-center justify-center overflow-hidden">
-                    <img
+                    <SecureImage
                       src={config.getUploadUrl("sponsors", s.sponser_image)}
                       alt={s.sponser_name}
                       className="w-full h-full object-contain"

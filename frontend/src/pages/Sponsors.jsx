@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ExternalLink, Award } from "lucide-react";
 import config from "../config/api";
+import SecureImage from "../components/ui/SecureImage";
 
 /**
  * Sponsors Page
@@ -81,7 +82,7 @@ export default function Sponsors() {
             >
               {/* Logo Only */}
               {sponsor.spo_logo ? (
-                <img
+                <SecureImage
                   src={sponsor.spo_logo}
                   alt={sponsor.spo_name}
                   className="max-w-full max-h-full object-contain"
