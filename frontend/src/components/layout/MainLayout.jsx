@@ -10,14 +10,12 @@ import Footer from "../sections/Footer";
  */
 export default function MainLayout({ children }) {
   return (
-    <div className="flex flex-col min-h-screen bg-white text-[#1b2b4a] font-[Sora] overflow-x-hidden">
+    <div className="flex flex-col min-h-screen bg-white text-[#1b2b4a] font-[Sora]">
       {/* 🔷 Header (Hexagon Nav) */}
-      <div className="relative z-40">
-        <Header />
-      </div>
+      <Header />
 
       {/* 🔹 Main Page Content */}
-      <main className="flex-1 pt-[var(--nav-height)]">{children}</main>
+      <main className="flex-1">{children}</main>
 
       {/* ⚫ Footer */}
       <Footer />

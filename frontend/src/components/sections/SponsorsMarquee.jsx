@@ -72,7 +72,7 @@ export default function SponsorsMarquee() {
 
         <div className="relative w-full overflow-hidden">
           <motion.div
-            className="flex items-center gap-10 w-max"
+            className="flex items-center gap-4 w-max"
             animate={{ x: ["0%", "-50%"] }}
             transition={{
               ease: "linear",

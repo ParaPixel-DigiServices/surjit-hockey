@@ -71,7 +71,7 @@ export default function Sponsors() {
         </motion.div>
 
         {/* Sponsors Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
           {sponsors.map((sponsor, index) => (
             <motion.div
               key={sponsor.spo_id}
