@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import config from "../../config/api";
-import SecureImage from "../ui/SecureImage";
 
 /**
  * MessagesPreview - Home page messages section
@@ -12,7 +11,7 @@ import SecureImage from "../ui/SecureImage";
 export default function MessagesPreview() {
   const [selectedMessage, setSelectedMessage] = useState(null);
 
-  // Messages data from officials
+  // Messages data from officials (same as /messages page)
   const messages = [
     {
       id: 1,
@@ -29,50 +28,60 @@ export default function MessagesPreview() {
       author_name: "Arvind Kejriwal",
       author_designation: "Ex. Chief Minister of Delhi",
       author_image: "cmdelhi.png",
-      document_image: "msg_kejriwal.jpg",
+      document_image: "msg_akm.jpg",
       message_text:
-        "I am delighted to know that Surjit Hockey Society is organizing the 39th Surjit Hockey Tournament. Hockey is our national sport and such tournaments are essential for nurturing young talent. I congratulate the organizers for their continued efforts in promoting sports and wish all participants the very best.",
+        "It gives me immense pleasure to learn that the Surjit Hockey Society is Organizing 39th Surjit Hockey Tournament. This tournament stands as a testament to the vision of Late Sardar Surjit Singh Sethi Ji and continues to inspire young hockey players across the nation. I congratulate the organizers and wish the participants all the very best.",
       display_order: 2,
     },
     {
       id: 3,
-      author_name: "Sanjay Singh",
-      author_designation: "Member of Parliament (Rajya Sabha)",
-      author_image: "mp.png",
-      document_image: "msg_sanjay.jpg",
+      author_name: "A Venu Parsad, IAS",
+      author_designation: "Addl. Chief Secretary to Chief Minister Punjab",
+      author_image: "vparsad.jpg",
+      document_image: "msg_avp.jpg",
       message_text:
-        "The Surjit Hockey Tournament has been a beacon of excellence in promoting hockey at the grassroots level. As we celebrate the 39th edition, I commend the Surjit Hockey Society for their unwavering commitment to the sport. May this tournament continue to inspire future generations of hockey players.",
+        "I am elated to learn that the Surjit Hockey is organizing 39th Surjit Hockey Tournament. This event has consistently maintained high standards and has been a platform for nurturing hockey talent. The society's commitment to the sport is truly praiseworthy. I extend my heartfelt congratulations to all involved.",
       display_order: 3,
     },
     {
       id: 4,
-      author_name: "Dilip Tirkey",
-      author_designation: "President, Hockey India",
-      author_image: "hockeyindia.png",
-      document_image: "msg_tirkey.jpg",
+      author_name: "Harbhajan Singh",
+      author_designation: "Public Minister & Power Minister, Punjab",
+      author_image: "hs.jpg",
+      document_image: "msg_hs.jpg",
       message_text:
-        "The Surjit Hockey Tournament stands as a testament to the enduring legacy of Late Sardar Surjit Singh Sethi Ji. Hockey India is proud to be associated with this prestigious tournament that has consistently contributed to the development of hockey in our country. I wish all teams and players great success.",
+        "I am delighted to know that 39th Surjit Hockey Tournament is being organised by the Surjit Hockey Society. This tournament has played a pivotal role in keeping the spirit of hockey alive in Punjab. The legacy of Late Sardar Surjit Singh Sethi Ji continues through this wonderful initiative. My best wishes to all participants and organizers.",
       display_order: 4,
     },
     {
       id: 5,
-      author_name: "Pargat Singh",
-      author_designation: "Former Captain, Indian Hockey Team",
-      author_image: "pargat.png",
-      document_image: "msg_pargat.jpg",
+      author_name: "Lal Chand Kataruchak",
+      author_designation: "Cabinet Minister Of Punjab",
+      author_image: "lck.jpg",
+      document_image: "msg_lck.jpg",
       message_text:
-        "Having been part of the hockey fraternity for decades, I have witnessed the tremendous impact of the Surjit Hockey Tournament. It has been instrumental in discovering and nurturing talent from across the nation. My best wishes to all participants and organizers for another successful edition.",
+        "It is very heartening to note that the Surjit Hockey Society Jalandhar is organizing the 39th edition of this prestigious tournament. The tournament has become a landmark event in the hockey calendar and continues to produce talented players. I convey my best wishes for the grand success of this tournament.",
       display_order: 5,
     },
     {
       id: 6,
-      author_name: "Zafar Iqbal",
-      author_designation: "Former Captain, Indian Hockey Team",
-      author_image: "zafar.png",
-      document_image: "msg_zafar.jpg",
+      author_name: "Avinash Chopra",
+      author_designation: "Jt. Managing Editor, Punjab",
+      author_image: "avinash.jpg",
+      document_image: "msg_avinash.jpg",
       message_text:
-        "The Surjit Hockey Tournament has always held a special place in the hearts of hockey players. It represents the true spirit of the game and continues to uphold the highest standards of competition. I extend my heartfelt wishes for the success of this tournament.",
+        "It gives me immense pleasure to know that the Surjit Hockey Society Jalandhar is going to organize the 39th Surjit Hockey Tournament. This tournament has been a beacon of excellence in hockey and has contributed immensely to the sport. I wish the organizers and participants great success.",
       display_order: 6,
+    },
+    {
+      id: 7,
+      author_name: "Ashok Kumar Mittal",
+      author_designation: "Member Of Parliament (Rajya Sabha)",
+      author_image: "ashokm.jpg",
+      document_image: "msg_mmm.jpg",
+      message_text:
+        "I am pleased to know that in commemoration of illustrious achievements of Late Sardar Surjit Singh Sethi Ji, the 39th Surjit Hockey Tournament is being organized. This tournament continues to inspire young athletes and promotes the game of hockey. My heartiest congratulations to the Surjit Hockey Society for their dedicated efforts.",
+      display_order: 7,
     },
   ];
 
@@ -119,10 +128,11 @@ export default function MessagesPreview() {
                 className="text-center cursor-pointer group hover:transform hover:scale-105 transition-all duration-300"
               >
                 <div className="w-24 h-24 mx-auto mb-3 rounded-full overflow-hidden border-4 border-[#ffd700]/30 group-hover:border-[#ffd700] transition-colors duration-300 shadow-lg">
-                  <SecureImage
+                  <img
                     src={config.getUploadUrl("messages", message.author_image)}
                     alt={message.author_name}
                     className="w-full h-full object-cover"
+                    loading="lazy"
                   />
                 </div>
                 <h3 className="font-bold text-sm text-[#1b2b4a] group-hover:text-[#ffd700] transition-colors duration-300">
@@ -158,13 +168,14 @@ export default function MessagesPreview() {
               <div className="flex items-center justify-between p-6 border-b border-gray-200">
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-[#ffd700]">
-                    <SecureImage
+                    <img
                       src={config.getUploadUrl(
                         "messages",
                         selectedMessage.author_image
                       )}
                       alt={selectedMessage.author_name}
                       className="w-full h-full object-cover"
+                      loading="lazy"
                     />
                   </div>
                   <div>
@@ -188,13 +199,14 @@ export default function MessagesPreview() {
               <div className="p-6">
                 {selectedMessage.document_image && (
                   <div className="mb-6">
-                    <SecureImage
+                    <img
                       src={config.getUploadUrl(
                         "messages",
                         selectedMessage.document_image
                       )}
                       alt="Message Document"
                       className="w-full max-w-2xl mx-auto rounded-lg shadow-lg"
+                      loading="lazy"
                     />
                   </div>
                 )}
