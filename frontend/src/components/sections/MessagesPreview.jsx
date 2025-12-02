@@ -120,7 +120,7 @@ export default function MessagesPreview() {
               >
                 <div className="w-24 h-24 mx-auto mb-3 rounded-full overflow-hidden border-4 border-[#ffd700]/30 group-hover:border-[#ffd700] transition-colors duration-300 shadow-lg">
                   <SecureImage
-                    src={config.getUploadUrl("officials", message.author_image)}
+                    src={config.getUploadUrl("messages", message.author_image)}
                     alt={message.author_name}
                     className="w-full h-full object-cover"
                   />
@@ -160,7 +160,7 @@ export default function MessagesPreview() {
                   <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-[#ffd700]">
                     <SecureImage
                       src={config.getUploadUrl(
-                        "officials",
+                        "messages",
                         selectedMessage.author_image
                       )}
                       alt={selectedMessage.author_name}
