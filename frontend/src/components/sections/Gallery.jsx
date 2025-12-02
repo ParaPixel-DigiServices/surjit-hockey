@@ -1,7 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import config from "../../config/api";
-import SecureImage from "../ui/SecureImage";
 
 /**
  * Players.jsx — "Meet the Troopers" (Edge-to-Edge)
@@ -59,10 +58,10 @@ export default function Players() {
             transition={{ duration: 0.4 }}
             className="relative overflow-hidden"
           >
-            <SecureImage
+            <img
               src={img}
               alt={`Player ${index + 1}`}
-              className="w-full h-full object-cover aspect-[4/5] transition-transform duration-500 hover:scale-105"
+              className="w-full h-full object-cover aspect-4/5 transition-transform duration-500 hover:scale-105"
               loading="lazy"
             />
           </motion.div>
