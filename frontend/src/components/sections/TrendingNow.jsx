@@ -71,7 +71,7 @@ export default function TrendingNow() {
           viewport={{ once: true }}
           className="text-3xl md:text-4xl font-bold tracking-wider font-[Sora]"
         >
-          TRENDING NOW
+          NEWS
         </motion.h2>
         <div className="mt-3 h-[3px] w-20 bg-[#ffd700] mx-auto rounded-full" />
       </div>
