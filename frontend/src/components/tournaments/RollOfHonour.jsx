@@ -26,8 +26,8 @@ export default function RollOfHonour() {
         // Transform honours data
         const formatted = honoursData.map((h) => ({
           year: h.year,
-          winner: h.winner_team ? teamMap[h.winner_team] || "Unknown" : "",
-          runner: h.runner_team ? teamMap[h.runner_team] || "Unknown" : "",
+          winner: h.team_id_1 ? teamMap[h.team_id_1] || "Unknown" : "",
+          runner: h.team_id_2 ? teamMap[h.team_id_2] || "Unknown" : "",
           remarks: h.remarks || "",
         }));
 

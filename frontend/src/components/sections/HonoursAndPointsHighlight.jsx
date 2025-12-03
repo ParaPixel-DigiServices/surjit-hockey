@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { api } from "../../services/api";
+import config from "../../config/api";
 
 export default function HonoursAndPointsHighlight() {
   const [recentHonours, setRecentHonours] = useState([]);
@@ -21,18 +22,25 @@ export default function HonoursAndPointsHighlight() {
           api.getYears(),
         ]);
 
-        // Map team id -> name
+        // Map team id -> name and logo
         const teamMap = {};
         teamsData.forEach((team) => {
-          teamMap[team.id] = team.team_name;
+          teamMap[team.id] = {
+            name: team.team_name,
+            logo: team.team_logo
+              ? config.getUploadUrl("teams", team.team_logo)
+              : null,
+          };
         });
 
         // Take a few most recent honours
         const formattedHonours = honoursData
           .map((h) => ({
             year: h.year,
-            winner: h.winner_team ? teamMap[h.winner_team] || "Unknown" : "-",
-            runner: h.runner_team ? teamMap[h.runner_team] || "Unknown" : "-",
+            winner: h.team_id_1 ? teamMap[h.team_id_1]?.name || "Unknown" : "-",
+            winnerLogo: h.team_id_1 ? teamMap[h.team_id_1]?.logo : null,
+            runner: h.team_id_2 ? teamMap[h.team_id_2]?.name || "Unknown" : "-",
+            runnerLogo: h.team_id_2 ? teamMap[h.team_id_2]?.logo : null,
           }))
           .sort((a, b) => b.year - a.year)
           .slice(0, 3);
@@ -64,7 +72,9 @@ export default function HonoursAndPointsHighlight() {
 
             const poolTeams = Array.isArray(standings)
               ? standings.map((row) => ({
-                  name: teamMap[row.team_id] || row.team_name || "Unknown",
+                  name:
+                    teamMap[row.team_id]?.name || row.team_name || "Unknown",
+                  logo: teamMap[row.team_id]?.logo || null,
                   stats: {
                     P: row.played ?? row.P ?? 0,
                     W: row.won ?? row.W ?? 0,
@@ -147,18 +157,38 @@ export default function HonoursAndPointsHighlight() {
                     key={h.year}
                     className="py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-[#ffd700]/10 border border-[#ffd700]/40 flex items-center justify-center text-[#ffd700] font-semibold text-sm">
-                        {h.year.toString().slice(-2)}
+                    <div className="flex items-start gap-3">
+                      <div className="shrink-0 mt-0.5">
+                        {h.winnerLogo && (
+                          <img
+                            src={h.winnerLogo}
+                            alt={h.winner}
+                            className="w-10 h-10 object-contain"
+                          />
+                        )}
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-white">
                           {h.winner}
                         </p>
-                        <p className="text-xs text-white/60">
-                          Runner-up: {h.runner}
-                        </p>
+                        <div className="flex items-center gap-2 mt-1">
+                          {h.runnerLogo && (
+                            <img
+                              src={h.runnerLogo}
+                              alt={h.runner}
+                              className="w-6 h-6 object-contain"
+                            />
+                          )}
+                          <p className="text-xs text-white/60">
+                            Runner-up: {h.runner}
+                          </p>
+                        </div>
                       </div>
+                    </div>
+                    <div className="shrink-0">
+                      <span className="inline-flex items-center justify-center px-3 py-1 rounded-full bg-[#ffd700]/10 border border-[#ffd700]/40 text-[#ffd700] font-semibold text-sm">
+                        {h.year}
+                      </span>
                     </div>
                   </div>
                 ))
@@ -234,11 +264,24 @@ export default function HonoursAndPointsHighlight() {
                             key={team.name + idx}
                             className="border-t border-white/5 hover:bg-white/5"
                           >
-                            <td className="px-4 py-2 text-sm flex items-center justify-between gap-3">
-                              <span className="text-white/90">{team.name}</span>
-                              <span className="text-[11px] text-white/40">
-                                #{idx + 1}
-                              </span>
+                            <td className="px-4 py-2 text-sm">
+                              <div className="flex items-center justify-between gap-3">
+                                <div className="flex items-center gap-2">
+                                  {team.logo && (
+                                    <img
+                                      src={team.logo}
+                                      alt={team.name}
+                                      className="w-6 h-6 object-contain"
+                                    />
+                                  )}
+                                  <span className="text-white/90">
+                                    {team.name}
+                                  </span>
+                                </div>
+                                <span className="text-[11px] text-white/40">
+                                  #{idx + 1}
+                                </span>
+                              </div>
                             </td>
                             <td className="px-2 py-2 text-center">
                               {team.stats?.P ?? 0}
