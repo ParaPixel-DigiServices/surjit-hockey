@@ -7,6 +7,7 @@ import Messages from "../components/sections/Messages";
 import SponsorsMarquee from "../components/sections/SponsorsMarquee";
 import MessagesPreview from "../components/sections/MessagesPreview";
 import BestPlayersHighlight from "../components/sections/BestPlayersHighlight";
+import HonoursAndPointsHighlight from "../components/sections/HonoursAndPointsHighlight";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
       <SponsorsMarquee />
       <MessagesPreview />
       <BestPlayersHighlight />
+      <HonoursAndPointsHighlight />
       <TrendingNow />
       <MatchSchedule />
       <Gallery />
