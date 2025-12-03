@@ -102,19 +102,77 @@ export default function MobileNav({ isOpen, onClose }) {
                     <ul className="ml-4 mt-1 space-y-1">
                       {item.children.map((child) => {
                         const isActive = location.pathname === child.path;
+                        const childHasSections =
+                          child.sections && child.sections.length > 0;
+                        const isChildExpanded = expandedItems.includes(
+                          `${item.label}-${child.label}`
+                        );
+
                         return (
                           <li key={child.path}>
-                            <Link
-                              to={child.path}
-                              onClick={onClose}
-                              className={`block px-3 py-2 rounded-md text-sm ${
-                                isActive
-                                  ? "bg-white/10 text-white font-medium"
-                                  : "text-white/70 hover:text-white hover:bg-white/5"
-                              }`}
-                            >
-                              {child.label}
-                            </Link>
+                            {/* If child has sections, make it expandable */}
+                            {childHasSections ? (
+                              <div>
+                                <button
+                                  onClick={() =>
+                                    toggleExpanded(
+                                      `${item.label}-${child.label}`
+                                    )
+                                  }
+                                  className={`w-full flex items-center justify-between px-3 py-2 rounded-md text-sm ${
+                                    isActive
+                                      ? "bg-white/10 text-white font-medium"
+                                      : "text-white/70 hover:text-white hover:bg-white/5"
+                                  }`}
+                                >
+                                  <span>{child.label}</span>
+                                  <ChevronDown
+                                    size={14}
+                                    className={`transition-transform duration-200 ${
+                                      isChildExpanded ? "rotate-180" : ""
+                                    }`}
+                                  />
+                                </button>
+
+                                {/* Sections sub-menu */}
+                                {isChildExpanded && (
+                                  <ul className="ml-4 mt-1 space-y-1 max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-[#ffd700] scrollbar-track-transparent">
+                                    {child.sections.map((section) => {
+                                      const isSectionActive =
+                                        location.pathname + location.hash ===
+                                        section.path;
+                                      return (
+                                        <li key={section.path}>
+                                          <Link
+                                            to={section.path}
+                                            onClick={onClose}
+                                            className={`block px-3 py-2 rounded-md text-xs ${
+                                              isSectionActive
+                                                ? "bg-white/10 text-white font-medium"
+                                                : "text-white/60 hover:text-white hover:bg-white/5"
+                                            }`}
+                                          >
+                                            {section.label}
+                                          </Link>
+                                        </li>
+                                      );
+                                    })}
+                                  </ul>
+                                )}
+                              </div>
+                            ) : (
+                              <Link
+                                to={child.path}
+                                onClick={onClose}
+                                className={`block px-3 py-2 rounded-md text-sm ${
+                                  isActive
+                                    ? "bg-white/10 text-white font-medium"
+                                    : "text-white/70 hover:text-white hover:bg-white/5"
+                                }`}
+                              >
+                                {child.label}
+                              </Link>
+                            )}
                           </li>
                         );
                       })}

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import TournamentHeader from "../components/layout/TournamentHeader";
 import HockeyIndiaOfficials from "../components/tournaments/HockeyOfficials";
 import TournamentParticipationRequest from "../components/tournaments/TournamentParticipationRequest";
@@ -13,6 +14,20 @@ import PlayersOfficialHonours from "../components/tournaments/PlayersOfficialHon
 import MatchesConducted from "../components/tournaments/MatchesConducted";
 
 export default function Tournament() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const targetId = location.hash.replace("#", "");
+      const el = document.getElementById(targetId);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    } else {
+      window.scrollTo({ top: 0, behavior: "auto" });
+    }
+  }, [location.hash]);
+
   return (
     <>
       <TournamentHeader />

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import AboutHeader from "../components/layout/AboutHeader"; // your scrolling navbar
 import History from "../components/about/History"; // the section we just built
 import AimsObjectives from "../components/about/AimsObjectives";
@@ -25,6 +26,20 @@ import LestWeForget from "../components/about/LestWeForget";
  */
 
 export default function About() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const targetId = location.hash.replace("#", "");
+      const el = document.getElementById(targetId);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    } else {
+      window.scrollTo({ top: 0, behavior: "auto" });
+    }
+  }, [location.hash]);
+
   return (
     <div className="min-h-screen bg-white text-[#1b2b4a]">
       <AboutHeader />
@@ -48,4 +63,3 @@ export default function About() {
     </div>
   );
 }
-
