@@ -1,17 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import heroImage from "../../assets/hero.jpg";
+import { heroImages } from "../../config/heroImages";
 
 export default function Hero() {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    if (!heroImages || heroImages.length === 0) return;
+
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % heroImages.length);
+    }, 6000); // 6 seconds per image
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="relative w-full min-h-[90vh] flex items-center justify-center overflow-hidden bg-black">
-      {/* Background Image */}
-      <img
-        src={heroImage}
-        alt="Surjit Hockey Tournament"
-        className="absolute inset-0 w-full h-full object-cover object-center"
-        draggable="false"
-      />
+      {/* Background Slideshow */}
+      <div className="absolute inset-0">
+        {heroImages.map((src, index) => (
+          <img
+            key={src}
+            src={src}
+            alt="Surjit Hockey Tournament action"
+            className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 ease-in-out ${
+              index === activeIndex ? "opacity-100" : "opacity-0"
+            }`}
+            draggable="false"
+          />
+        ))}
+      </div>
 
       {/* Gradient Overlay for Contrast */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/20"></div>
