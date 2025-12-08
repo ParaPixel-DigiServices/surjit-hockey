@@ -2,7 +2,6 @@
 export const heroImages = [
     "/images/slider/184-299.jpeg",
     "/images/slider/164-239.jpg",
-    "/images/slider/183-841.jpg",
     "/images/slider/182-577.jpeg",
     "/images/slider/181-289.jpg",
     "/images/slider/178-283.jpg",
