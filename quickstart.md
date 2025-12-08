@@ -4,13 +4,13 @@
 
 ## For Prod
 
-### Terminal 1:
+### Terminal 1
 
 ```bash
 cd backend; .venv\Scripts\python -m uvicorn app.main:app --reload --port 8000
 ```
 
-### Terminal 2:
+### Terminal 2
 
 ```bash
 ngrok http 8000
@@ -18,13 +18,13 @@ ngrok http 8000
 
 ## For Dev
 
-### Terminal 1:
+### Terminal 1
 
 ```bash
 cd frontend;npm run dev
 ```
 
-### Terminal 2:
+### Terminal 2
 
 ```bash
 cd backend; .venv\Scripts\python -m uvicorn app.main:app --reload --port 8000

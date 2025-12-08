@@ -1,5 +1,6 @@
 import React from "react";
 import Hero from "../components/sections/Hero";
+import LatestEvents from "../components/sections/LatestEvents";
 import TrendingNow from "../components/sections/TrendingNow";
 import MatchSchedule from "../components/sections/MatchSchedule";
 import Gallery from "../components/sections/Gallery";
@@ -17,6 +18,7 @@ export default function Home() {
       <MessagesPreview />
       <BestPlayersHighlight />
       <HonoursAndPointsHighlight />
+      <LatestEvents />
       <TrendingNow />
       <MatchSchedule />
       <Gallery />
