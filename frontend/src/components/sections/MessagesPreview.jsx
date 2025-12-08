@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import config from "../../config/api";
+import SecureImage from "../ui/SecureImage";
 
 /**
  * MessagesPreview - Home page messages section
@@ -128,7 +129,7 @@ export default function MessagesPreview() {
                 className="text-center cursor-pointer group hover:transform hover:scale-105 transition-all duration-300"
               >
                 <div className="w-24 h-24 mx-auto mb-3 rounded-full overflow-hidden border-4 border-[#ffd700]/30 group-hover:border-[#ffd700] transition-colors duration-300 shadow-lg">
-                  <img
+                  <SecureImage
                     src={config.getUploadUrl("messages", message.author_image)}
                     alt={message.author_name}
                     className="w-full h-full object-cover"
@@ -168,7 +169,7 @@ export default function MessagesPreview() {
               <div className="flex items-center justify-between p-6 border-b border-gray-200">
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-[#ffd700]">
-                    <img
+                    <SecureImage
                       src={config.getUploadUrl(
                         "messages",
                         selectedMessage.author_image
@@ -199,7 +200,7 @@ export default function MessagesPreview() {
               <div className="p-6">
                 {selectedMessage.document_image && (
                   <div className="mb-6">
-                    <img
+                    <SecureImage
                       src={config.getUploadUrl(
                         "messages",
                         selectedMessage.document_image

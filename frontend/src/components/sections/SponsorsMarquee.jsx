@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { api } from "../../services/api";
 import config from "../../config/api";
+import SecureImage from "../ui/SecureImage";
 
 export default function SponsorsMarquee() {
   const [sponsors, setSponsors] = useState([]);
@@ -80,7 +81,7 @@ export default function SponsorsMarquee() {
           >
             {loopSponsors.map((sponsor, index) => (
               <div key={`${sponsor.id}-${index}`} className="shrink-0">
-                <img
+                <SecureImage
                   src={sponsor.image}
                   alt={sponsor.name}
                   className="block h-auto max-h-16 md:max-h-20 w-auto object-contain"

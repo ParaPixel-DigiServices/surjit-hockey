@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import config from "../../config/api";
+import SecureImage from "../ui/SecureImage";
 
 /**
  * Messages.jsx — Delegates’ Messages Carousel
@@ -81,7 +82,7 @@ export default function Messages() {
             className="bg-[#f9f9f9] rounded-2xl shadow-lg p-8 md:p-10 flex flex-col items-center"
           >
             <div className="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-[#ffd700] mb-5">
-              <img
+              <SecureImage
                 src={messages[index].image}
                 alt={messages[index].name}
                 className="w-full h-full object-cover"

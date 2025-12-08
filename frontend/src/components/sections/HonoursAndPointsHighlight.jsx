@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { api } from "../../services/api";
 import config from "../../config/api";
+import SecureImage from "../ui/SecureImage";
 
 export default function HonoursAndPointsHighlight() {
   const [recentHonours, setRecentHonours] = useState([]);
@@ -160,7 +161,7 @@ export default function HonoursAndPointsHighlight() {
                     <div className="flex items-start gap-3">
                       <div className="shrink-0 mt-0.5">
                         {h.winnerLogo && (
-                          <img
+                          <SecureImage
                             src={h.winnerLogo}
                             alt={h.winner}
                             className="w-10 h-10 object-contain"
@@ -173,7 +174,7 @@ export default function HonoursAndPointsHighlight() {
                         </p>
                         <div className="flex items-center gap-2 mt-1">
                           {h.runnerLogo && (
-                            <img
+                            <SecureImage
                               src={h.runnerLogo}
                               alt={h.runner}
                               className="w-6 h-6 object-contain"
@@ -268,7 +269,7 @@ export default function HonoursAndPointsHighlight() {
                               <div className="flex items-center justify-between gap-3">
                                 <div className="flex items-center gap-2">
                                   {team.logo && (
-                                    <img
+                                    <SecureImage
                                       src={team.logo}
                                       alt={team.name}
                                       className="w-6 h-6 object-contain"
