@@ -16,6 +16,8 @@ import Patrons from "../components/about/Patrons";
 import NRIWellWishers from "../components/about/NRIWellWishers";
 import { Form } from "react-router-dom";
 import LestWeForget from "../components/about/LestWeForget";
+import CoreCommittee from "../components/about/CoreCommittee";
+import DedicatedTeam from "../components/about/DedicatedTeam";
 
 /**
  * About.jsx
@@ -30,11 +32,22 @@ export default function About() {
 
   useEffect(() => {
     if (location.hash) {
-      const targetId = location.hash.replace("#", "");
-      const el = document.getElementById(targetId);
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
+      setTimeout(() => {
+        const targetId = location.hash.replace("#", "");
+        const el = document.getElementById(targetId);
+        if (el) {
+          // Account for sticky header height
+          const headerOffset = 180;
+          const elementPosition = el.getBoundingClientRect().top;
+          const offsetPosition =
+            elementPosition + window.pageYOffset - headerOffset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth",
+          });
+        }
+      }, 100);
     } else {
       window.scrollTo({ top: 0, behavior: "auto" });
     }
@@ -59,6 +72,8 @@ export default function About() {
         <Patrons />
         <NRIWellWishers />
         <LestWeForget />
+        <CoreCommittee />
+        <DedicatedTeam />
       </main>
     </div>
   );

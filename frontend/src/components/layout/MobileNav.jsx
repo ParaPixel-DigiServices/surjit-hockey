@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
-import { NAV_LINKS } from "../../utils/navLinks";
+import { PRIMARY_NAV, SECONDARY_NAV } from "../../utils/navLinks";
 
 /**
  * MobileNav (Enhanced with Nested Menus)
@@ -69,7 +69,8 @@ export default function MobileNav({ isOpen, onClose }) {
 
         {/* Links with Nested Menus */}
         <ul className="flex flex-col gap-1 px-4 py-6 overflow-y-auto max-h-[calc(100vh-180px)]">
-          {NAV_LINKS.map((item) => {
+          {/* PRIMARY NAVIGATION */}
+          {PRIMARY_NAV.map((item) => {
             // If item has children, render as expandable menu
             if (item.children) {
               const isExpanded = expandedItems.includes(item.label);
@@ -184,7 +185,6 @@ export default function MobileNav({ isOpen, onClose }) {
 
             // Simple link item
             const isActive = location.pathname === item.path;
-            const isContact = item.label === "Contact";
 
             return (
               <li key={item.path}>
@@ -192,14 +192,41 @@ export default function MobileNav({ isOpen, onClose }) {
                   to={item.path}
                   onClick={onClose}
                   className={`flex items-center justify-center px-3 py-3 rounded-md text-sm font-semibold ${
-                    isContact
-                      ? "bg-[#ffd700] text-[#1b2b4a] hover:bg-[#ffd700]/90"
-                      : isActive
-                        ? "bg-white/10 text-white"
-                        : "text-white/80 hover:text-white hover:bg-white/5"
+                    isActive
+                      ? "bg-white/10 text-white"
+                      : "text-white/80 hover:text-white hover:bg-white/5"
                   }`}
                 >
                   <span>{item.label}</span>
+                </Link>
+              </li>
+            );
+          })}
+
+          {/* DIVIDER */}
+          <li className="my-2">
+            <div className="h-px bg-white/10"></div>
+          </li>
+
+          {/* SECONDARY NAVIGATION */}
+          {SECONDARY_NAV.map((item) => {
+            const isActive = location.pathname === item.path;
+            return (
+              <li key={item.path}>
+                <Link
+                  to={item.path}
+                  onClick={onClose}
+                  className={`flex items-center justify-center px-3 py-2.5 rounded-md text-sm ${
+                    item.highlight
+                      ? "bg-[#ffd700] text-[#1b2b4a] hover:bg-[#ffd700]/90 font-bold"
+                      : isActive
+                        ? "bg-white/10 text-white font-medium"
+                        : "text-white/70 hover:text-white hover:bg-white/5"
+                  }`}
+                >
+                  {item.highlight && <span className="mr-1">▶</span>}
+                  <span>{item.label}</span>
+                  {item.highlight && <span className="ml-1">◀</span>}
                 </Link>
               </li>
             );

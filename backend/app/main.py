@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 from app.core.config import settings
-from app.api.v1 import tournaments, teams, content, news, additional, auth
+from app.api.v1 import tournaments, teams, content, news, additional, auth, committee
 
 # Create FastAPI application
 app = FastAPI(
@@ -63,6 +63,12 @@ app.include_router(
     auth.router,
     prefix="/api/v1/auth",
     tags=["Authentication"]
+)
+
+app.include_router(
+    committee.router,
+    prefix="/api/v1",
+    tags=["Committee"]
 )
 
 

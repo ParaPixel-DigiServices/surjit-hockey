@@ -10,13 +10,13 @@ import { ChevronDown, ChevronRight } from "lucide-react";
  * ✅ Scrollable second-level panel with fixed height
  * ✅ Smooth animations and keyboard accessible
  */
-export default function DropdownMenu({ label, children }) {
+export default function DropdownMenu({ label, items }) {
   const [isOpen, setIsOpen] = useState(false);
   const [openSectionsItem, setOpenSectionsItem] = useState(null);
   const location = useLocation();
 
   // Check if any child is active
-  const isAnyChildActive = children.some(
+  const isAnyChildActive = items.some(
     (child) =>
       location.pathname === child.path ||
       location.pathname.startsWith(child.path + "#")
@@ -60,8 +60,8 @@ export default function DropdownMenu({ label, children }) {
             transition={{ duration: 0.2 }}
             className="absolute top-full left-0 mt-2 w-56 bg-[#1b2b4a] border border-white/10 rounded-md shadow-2xl overflow-hidden z-50"
           >
-            <div className="py-2">
-              {children.map((item) => {
+            <div className="py-2 max-h-[70vh] overflow-y-auto scrollbar-hide [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
+              {items.map((item) => {
                 const hasSections =
                   Array.isArray(item.sections) && item.sections.length > 0;
                 const isActive = location.pathname === item.path;

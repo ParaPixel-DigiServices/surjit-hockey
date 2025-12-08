@@ -23,4 +23,7 @@ export const config = {
   },
 };
 
+// Export helper function to get API URL
+export const getApiUrl = () => `${API_BASE}/api/v1`;
+
 export default config;

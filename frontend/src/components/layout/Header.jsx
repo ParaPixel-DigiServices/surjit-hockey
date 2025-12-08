@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import MobileNav from "./MobileNav";
 import DropdownMenu from "./DropdownMenu";
 import CountdownTimer from "./CountdownTimer";
-import { NAV_LINKS } from "../../utils/navLinks";
+import { PRIMARY_NAV, SECONDARY_NAV } from "../../utils/navLinks";
 import logo from "../../assets/icon.png";
 
 /**
@@ -27,12 +27,13 @@ export default function Header() {
 
   useEffect(() => setMobileOpen(false), [location.pathname]);
 
-  // Split nav items for left and right sides
-  const leftNavItems = NAV_LINKS.slice(0, 3); // Home, About, Tournament
-  const rightNavItems = NAV_LINKS.slice(3); // Teams, Media, Sponsors
+  // Split PRIMARY nav items for left and right sides of logo
+  const leftNavItems = PRIMARY_NAV.slice(0, 3); // Home, Society, Tournament
+  const rightNavItems = PRIMARY_NAV.slice(3); // Results, Team, News
 
   return (
     <>
+      {/* PRIMARY HEADER - Main Navigation */}
       <header className="sticky top-0 z-50 bg-[#1b2b4a] transition-all duration-300 border-b border-white/10">
         <div className="container mx-auto flex items-center justify-between h-20 px-4 sm:px-6 md:px-8 relative font-[Sora]">
           {/* ---------- LEFT NAV ---------- */}
@@ -42,7 +43,7 @@ export default function Header() {
                 <DropdownMenu
                   key={item.label}
                   label={item.label}
-                  children={item.children}
+                  items={item.children}
                 />
               ) : (
                 <Link
@@ -52,7 +53,7 @@ export default function Header() {
                     location.pathname === item.path
                       ? "text-white"
                       : "text-white/80 hover:text-white"
-                  } after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-white after:transition-[width] after:duration-400 after:ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:after:w-full`}
+                  } after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-0 after:bg-white after:transition-[width] after:duration-400 after:ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:after:w-full`}
                 >
                   {item.label}
                 </Link>
@@ -99,16 +100,8 @@ export default function Header() {
                 <DropdownMenu
                   key={item.label}
                   label={item.label}
-                  children={item.children}
+                  items={item.children}
                 />
-              ) : item.label === "Contact" ? (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className="inline-flex items-center justify-center bg-[#ffd700] text-[#1b2b4a] font-extrabold px-5 py-2 rounded-md hover:bg-[#ffd700]/90 transition"
-                >
-                  {item.label}
-                </Link>
               ) : (
                 <Link
                   key={item.path}
@@ -117,7 +110,7 @@ export default function Header() {
                     location.pathname === item.path
                       ? "text-white"
                       : "text-white/80 hover:text-white"
-                  } after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-white after:transition-[width] after:duration-400 after:ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:after:w-full`}
+                  } after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-0 after:bg-white after:transition-[width] after:duration-400 after:ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:after:w-full`}
                 >
                   {item.label}
                 </Link>
@@ -148,6 +141,68 @@ export default function Header() {
           </button>
         </div>
       </header>
+
+      {/* SECONDARY HEADER - Category Navigation */}
+      <div className="sticky top-20 z-40 bg-[#0b152d] border-b border-white/10">
+        <div className="container mx-auto px-4 sm:px-6 md:px-8 font-[Sora]">
+          <nav className="hidden lg:flex items-center justify-between h-12 text-[12px] font-bold uppercase tracking-wide">
+            {/* Left side items */}
+            <div className="flex items-center gap-6 xl:gap-8">
+              {SECONDARY_NAV.slice(0, Math.ceil(SECONDARY_NAV.length / 2)).map(
+                (item) => (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className={`inline-block relative transition-colors duration-300 ${
+                      item.highlight
+                        ? "text-[#ffd700] animate-pulse"
+                        : location.pathname === item.path
+                          ? "text-white"
+                          : "text-white/70 hover:text-white"
+                    } ${
+                      !item.highlight &&
+                      "after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-white after:transition-[width] after:duration-400 after:ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:after:w-full"
+                    }`}
+                  >
+                    {item.highlight && <span className="mr-1">▶</span>}
+                    {item.label}
+                    {item.highlight && <span className="ml-1">◀</span>}
+                  </Link>
+                )
+              )}
+            </div>
+
+            {/* Center space for hexagon */}
+            <div className="w-56 shrink-0"></div>
+
+            {/* Right side items */}
+            <div className="flex items-center gap-6 xl:gap-8">
+              {SECONDARY_NAV.slice(Math.ceil(SECONDARY_NAV.length / 2)).map(
+                (item) => (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className={`inline-block relative transition-colors duration-300 ${
+                      item.highlight
+                        ? "text-[#ffd700] animate-pulse"
+                        : location.pathname === item.path
+                          ? "text-white"
+                          : "text-white/70 hover:text-white"
+                    } ${
+                      !item.highlight &&
+                      "after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-white after:transition-[width] after:duration-400 after:ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:after:w-full"
+                    }`}
+                  >
+                    {item.highlight && <span className="mr-1">▶</span>}
+                    {item.label}
+                    {item.highlight && <span className="ml-1">◀</span>}
+                  </Link>
+                )
+              )}
+            </div>
+          </nav>
+        </div>
+      </div>
 
       {/* ---------- MOBILE DRAWER ---------- */}
       <MobileNav isOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
