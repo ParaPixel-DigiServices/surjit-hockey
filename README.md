@@ -1,246 +1,250 @@
 # Surjit Hockey Tournament Website
 
-A modern full-stack web application for managing the Surjit Hockey Tournament, featuring tournament management, team information, player profiles, galleries, and news updates.
+A comprehensive web application for managing and showcasing the annual IndianOil Servo Surjit Hockey Tournament - one of India's premier Grade-I hockey tournaments.
 
-## Project Overview
+## 🏑 About
 
-The Surjit Hockey Tournament is India's Grade-I hockey tournament, organized annually in Jalandhar, Punjab. This application provides:
+The Surjit Hockey Tournament is an annual event held in Jalandhar, Punjab, bringing together the best hockey teams from across India. This web application provides a modern platform for tournament management, news updates, team information, and more.
 
-- **Frontend**: React-based modern UI with animations (Framer Motion)
-- **Backend**: FastAPI-powered REST API
-- **Database**: MySQL database for data persistence
+## ✨ Features
 
-## Project Structure
+- **Tournament Management** - Track multiple tournament editions, teams, and results
+- **News & Announcements** - Latest updates and featured articles with images
+- **Team Profiles** - Detailed information about participating teams
+- **Committee Members** - Core committee and 75+ dedicated team profiles with photos
+- **Content Management** - Dynamic page content with admin controls
+- **Sponsors & Patrons** - Showcase tournament supporters
+- **Admin Dashboard** - Secure content management system with JWT authentication
+- **Responsive Design** - Optimized for desktop, tablet, and mobile devices
+- **API-First Architecture** - RESTful API with automatic documentation
 
-```
-surjit-hockey/
-├── frontend/                # React frontend application
-│   ├── src/
-│   │   ├── components/     # Reusable UI components
-│   │   ├── pages/          # Page components
-│   │   ├── utils/          # Utility functions
-│   │   └── assets/         # Static assets (images, icons)
-│   └── package.json
-│
-├── backend/                # FastAPI backend application
-│   ├── app/
-│   │   ├── api/           # API routes
-│   │   ├── models/        # Database models
-│   │   ├── schemas/       # Pydantic schemas
-│   │   ├── core/          # Core functionality (config, security)
-│   │   └── main.py        # Application entry point
-│   └── requirements.txt
-│
-└── README.md
-```
+## 🚀 Quick Start
 
-## Features
+For a quick setup guide, see **[quickstart.md](quickstart.md)**
 
-### Frontend Features
-
-- 🏠 **Home Page**: Hero section, trending news, match schedule, gallery, messages
-- 📋 **Tournament Info**: Tournament details, participating teams, fixtures, results
-- 👥 **Teams**: Team profiles with logos and information
-- 📊 **Results & Statistics**: Match results, points tables, tournament history
-- 📰 **News**: Latest updates and trending articles
-- 🖼️ **Gallery**: Photo galleries from tournaments and events
-- ℹ️ **About**: Information about the tournament and organization
-
-### Backend Features
-
-- 🔐 **Authentication**: JWT-based user authentication
-- 🏆 **Tournament Management**: CRUD operations for tournaments, matches, fixtures
-- 👥 **Team Management**: Team information, player rosters
-- 📊 **Statistics**: Match results, points tables, player statistics
-- 📰 **Content Management**: News articles, galleries, memories
-- 👤 **User Profiles**: Alumni registration and profile management
-
-## Tech Stack
-
-### Frontend
-
-- **React** 19.2.0 - UI library
-- **React Router** 7.9.5 - Routing
-- **Framer Motion** 12.23.24 - Animations
-- **Tailwind CSS** 4.1.17 - Styling
-- **Vite** 7.2.2 - Build tool
-- **Lucide React** - Icons
-
-### Backend
-
-- **FastAPI** - Modern Python web framework
-- **SQLAlchemy** - ORM for database operations
-- **Pydantic** - Data validation
-- **MySQL** - Database
-- **JWT** - Authentication
-- **CORS** - Cross-origin resource sharing
-
-## Getting Started
+For detailed documentation, see **[backend/docs/SETUP.md](backend/docs/SETUP.md)**
 
 ### Prerequisites
 
-- Node.js 18+ and npm
-- Python 3.9+
-- MySQL 5.7+
+- Python 3.11+
+- Node.js 18+
+- MySQL 8.0+
+
+### Backend Setup
+
+```bash
+cd backend
+python -m venv .venv
+
+# Activate virtual environment
+.venv\Scripts\activate              # Windows
+source .venv/bin/activate           # Linux/Mac
+
+pip install -r requirements.txt
+
+# Configure .env file (see backend/docs/SETUP.md)
+
+# Run migrations
+python migrations/add_core_committee.py
+python migrations/add_dedicated_team.py
+
+# Start server
+uvicorn app.main:app --reload
+```
+
+Backend runs at: **http://localhost:8000**  
+API docs: **http://localhost:8000/docs**
 
 ### Frontend Setup
 
 ```bash
 cd frontend
 npm install
+
+# Configure .env file (see backend/docs/SETUP.md)
+
 npm run dev
 ```
 
-The frontend will run on `http://localhost:5173`
+Frontend runs at: **http://localhost:5173**
 
-### Backend Setup
+## 📁 Project Structure
 
-```bash
-cd backend
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload
+```
+surjit-hockey/
+├── backend/                    # FastAPI backend
+│   ├── app/
+│   │   ├── api/v1/            # API endpoints (auth, tournaments, news, etc.)
+│   │   ├── core/              # Configuration, database, security
+│   │   ├── models/            # SQLAlchemy database models
+│   │   └── schemas/           # Pydantic request/response schemas
+│   ├── docs/                  # API, database, and setup documentation
+│   ├── migrations/            # Database migration scripts
+│   ├── uploads/               # User-uploaded files
+│   ├── .env                   # Environment configuration
+│   └── requirements.txt       # Python dependencies
+│
+├── frontend/                   # React frontend
+│   ├── public/
+│   │   └── images/            # Static images (teams, committee, etc.)
+│   ├── src/
+│   │   ├── components/        # Reusable React components
+│   │   ├── pages/             # Page components (Home, About, etc.)
+│   │   ├── config/            # API configuration
+│   │   └── utils/             # Utility functions
+│   ├── .env                   # Environment configuration
+│   └── package.json           # Node dependencies
+│
+├── Backup/                    # Database and site backups
+├── quickstart.md              # Quick setup guide
+└── README.md                  # This file
 ```
 
-The backend API will run on `http://localhost:8000`
+## 🛠️ Technology Stack
 
-API documentation available at `http://localhost:8000/docs`
+### Backend
 
-### Environment Variables
+- **FastAPI** - Modern, fast web framework for building APIs
+- **SQLAlchemy** - SQL toolkit and ORM
+- **MySQL** - Relational database management system
+- **PyMySQL** - Pure Python MySQL client
+- **Pydantic** - Data validation using Python type hints
+- **JWT** - JSON Web Tokens for authentication
+- **Bcrypt** - Secure password hashing
 
-Create a `.env` file in the backend directory:
+### Frontend
+
+- **React 18** - JavaScript library for building user interfaces
+- **Vite** - Next generation frontend build tool
+- **Tailwind CSS** - Utility-first CSS framework
+- **Framer Motion** - Production-ready animation library
+- **React Router** - Declarative routing for React
+
+## 📚 Documentation
+
+| Document                                    | Description                                   |
+| ------------------------------------------- | --------------------------------------------- |
+| [API Documentation](backend/docs/API.md)    | Complete REST API reference with examples     |
+| [Database Schema](backend/docs/DATABASE.md) | Database structure, tables, and relationships |
+| [Setup Guide](backend/docs/SETUP.md)        | Detailed development environment setup        |
+| [Quick Start](quickstart.md)                | Fast track setup instructions                 |
+
+## 🔐 Environment Configuration
+
+### Backend `.env`
 
 ```env
-# Database
+# Database Connection
 DATABASE_URL=mysql+pymysql://username:password@localhost:3306/surjit_hockey
 
 # Security
-SECRET_KEY=your-secret-key-here
+SECRET_KEY=your-secret-key-here-use-openssl-rand-hex-32
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 
 # CORS
-CORS_ORIGINS=http://localhost:5173,http://localhost:3000
-
-# Application
-DEBUG=True
+ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000
 ```
 
-## Database Schema
+### Frontend `.env`
 
-The application uses the following main tables:
-
-- **Users & Authentication**
-
-  - `alumni_user_register` - User accounts
-  - `alumni_user_personal_details` - Personal information
-  - `alumni_user_professional_details` - Professional details
-  - `alumni_user_sports_details` - Sports background
-
-- **Content Management**
-
-  - `hockey_banner` - Banner images
-  - `hockey_advertisements` - Advertisements
-  - `alumni_gallery` - Photo galleries
-  - `alumni_memory` - Memory posts
-
-- **Tournament Management**
-
-  - `hockey_event_master` - Tournament events
-  - `hockey_fixture_master` - Match fixtures
-  - `hockey_category_master` - Categories (Men/Women)
-  - `hockey_capacity_master` - Team capacities
-
-- **Teams & Players**
-  - `hockey_alumni_master` - Alumni/player information
-  - Team-related data stored in various tables
-
-## API Endpoints
-
-### Authentication
-
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - User login
-- `POST /api/auth/refresh` - Refresh access token
-
-### Tournaments
-
-- `GET /api/tournaments` - List all tournaments
-- `GET /api/tournaments/{id}` - Get tournament details
-- `GET /api/tournaments/{id}/fixtures` - Get tournament fixtures
-- `GET /api/tournaments/{id}/results` - Get tournament results
-
-### Teams
-
-- `GET /api/teams` - List all teams
-- `GET /api/teams/{id}` - Get team details
-- `GET /api/teams/{id}/players` - Get team players
-
-### Content
-
-- `GET /api/news` - List news articles
-- `GET /api/gallery` - Get gallery images
-- `GET /api/memories` - Get memory posts
-
-### User Profile
-
-- `GET /api/users/me` - Get current user profile
-- `PUT /api/users/me` - Update user profile
-
-See full API documentation at `/docs` when running the backend.
-
-## Development
-
-### Code Style
-
-- Frontend: ESLint + Prettier
-- Backend: Black + isort
-
-### Running Tests
-
-```bash
-# Frontend
-cd frontend
-npm run test
-
-# Backend
-cd backend
-pytest
+```env
+VITE_API_URL=http://localhost:8000
 ```
 
-## Deployment
+## 🗄️ Database
 
-### Frontend (Vercel/Netlify)
+The application uses MySQL with the following main tables:
 
-```bash
-cd frontend
-npm run build
-```
+- `tournaments` - Tournament editions and details
+- `teams` - Participating teams
+- `news` - News articles and announcements
+- `core_committee_members` - Core organizing committee (4 members)
+- `dedicated_team_members` - Extended support team (75 members)
+- `content_pages` - Dynamic page content
+- `sponsors`, `patrons`, `advisors` - Supporting organizations/individuals
+- `users` - Admin authentication
 
-### Backend (Railway/Render/DigitalOcean)
+See [backend/docs/DATABASE.md](backend/docs/DATABASE.md) for complete schema.
+
+## 🔌 API Endpoints
+
+Main API endpoints available at `/api/v1`:
+
+| Endpoint          | Method    | Description            | Auth Required |
+| ----------------- | --------- | ---------------------- | ------------- |
+| `/auth/login`     | POST      | User authentication    | No            |
+| `/auth/me`        | GET       | Current user info      | Yes           |
+| `/tournaments`    | GET, POST | Tournament management  | POST: Yes     |
+| `/news`           | GET, POST | News articles          | POST: Yes     |
+| `/teams`          | GET, POST | Team information       | POST: Yes     |
+| `/core-committee` | GET       | Core committee members | No            |
+| `/dedicated-team` | GET       | Dedicated team members | No            |
+| `/sponsors`       | GET       | Tournament sponsors    | No            |
+
+Full API documentation: http://localhost:8000/docs (when backend is running)
+
+## 🚢 Deployment
+
+### Backend Deployment
+
+1. Set production environment variables
+2. Use production WSGI server (Gunicorn with Uvicorn workers)
+3. Set up Nginx as reverse proxy
+4. Configure SSL/HTTPS certificates
+5. Set up database backups
+6. Enable logging and monitoring
+
+### Frontend Deployment
+
+1. Build production bundle: `npm run build`
+2. Serve `dist` folder with web server (Nginx, Apache)
+3. Configure production API URL
+4. Enable gzip compression
+5. Set up CDN for static assets (optional)
+6. Configure caching headers
+
+## 🧪 Testing
+
+### Backend Tests
 
 ```bash
 cd backend
-gunicorn app.main:app -w 4 -k uvicorn.workers.UvicornWorker
+pytest                          # Run all tests
+pytest tests/test_endpoints.py  # Run specific test file
+pytest --cov=app               # Run with coverage
 ```
 
-## Contributing
+### Frontend Tests
+
+```bash
+cd frontend
+npm test                    # Run tests
+npm run test:coverage       # Run with coverage
+```
+
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## License
+## 📝 License
 
-This project is proprietary and confidential.
+This project is licensed under the MIT License.
 
-## Contact
+## 📧 Support
 
-For queries contact: [Add contact information]
+For questions, issues, or support:
+
+- Create an issue in the repository
+- Contact the development team
+- Email: support@example.com
 
 ---
 
-**Note**: This is a professional tournament management system. Handle all data with care and maintain confidentiality.
+**Developed by:** ParaPixel DigiServices  
+**Tournament Website:** [surjithockey.in](https://surjithockey.in)  
+**Year:** 2024-2025
