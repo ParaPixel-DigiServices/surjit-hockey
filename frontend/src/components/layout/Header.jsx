@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { Facebook, Twitter, Instagram, Youtube } from "lucide-react";
 import MobileNav from "./MobileNav";
 import DropdownMenu from "./DropdownMenu";
 import CountdownTimer from "./CountdownTimer";
@@ -7,12 +8,11 @@ import { PRIMARY_NAV, SECONDARY_NAV } from "../../utils/navLinks";
 import logo from "../../assets/icon.png";
 
 /**
- * Header (Enhanced with Dropdown Navigation)
- * ------------------------------------------
- * ✅ Seamless hexagon blend
- * ✅ Dropdown menus for complex navigation
- * ✅ Bold Sora font
- * ✅ Responsive & clean
+ * Header (Two-Row Navigation)
+ * ----------------------------
+ * ✅ Top row: Social links (left) + E O I (right)
+ * ✅ Main row: PRIMARY_NAV (left, 6 items) + SECONDARY_NAV without EOI (right, 6 items)
+ * ✅ Equal space allocation, center logo with breathing room
  */
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -27,86 +27,142 @@ export default function Header() {
 
   useEffect(() => setMobileOpen(false), [location.pathname]);
 
-  // Split PRIMARY nav items for left and right sides of logo
-  const leftNavItems = PRIMARY_NAV.slice(0, 3); // Home, Society, Tournament
-  const rightNavItems = PRIMARY_NAV.slice(3); // Results, Team, News
+  // Filter out E O I from SECONDARY_NAV
+  const secondaryNavWithoutEOI = SECONDARY_NAV.filter(
+    (item) => !item.highlight
+  );
+  const eoiItem = SECONDARY_NAV.find((item) => item.highlight);
 
   return (
     <>
-      {/* PRIMARY HEADER - Main Navigation */}
-      <header className="sticky top-0 z-50 bg-[#1b2b4a] transition-all duration-300 border-b border-white/10">
-        <div className="container mx-auto flex items-center justify-between h-20 px-4 sm:px-6 md:px-8 relative font-[Sora]">
-          {/* ---------- LEFT NAV ---------- */}
-          <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-[13px] font-bold uppercase tracking-wide">
-            {leftNavItems.map((item) =>
-              item.children ? (
-                <DropdownMenu
-                  key={item.label}
-                  label={item.label}
-                  items={item.children}
-                />
-              ) : (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`inline-block relative pb-1 transition-colors duration-300 ${
-                    location.pathname === item.path
-                      ? "text-white"
-                      : "text-white/80 hover:text-white"
-                  } after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-0 after:bg-white after:transition-[width] after:duration-400 after:ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:after:w-full`}
-                >
-                  {item.label}
-                </Link>
-              )
-            )}
-          </nav>
-
-          {/* ---------- CENTER HEX LOGO ---------- */}
-          <div className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[99%] w-56 sm:w-64 h-40 sm:h-44 overflow-visible flex flex-col items-center justify-center">
-            {/* Blended Hex Shape */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 100 70"
-              className="absolute inset-0 w-full h-full"
-              preserveAspectRatio="none"
-            >
-              <path d="M0,-8 L20,30 L80,30 L100,-8 Z" fill="#1b2b4a" />
-            </svg>
-
-            {/* Logo centered at the join */}
-            <Link
-              to="/"
-              className="absolute inset-0 flex items-center justify-center"
-              aria-label="Home"
-            >
-              <img
-                src={logo}
-                alt="Surjit Hockey Logo"
-                className="relative z-10 w-[55%] sm:w-[50%] h-auto object-contain translate-y-[-90%]"
-                draggable="false"
-              />
-            </Link>
-
-            {/* Timer inside hexagon shape */}
-            <div className="absolute top-[20%] left-1/2 -translate-x-1/2 z-20 text-[#ffd700] text-[10px] sm:text-xs font-bold whitespace-nowrap">
-              <CountdownTimer />
+      {/* COMBINED HEADER - Two Rows in One */}
+      <header className="sticky top-0 z-50 bg-[#1b2b4a] transition-all duration-300 border-b border-white/10 font-[Sora]">
+        <div className="container mx-auto px-1 relative">
+          {/* TOP ROW - Social Links & EOI (Smaller) */}
+          <div className="flex items-center justify-between h-9">
+            {/* Social Links with Labels */}
+            <div className="hidden lg:flex items-center gap-6">
+              <a
+                href="https://www.facebook.com/surjithockey.in/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-white/70 hover:text-white transition-colors text-[10px] xl:text-[11px] font-medium uppercase"
+                aria-label="Facebook"
+              >
+                <Facebook size={14} />
+                <span>Facebook</span>
+              </a>
+              <a
+                href="https://x.com/surjit_hockey"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-white/70 hover:text-white transition-colors text-[10px] xl:text-[11px] font-medium uppercase"
+                aria-label="Twitter"
+              >
+                <Twitter size={14} />
+                <span>Twitter</span>
+              </a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-white/70 hover:text-white transition-colors text-[10px] xl:text-[11px] font-medium uppercase"
+                aria-label="Instagram"
+              >
+                <Instagram size={14} />
+                <span>Instagram</span>
+              </a>
+              <a
+                href="https://www.youtube.com/user/WorldKabaddiLeague14"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-white/70 hover:text-white transition-colors text-[10px] xl:text-[11px] font-medium uppercase"
+                aria-label="YouTube"
+              >
+                <Youtube size={14} />
+                <span>YouTube</span>
+              </a>
             </div>
+
+            {/* EOI Link */}
+            {eoiItem && (
+              <Link
+                to={eoiItem.path}
+                className="text-[#ffd700] text-[11px] xl:text-[12px] font-bold uppercase tracking-wide animate-pulse"
+              >
+                <span className="mr-1">▶</span>
+                {eoiItem.label}
+                <span className="ml-1">◀</span>
+              </Link>
+            )}
           </div>
 
-          {/* ---------- RIGHT NAV ---------- */}
-          <div className="hidden lg:flex items-center gap-6 xl:gap-8 text-[13px] font-bold uppercase tracking-wide">
-            {rightNavItems.map((item) =>
-              item.children ? (
-                <DropdownMenu
-                  key={item.label}
-                  label={item.label}
-                  items={item.children}
+          {/* BOTTOM ROW - Main Navigation (Larger) */}
+          <div className="flex items-center h-20">
+            {/* ---------- LEFT NAV (PRIMARY - 6 items) ---------- */}
+            <nav className="hidden lg:flex items-center gap-1.5 xl:gap-2 text-[11px] xl:text-[12px] font-semibold uppercase tracking-tight flex-1">
+              {PRIMARY_NAV.map((item) =>
+                item.children ? (
+                  <DropdownMenu
+                    key={item.label}
+                    label={item.label}
+                    items={item.children}
+                  />
+                ) : (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className={`inline-block relative px-1.5 py-1 transition-colors duration-300 whitespace-nowrap ${
+                      location.pathname === item.path
+                        ? "text-white"
+                        : "text-white/80 hover:text-white"
+                    } after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-0 after:bg-white after:transition-[width] after:duration-400 after:ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:after:w-full`}
+                  >
+                    {item.label}
+                  </Link>
+                )
+              )}
+            </nav>
+
+            {/* ---------- CENTER HEX LOGO ---------- */}
+            <div className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[99%] w-56 sm:w-64 h-40 sm:h-44 overflow-visible flex flex-col items-center justify-center">
+              {/* Blended Hex Shape */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 70"
+                className="absolute inset-0 w-full h-full"
+                preserveAspectRatio="none"
+              >
+                <path d="M0,-8 L20,30 L80,30 L100,-8 Z" fill="#1b2b4a" />
+              </svg>
+
+              {/* Logo centered at the join */}
+              <Link
+                to="/"
+                className="absolute inset-0 flex items-center justify-center"
+                aria-label="Home"
+              >
+                <img
+                  src={logo}
+                  alt="Surjit Hockey Logo"
+                  className="relative z-10 w-[55%] sm:w-[50%] h-auto object-contain -translate-y-full"
+                  draggable="false"
                 />
-              ) : (
+              </Link>
+
+              {/* Timer inside hexagon shape */}
+              <div className="absolute top-[16%] left-1/2 -translate-x-1/2 z-20 text-[#ffd700] text-[10px] sm:text-xs font-bold whitespace-nowrap">
+                <CountdownTimer />
+              </div>
+            </div>
+
+            {/* ---------- RIGHT NAV (SECONDARY without EOI - 6 items) ---------- */}
+            <nav className="hidden lg:flex items-center justify-end gap-1.5 xl:gap-2 text-[11px] xl:text-[12px] font-semibold uppercase tracking-tight flex-1">
+              {secondaryNavWithoutEOI.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`inline-block relative pb-1 transition-colors duration-300 ${
+                  className={`inline-block relative px-1.5 py-1 transition-colors duration-300 whitespace-nowrap ${
                     location.pathname === item.path
                       ? "text-white"
                       : "text-white/80 hover:text-white"
@@ -114,95 +170,33 @@ export default function Header() {
                 >
                   {item.label}
                 </Link>
-              )
-            )}
-          </div>
+              ))}
+            </nav>
 
-          {/* ---------- MOBILE MENU ---------- */}
-          <button
-            onClick={() => setMobileOpen(true)}
-            className="lg:hidden p-2 rounded-md border border-white/10 text-white hover:bg-white/10"
-            aria-label="Open menu"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              className="w-6 h-6"
+            {/* ---------- MOBILE MENU ---------- */}
+            <button
+              onClick={() => setMobileOpen(true)}
+              className="lg:hidden p-2 rounded-md border border-white/10 text-white hover:bg-white/10 ml-auto"
+              aria-label="Open menu"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="1.5"
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.5"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       </header>
-
-      {/* SECONDARY HEADER - Category Navigation */}
-      <div className="sticky top-20 z-40 bg-[#0b152d] border-b border-white/10">
-        <div className="container mx-auto px-4 sm:px-6 md:px-8 font-[Sora]">
-          <nav className="hidden lg:flex items-center justify-between h-12 text-[12px] font-bold uppercase tracking-wide">
-            {/* Left side items */}
-            <div className="flex items-center gap-6 xl:gap-8">
-              {SECONDARY_NAV.slice(0, Math.ceil(SECONDARY_NAV.length / 2)).map(
-                (item) => (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    className={`inline-block relative transition-colors duration-300 ${
-                      item.highlight
-                        ? "text-[#ffd700] animate-pulse"
-                        : location.pathname === item.path
-                          ? "text-white"
-                          : "text-white/70 hover:text-white"
-                    } ${
-                      !item.highlight &&
-                      "after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-white after:transition-[width] after:duration-400 after:ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:after:w-full"
-                    }`}
-                  >
-                    {item.highlight && <span className="mr-1">▶</span>}
-                    {item.label}
-                    {item.highlight && <span className="ml-1">◀</span>}
-                  </Link>
-                )
-              )}
-            </div>
-
-            {/* Center space for hexagon */}
-            <div className="w-56 shrink-0"></div>
-
-            {/* Right side items */}
-            <div className="flex items-center gap-6 xl:gap-8">
-              {SECONDARY_NAV.slice(Math.ceil(SECONDARY_NAV.length / 2)).map(
-                (item) => (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    className={`inline-block relative transition-colors duration-300 ${
-                      item.highlight
-                        ? "text-[#ffd700] animate-pulse"
-                        : location.pathname === item.path
-                          ? "text-white"
-                          : "text-white/70 hover:text-white"
-                    } ${
-                      !item.highlight &&
-                      "after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-white after:transition-[width] after:duration-400 after:ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:after:w-full"
-                    }`}
-                  >
-                    {item.highlight && <span className="mr-1">▶</span>}
-                    {item.label}
-                    {item.highlight && <span className="ml-1">◀</span>}
-                  </Link>
-                )
-              )}
-            </div>
-          </nav>
-        </div>
-      </div>
 
       {/* ---------- MOBILE DRAWER ---------- */}
       <MobileNav isOpen={mobileOpen} onClose={() => setMobileOpen(false)} />

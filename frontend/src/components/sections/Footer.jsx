@@ -109,16 +109,16 @@ export default function Footer() {
             {[
               {
                 Icon: FaFacebookF,
-                url: "https://www.facebook.com/surjithockeyjal",
+                url: "https://www.facebook.com/surjithockey.in/",
               },
               {
                 Icon: FaInstagram,
                 url: "https://www.instagram.com/surjit_hockey_tournament",
               },
-              { Icon: FaTwitter, url: "https://twitter.com/surjit_hockey" },
+              { Icon: FaTwitter, url: "https://x.com/surjit_hockey" },
               {
                 Icon: FaYoutube,
-                url: "https://www.youtube.com/@surjithockeytournament",
+                url: "https://www.youtube.com/user/WorldKabaddiLeague14",
               },
             ].map(({ Icon, url }, i) => (
               <a

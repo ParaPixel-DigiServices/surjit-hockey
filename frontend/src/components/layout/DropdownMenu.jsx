@@ -35,7 +35,7 @@ export default function DropdownMenu({ label, items }) {
     >
       {/* Trigger Button */}
       <button
-        className={`inline-flex items-center gap-1 relative pb-1 transition-colors duration-300 ${
+        className={`inline-flex items-center gap-0.5 relative px-1.5 py-1 transition-colors duration-300 whitespace-nowrap ${
           isAnyChildActive ? "text-white" : "text-white/80 hover:text-white"
         } after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-0 after:bg-white after:transition-[width] after:duration-400 after:ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:after:w-full`}
         aria-expanded={isOpen}
@@ -43,7 +43,7 @@ export default function DropdownMenu({ label, items }) {
       >
         {label}
         <ChevronDown
-          size={14}
+          size={12}
           className={`transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
           }`}
@@ -58,7 +58,7 @@ export default function DropdownMenu({ label, items }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-full left-0 mt-2 w-56 bg-[#1b2b4a] border border-white/10 rounded-md shadow-2xl overflow-hidden z-50"
+            className="absolute top-full left-0 mt-2 w-72 bg-[#1b2b4a] border border-white/10 rounded-md shadow-2xl overflow-hidden z-50"
           >
             <div className="py-2 max-h-[70vh] overflow-y-auto scrollbar-hide [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
               {items.map((item) => {
@@ -75,7 +75,7 @@ export default function DropdownMenu({ label, items }) {
                           setOpenSectionsItem(item.path);
                         }
                       }}
-                      className={`flex items-center justify-between px-4 py-2.5 text-sm transition-colors ${
+                      className={`flex items-center justify-between px-3 py-1.5 text-[12px] xl:text-[13px] transition-colors whitespace-nowrap ${
                         isActive
                           ? "bg-white/10 text-white font-semibold"
                           : "text-white/80 hover:bg-white/5 hover:text-white"
@@ -125,7 +125,7 @@ export default function DropdownMenu({ label, items }) {
                               <li key={section.path}>
                                 <Link
                                   to={section.path}
-                                  className={`block px-3 py-1.5 rounded-md text-xs transition-colors ${
+                                  className={`block px-3 py-1 rounded-md text-[11px] xl:text-[12px] leading-tight transition-colors whitespace-nowrap ${
                                     isSectionActive
                                       ? "bg-white/10 text-white font-medium"
                                       : "text-white/70 hover:bg-white/5 hover:text-white"
