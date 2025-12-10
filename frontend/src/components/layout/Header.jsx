@@ -27,6 +27,18 @@ export default function Header() {
 
   useEffect(() => setMobileOpen(false), [location.pathname]);
 
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [mobileOpen]);
+
   // Filter out E O I from SECONDARY_NAV
   const secondaryNavWithoutEOI = SECONDARY_NAV.filter(
     (item) => !item.highlight
@@ -38,10 +50,10 @@ export default function Header() {
       {/* COMBINED HEADER - Two Rows in One */}
       <header className="sticky top-0 z-50 bg-[#1b2b4a] transition-all duration-300 border-b border-white/10 font-[Sora]">
         <div className="container mx-auto px-1 relative">
-          {/* TOP ROW - Social Links & EOI (Smaller) */}
+          {/* TOP ROW - Empty on Mobile, Social Links & EOI on Desktop */}
           <div className="flex items-center justify-between h-9">
-            {/* Social Links with Labels */}
-            <div className="hidden lg:flex items-center gap-6">
+            {/* Social Links - Desktop with Labels, Mobile Icons Only */}
+            <div className="hidden lg:flex items-center gap-3 lg:gap-6">
               <a
                 href="https://www.facebook.com/surjithockey.in/"
                 target="_blank"
@@ -50,7 +62,7 @@ export default function Header() {
                 aria-label="Facebook"
               >
                 <Facebook size={14} />
-                <span>Facebook</span>
+                <span className="hidden lg:inline">Facebook</span>
               </a>
               <a
                 href="https://x.com/surjit_hockey"
@@ -60,7 +72,7 @@ export default function Header() {
                 aria-label="Twitter"
               >
                 <Twitter size={14} />
-                <span>Twitter</span>
+                <span className="hidden lg:inline">Twitter</span>
               </a>
               <a
                 href="https://instagram.com"
@@ -70,7 +82,7 @@ export default function Header() {
                 aria-label="Instagram"
               >
                 <Instagram size={14} />
-                <span>Instagram</span>
+                <span className="hidden lg:inline">Instagram</span>
               </a>
               <a
                 href="https://www.youtube.com/user/WorldKabaddiLeague14"
@@ -80,15 +92,15 @@ export default function Header() {
                 aria-label="YouTube"
               >
                 <Youtube size={14} />
-                <span>YouTube</span>
+                <span className="hidden lg:inline">YouTube</span>
               </a>
             </div>
 
-            {/* EOI Link */}
+            {/* EOI Link - Desktop Only */}
             {eoiItem && (
               <Link
                 to={eoiItem.path}
-                className="text-[#ffd700] text-[11px] xl:text-[12px] font-bold uppercase tracking-wide animate-pulse"
+                className="hidden lg:flex text-[#ffd700] text-[11px] xl:text-[12px] font-bold uppercase tracking-wide animate-pulse"
               >
                 <span className="mr-1">▶</span>
                 {eoiItem.label}
