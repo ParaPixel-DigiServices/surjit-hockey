@@ -186,7 +186,6 @@ export default function Pools() {
       "⚠️ UPDATE POOL STATS: Backend PUT endpoint required - /additional/pools/{pool_id}/stats"
     );
     console.log("Pool ID:", editingPool.id, "Stats:", s);
-    // TODO: Implement backend endpoint
     setPools((prev) =>
       prev.map((p) => (p.id === editingPool.id ? { ...p, stats: s } : p))
     );
@@ -197,7 +196,6 @@ export default function Pools() {
       "⚠️ IMPORT POOLS: Backend POST endpoint required - /additional/pools/import"
     );
     console.log("Imported pools:", importedPools);
-    // TODO: Implement backend endpoint
 
     // merge imported teams into teams list and pools
     const newTeams = [...teams];

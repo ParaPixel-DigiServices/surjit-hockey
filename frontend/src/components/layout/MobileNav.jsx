@@ -264,7 +264,7 @@ export default function MobileNav({ isOpen, onClose }) {
               </svg>
             </a>
             <a
-              href="https://instagram.com"
+              href="https://instagram.com/surjit_hockey_tournament"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white/70 hover:text-[#ffd700] transition-colors"

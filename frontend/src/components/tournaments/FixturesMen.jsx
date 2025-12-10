@@ -14,7 +14,6 @@ export default function FixturesMen() {
     const fetchFixtures = async () => {
       try {
         setLoading(true);
-        // TODO: Replace with actual tournament ID dynamically based on category
         const tournamentId = category === "Men" ? 100 : 101;
         const fixturesData = await api.getTournamentFixtures(tournamentId);
 

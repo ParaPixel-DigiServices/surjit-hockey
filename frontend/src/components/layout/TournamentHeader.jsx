@@ -3,15 +3,6 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../assets/icon.png";
 import SecureImage from "../ui/SecureImage";
 
-/**
- * TournamentHeader.jsx — Auto-scrolling Navbar (Back & Forth)
- * ------------------------------------------------------------
- * ✅ Scrolls left ↔ right continuously
- * ✅ Pauses on hover
- * ✅ Custom golden scrollbar
- * ✅ Matches About page style
- */
-
 export default function TournamentHeader() {
   const navigate = useNavigate();
   const [active, setActive] = useState(null);

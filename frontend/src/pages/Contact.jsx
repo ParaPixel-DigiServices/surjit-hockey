@@ -18,7 +18,6 @@ export default function Contact() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: Implement contact form submission
     console.log("Contact form submitted:", formData);
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 3000);

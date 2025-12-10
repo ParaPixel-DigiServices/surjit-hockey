@@ -66,7 +66,6 @@ export default function MatchSchedule() {
     const fetchMatches = async () => {
       try {
         setLoading(true);
-        // TODO: Replace with actual tournament ID dynamically
         const tournamentId = 100;
         const fixturesData = await api.getTournamentFixtures(tournamentId);
 

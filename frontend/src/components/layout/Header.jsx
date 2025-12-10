@@ -7,23 +7,9 @@ import CountdownTimer from "./CountdownTimer";
 import { PRIMARY_NAV, SECONDARY_NAV } from "../../utils/navLinks";
 import logo from "../../assets/icon.png";
 
-/**
- * Header (Two-Row Navigation)
- * ----------------------------
- * ✅ Top row: Social links (left) + E O I (right)
- * ✅ Main row: PRIMARY_NAV (left, 6 items) + SECONDARY_NAV without EOI (right, 6 items)
- * ✅ Equal space allocation, center logo with breathing room
- */
 export default function Header() {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
-
-  useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => setMobileOpen(false), [location.pathname]);
 
@@ -75,7 +61,7 @@ export default function Header() {
                 <span className="hidden lg:inline">Twitter</span>
               </a>
               <a
-                href="https://instagram.com"
+                href="https://instagram.com/surjit_hockey_tournament"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-white/70 hover:text-white transition-colors text-[10px] xl:text-[11px] font-medium uppercase"

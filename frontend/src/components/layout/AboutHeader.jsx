@@ -2,16 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/icon.png";
 
-/**
- * AboutHeader.jsx — Auto-scrolling About page navigation (Back & Forth)
- * ----------------------------------------------------------------------
- * ✅ Smoothly scrolls right → left → right endlessly
- * ✅ Reverses at ends
- * ✅ Pauses on hover
- * ✅ Custom golden scrollbar
- * ✅ Fully responsive
- */
-
 export default function AboutHeader() {
   const navigate = useNavigate();
   const [active, setActive] = useState(null);

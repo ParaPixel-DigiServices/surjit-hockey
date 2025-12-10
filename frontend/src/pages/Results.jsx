@@ -27,7 +27,6 @@ export default function ResultsPage() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        // TODO: Replace with actual tournament ID dynamically
         const tournamentId = 100;
         const [fixturesData, resultsData] = await Promise.all([
           api.getTournamentFixtures(tournamentId),
