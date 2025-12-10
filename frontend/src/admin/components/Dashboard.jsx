@@ -50,8 +50,7 @@ export default function Dashboard() {
   const [open, setOpen] = useState(false);
 
   const handleSave = (updated) => {
-    console.log("Updated Upcoming Match:", updated);
-    // Note: Backend doesn't have UPDATE endpoints yet
+    // Backend endpoint not yet implemented
   };
 
   const [addTeamOpen, setAddTeamOpen] = useState(false);

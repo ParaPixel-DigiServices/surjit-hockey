@@ -45,10 +45,7 @@ export default function App() {
   return (
     <AuthProvider>
       <Routes>
-        {/** ========= AUTH ROUTES ========= **/}
         <Route path="/login" element={<Login />} />
-
-        {/** ========= MAIN WEBSITE ROUTES ========= **/}
 
         <Route
           path="/"
@@ -86,7 +83,6 @@ export default function App() {
           }
         />
 
-        {/** 🚨 About page uses its OWN header — NOT MainLayout **/}
         <Route path="/about" element={<About />} />
 
         <Route path="/tournament" element={<Tournaments />} />
@@ -107,8 +103,6 @@ export default function App() {
             </MainLayout>
           }
         />
-
-        {/** ========= NEW DROPDOWN PAGES ========= **/}
 
         <Route
           path="/pools"
@@ -174,15 +168,6 @@ export default function App() {
         />
 
         <Route
-          path="/teams"
-          element={
-            <MainLayout>
-              <Teams />
-            </MainLayout>
-          }
-        />
-
-        <Route
           path="/team/:id"
           element={
             <MainLayout>
@@ -218,8 +203,6 @@ export default function App() {
           }
         />
 
-        {/** ========= ADMIN ROUTES (PROTECTED) ========= **/}
-
         <Route
           path="/admin"
           element={
@@ -239,7 +222,6 @@ export default function App() {
           <Route path="settings" element={<SettingsAdmin />} />
         </Route>
 
-        {/** ========= 404 ========= **/}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AuthProvider>

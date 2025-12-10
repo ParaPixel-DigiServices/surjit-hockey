@@ -25,7 +25,6 @@ import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
 import SecureImage from "../../../components/ui/SecureImage";
 
-/** Sortable item */
 function SortableItem({ id, team, onRemove }) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });

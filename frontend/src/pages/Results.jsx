@@ -44,8 +44,7 @@ export default function ResultsPage() {
         }));
 
         setMatches(formattedMatches);
-        setTable(resultsData); // Set table data if available
-        console.log(loading, error, table); // Temporary usage to silence linter
+        setTable(resultsData);
       } catch (err) {
         console.error("Failed to fetch data:", err);
         setError("Failed to load data");
