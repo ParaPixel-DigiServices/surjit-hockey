@@ -1,9 +1,3 @@
-// src/utils/navLinks.js
-
-/**
- * PRIMARY NAVIGATION - Main top-level menu (matches original upper header)
- * -------------------------------------------------------------------------
- */
 export const PRIMARY_NAV = [
   {
     label: "HOME",
@@ -65,10 +59,6 @@ export const PRIMARY_NAV = [
   },
 ];
 
-/**
- * SECONDARY NAVIGATION - Bottom category bar (matches original lower header)
- * ---------------------------------------------------------------------------
- */
 export const SECONDARY_NAV = [
   { label: "Statistics", path: "/results#statistics" },
   { label: "Fixtures", path: "/fixtures" },

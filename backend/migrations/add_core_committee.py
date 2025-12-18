@@ -4,10 +4,8 @@ Migration script to create core_committee_members table and populate with initia
 from sqlalchemy import create_engine, text
 from app.core.config import settings
 
-# Create engine
 engine = create_engine(settings.DATABASE_URL)
 
-# SQL to create table
 CREATE_TABLE_SQL = """
 CREATE TABLE IF NOT EXISTS core_committee_members (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -21,7 +19,6 @@ CREATE TABLE IF NOT EXISTS core_committee_members (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 """
 
-# SQL to insert initial data
 INSERT_DATA_SQL = """
 INSERT INTO core_committee_members (name, role, description, image_url, display_order) VALUES
     ('Mr. L. R. Nayyar, IRS (Retd.)', 'Former Chief Commissioner', 'Income Tax', '/images/core-committee/core_committee_1.jpg', 1),

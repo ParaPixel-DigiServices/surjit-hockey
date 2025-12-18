@@ -62,7 +62,6 @@ export default function Messages() {
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
     >
-      {/* Heading */}
       <div className="text-center mb-10">
         <h2 className="text-3xl md:text-4xl font-extrabold tracking-wide uppercase">
           Messages from Delegates
@@ -70,7 +69,6 @@ export default function Messages() {
         <div className="mt-3 h-[3px] w-24 bg-[#ffd700] mx-auto rounded-full" />
       </div>
 
-      {/* Carousel Container */}
       <div className="max-w-3xl mx-auto relative flex flex-col items-center px-4 text-center">
         <AnimatePresence mode="wait">
           <motion.div
@@ -102,7 +100,6 @@ export default function Messages() {
           </motion.div>
         </AnimatePresence>
 
-        {/* Navigation dots */}
         <div className="flex items-center justify-center gap-3 mt-8">
           {messages.map((_, i) => (
             <button
@@ -116,7 +113,6 @@ export default function Messages() {
           ))}
         </div>
 
-        {/* Optional manual arrows */}
         <div className="absolute inset-y-1/2 -translate-y-1/2 w-full flex justify-between px-2 md:px-6 pointer-events-none">
           <button
             onClick={prev}

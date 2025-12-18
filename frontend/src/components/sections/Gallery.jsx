@@ -3,16 +3,6 @@ import { motion } from "framer-motion";
 import config from "../../config/api";
 import SecureImage from "../ui/SecureImage";
 
-/**
- * Players.jsx — "Meet the Troopers" (Edge-to-Edge)
- * ------------------------------------------------
- * - Blue background (#1b2b4a)
- * - White text, gold underline
- * - No gaps, no border radius, full-width grid
- * - Subtle hover zoom (no borders)
- * - Framer Motion staggered fade-in animation
- */
-
 const players = [
   config.getUploadUrl("gallery", "2-261.jpeg"),
   config.getUploadUrl("gallery", "10-404.JPG"),
@@ -29,7 +19,6 @@ const players = [
 export default function Players() {
   return (
     <section className="relative bg-[#1b2b4a] text-white py-4 md:py-6 font-[Sora] overflow-hidden">
-      {/* Heading */}
       <div className="text-center mb-10">
         <h2 className="text-3xl md:text-4xl font-extrabold tracking-wide uppercase">
           GALLERY
@@ -37,7 +26,6 @@ export default function Players() {
         <div className="mt-3 h-[3px] w-24 bg-[#ffd700] mx-auto rounded-full" />
       </div>
 
-      {/* Tight Image Grid */}
       <motion.div
         className="max-w-[1600px] mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
         initial="hidden"

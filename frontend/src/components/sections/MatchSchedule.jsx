@@ -3,23 +3,11 @@ import { Link } from "react-router-dom";
 import { api } from "../../services/api";
 import { motion, AnimatePresence } from "framer-motion";
 
-/**
- * MatchSchedule (Interactive)
- * ----------------------------
- * - White background, gold accents, navy text
- * - Auto month/year detection
- * - Click a date to filter matches by that day
- * - "Show All" button resets the view
- * - Framer Motion fade transitions
- * - Responsive and mobile-first
- */
-
 export default function MatchSchedule() {
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState(null);
 
-  // Utility functions (must be defined before useMemo)
   const daysInMonth = (year, month) => {
     return new Date(year, month + 1, 0).getDate();
   };
@@ -72,18 +60,17 @@ export default function MatchSchedule() {
         const formattedMatches = fixturesData.map((match) => ({
           id: match.id,
           date: new Date(match.date_match).toISOString().split("T")[0],
-          teams: `Team ${match.team_id_1} vs Team ${match.team_id_2}`, // Placeholder logic
+          teams: `Team ${match.team_id_1} vs Team ${match.team_id_2}`,
           time: new Date(match.date_match).toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",
           }),
-          venue: "Surjit Hockey Stadium", // Placeholder
+          venue: "Surjit Hockey Stadium",
         }));
 
         setMatches(formattedMatches);
       } catch (error) {
         console.error("Failed to fetch matches:", error);
-        // Fallback data
         setMatches([
           {
             id: 1,
@@ -126,7 +113,6 @@ export default function MatchSchedule() {
     return <div className="text-center py-20">Loading schedule...</div>;
   }
 
-  // Filter logic
   const filteredMatches = selectedDate
     ? matches.filter((m) => m.date === selectedDate)
     : matches;
@@ -140,7 +126,6 @@ export default function MatchSchedule() {
 
   return (
     <section className="relative bg-white text-[#1b2b4a] py-4 md:py-6 px-6 font-[Sora]">
-      {/* Heading */}
       <div className="w-full mb-8 text-center">
         <h2 className="text-3xl md:text-4xl font-bold tracking-wide">
           MATCH SCHEDULE
@@ -149,7 +134,6 @@ export default function MatchSchedule() {
       </div>
 
       <div className="w-full flex flex-col md:flex-row gap-8">
-        {/* LEFT: Match List */}
         <motion.div
           className="md:w-2/3 space-y-6"
           initial={{ opacity: 0, y: 20 }}
@@ -221,7 +205,6 @@ export default function MatchSchedule() {
           </AnimatePresence>
         </motion.div>
 
-        {/* RIGHT: Calendar */}
         <motion.aside
           className="md:w-1/3 bg-[#f5f5f5] rounded-2xl p-4 border border-[#ffd700]/50"
           initial={{ opacity: 0, x: 30 }}
@@ -236,7 +219,6 @@ export default function MatchSchedule() {
             </div>
           </div>
 
-          {/* Weekday Headers */}
           <div className="grid grid-cols-7 gap-1 text-xs text-gray-600 px-1 mb-2">
             {weekdayShort.map((d) => (
               <div key={d} className="text-center font-semibold">
@@ -245,7 +227,6 @@ export default function MatchSchedule() {
             ))}
           </div>
 
-          {/* Calendar Grid */}
           <div className="grid grid-cols-7 gap-2">
             {weeks.flat().map((day, idx) => {
               if (!day) return <div key={idx} className="h-10" />;
@@ -271,7 +252,6 @@ export default function MatchSchedule() {
             })}
           </div>
 
-          {/* Legend */}
           <div className="mt-4 text-sm text-gray-700 flex items-center gap-2">
             <span className="inline-block w-3 h-3 rounded-full bg-[#ffd700]" />
             <span>Match Day</span>

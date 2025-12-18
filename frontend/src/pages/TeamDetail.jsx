@@ -5,11 +5,6 @@ import { ArrowLeft, Users, User, Phone } from "lucide-react";
 import config from "../config/api";
 import SecureImage from "../components/ui/SecureImage";
 
-/**
- * Team Detail Page
- * ----------------
- * Displays detailed information about a specific team
- */
 export default function TeamDetail() {
   const { id } = useParams();
   const [team, setTeam] = useState(null);

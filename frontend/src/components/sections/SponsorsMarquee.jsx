@@ -39,7 +39,6 @@ export default function SponsorsMarquee() {
 
   const loopSponsors = useMemo(() => {
     if (!sponsors.length) return [];
-    // Duplicate once so we can scroll through all then seamlessly continue
     return [...sponsors, ...sponsors];
   }, [sponsors]);
 

@@ -1,4 +1,3 @@
-// src/App.jsx
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -15,8 +14,6 @@ import News from "./pages/News";
 import NewsDetail from "./pages/NewsDetail";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
-
-// New Pages
 import Pools from "./pages/Pools";
 import Honours from "./pages/Honours";
 import Officials from "./pages/Officials";
@@ -28,8 +25,6 @@ import TeamDetail from "./pages/TeamDetail";
 import Sponsors from "./pages/Sponsors";
 import Messages from "./pages/Messages";
 import Contact from "./pages/Contact";
-
-// ADMIN
 import AdminLayout from "./admin/layout/AdminLayout";
 import Dashboard from "./admin/components/Dashboard";
 import TeamsAdmin from "./admin/pages/Teams";

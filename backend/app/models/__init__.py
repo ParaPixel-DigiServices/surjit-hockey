@@ -1,5 +1,3 @@
-"""Models package initialization."""
-
 from app.models.user import User, UserProfile, UserSportsDetails
 from app.models.tournament import Tournament, Fixture, MatchResult, Category
 from app.models.team import Team, TeamPlayer, Alumni

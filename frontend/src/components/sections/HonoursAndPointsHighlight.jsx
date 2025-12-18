@@ -23,7 +23,6 @@ export default function HonoursAndPointsHighlight() {
           api.getYears(),
         ]);
 
-        // Map team id -> name and logo
         const teamMap = {};
         teamsData.forEach((team) => {
           teamMap[team.id] = {
@@ -34,7 +33,6 @@ export default function HonoursAndPointsHighlight() {
           };
         });
 
-        // Take a few most recent honours
         const formattedHonours = honoursData
           .map((h) => ({
             year: h.year,
@@ -48,14 +46,12 @@ export default function HonoursAndPointsHighlight() {
 
         setRecentHonours(formattedHonours);
 
-        // Determine latest year id for standings/pools
         const sortedYears = Array.isArray(yearsData)
           ? [...yearsData].sort((a, b) => b.year - a.year)
           : [];
         const latestYear = sortedYears[0];
 
         if (latestYear) {
-          // Load pools for that year and build a small snapshot for each
           const pools = await api.getPools();
           const yearPools = Array.isArray(pools)
             ? pools.filter((p) => p.year_id === latestYear.id)
@@ -117,7 +113,6 @@ export default function HonoursAndPointsHighlight() {
       <div className="pointer-events-none absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_top,rgba(255,215,0,0.12),transparent_60%)]" />
 
       <div className="relative max-w-6xl mx-auto px-6">
-        {/* Header */}
         <div className="text-center mb-10">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -135,7 +130,6 @@ export default function HonoursAndPointsHighlight() {
           </p>
         </div>
 
-        {/* Roll of Honour preview */}
         <div className="mb-10">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -215,7 +209,6 @@ export default function HonoursAndPointsHighlight() {
           </motion.div>
         </div>
 
-        {/* Points snapshot */}
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           whileInView={{ opacity: 1, x: 0 }}

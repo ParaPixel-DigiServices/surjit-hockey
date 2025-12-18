@@ -4,13 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import config from "../config/api";
 import { useSecureImage } from "../hooks/useSecureImage";
 
-// --- Import Team Logos ---
-// import indianOil from "../assets/teams/iocl.png";
-// import punjabPolice from "../assets/teams/police.png";
-// import armyXi from "../assets/teams/army.png";
-// import indianNavy from "../assets/teams/navy.png";
-// import rcf from "../assets/teams/rcf.png";
-
 export default function ResultsPage() {
   const [gender, setGender] = useState("men");
   const [tab, setTab] = useState("results");

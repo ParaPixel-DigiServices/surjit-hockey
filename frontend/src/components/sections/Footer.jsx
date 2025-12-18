@@ -11,22 +11,10 @@ import {
   FaMapMarkerAlt,
 } from "react-icons/fa";
 
-/**
- * Footer.jsx — Premium Large Footer
- * ---------------------------------
- * - Navy blue background (#1b2b4a)
- * - White text + gold accent
- * - Three main columns: About | Quick Links | Contact
- * - Gold border bottom bar with credit line
- * - Fully responsive, elegant, and animated
- */
-
 export default function Footer() {
   return (
     <footer className="bg-[#1b2b4a] text-white font-[Sora] pt-16 md:pt-20 pb-10 relative overflow-hidden">
-      {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-16">
-        {/* About */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -44,7 +32,6 @@ export default function Footer() {
           </p>
         </motion.div>
 
-        {/* Quick Links */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -73,7 +60,6 @@ export default function Footer() {
           </ul>
         </motion.div>
 
-        {/* Contact Info */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -104,7 +90,6 @@ export default function Footer() {
             </li>
           </ul>
 
-          {/* Social Media Icons */}
           <div className="flex gap-4 mt-6">
             {[
               {
@@ -135,7 +120,6 @@ export default function Footer() {
         </motion.div>
       </div>
 
-      {/* Bottom Bar */}
       <div className="border-t border-[#ffd700]/30 mt-16 pt-6 text-center text-gray-400 text-sm md:text-base">
         © 2025 Surjit Hockey Society | Designed & Developed by{" "}
         <span className="text-[#ffd700] font-semibold">

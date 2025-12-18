@@ -25,12 +25,9 @@ export default function Header() {
 
   return (
     <>
-      {/* COMBINED HEADER - Two Rows in One */}
       <header className="sticky top-0 z-50 bg-[#015296] transition-all duration-300 border-b border-white/10 font-[Sora]">
         <div className="w-full px-6 relative">
-          {/* BOTTOM ROW - Main Navigation (Larger) */}
           <div className="flex items-center h-20">
-            {/* ---------- LEFT NAV (PRIMARY - 6 items) ---------- */}
             <nav className="hidden xl:flex items-center justify-between flex-1 pr-4 text-[12px] font-semibold uppercase tracking-tight">
               <div className="flex items-center gap-4">
                 {PRIMARY_NAV.map((item) =>
@@ -57,9 +54,7 @@ export default function Header() {
               </div>
             </nav>
 
-            {/* ---------- CENTER HEX LOGO ---------- */}
             <div className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[99%] w-56 sm:w-64 h-40 sm:h-44 overflow-visible flex flex-col items-center justify-center">
-              {/* Blended Hex Shape */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 100 70"
@@ -69,7 +64,6 @@ export default function Header() {
                 <path d="M0,-8 L20,30 L80,30 L100,-8 Z" fill="#015296" />
               </svg>
 
-              {/* Logo centered at the join */}
               <Link
                 to="/"
                 className="absolute inset-0 flex items-center justify-center"
@@ -83,8 +77,6 @@ export default function Header() {
                 />
               </Link>
 
-              {/* Social Icons Around Hexagon */}
-              {/* Left - Facebook */}
               <a
                 href="https://www.facebook.com/surjithockey.in/"
                 target="_blank"
@@ -97,7 +89,6 @@ export default function Header() {
                 </svg>
               </a>
 
-              {/* Center Left - Twitter/X */}
               <a
                 href="https://x.com/surjit_hockey"
                 target="_blank"
@@ -110,7 +101,6 @@ export default function Header() {
                 </svg>
               </a>
 
-              {/* Center Right - Instagram */}
               <a
                 href="https://instagram.com/surjit_hockey_tournament"
                 target="_blank"
@@ -143,7 +133,6 @@ export default function Header() {
                 </svg>
               </a>
 
-              {/* Right - YouTube */}
               <a
                 href="https://www.youtube.com/user/WorldKabaddiLeague14"
                 target="_blank"
@@ -157,7 +146,6 @@ export default function Header() {
               </a>
             </div>
 
-            {/* ---------- RIGHT NAV (SECONDARY - 7 items) ---------- */}
             <nav className="hidden xl:flex items-center justify-between flex-1 pl-4 text-[12px] font-semibold uppercase tracking-tight">
               <div className="flex items-center gap-4 ml-auto">
                 {SECONDARY_NAV.map((item) => (

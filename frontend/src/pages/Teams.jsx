@@ -5,11 +5,6 @@ import { Users, MapPin } from "lucide-react";
 import config from "../config/api";
 import SecureImage from "../components/ui/SecureImage";
 
-/**
- * Teams Page
- * ----------
- * Display all participating teams
- */
 export default function Teams() {
   const [teams, setTeams] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -59,7 +54,6 @@ export default function Teams() {
   return (
     <div className="min-h-screen bg-[#0b152d] text-white py-20 px-4 font-[Sora]">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -73,7 +67,6 @@ export default function Teams() {
           </p>
         </motion.div>
 
-        {/* Teams Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {teams.map((team, index) => (
             <motion.div
@@ -86,7 +79,6 @@ export default function Teams() {
                 to={`/team/${team.team_id}`}
                 className="block bg-[#1b2b4a] rounded-lg p-6 border border-white/10 hover:border-[#ffd700]/50 transition group"
               >
-                {/* Team Logo */}
                 {team.team_logo && (
                   <div className="mb-4 flex justify-center">
                     <SecureImage
@@ -97,12 +89,10 @@ export default function Teams() {
                   </div>
                 )}
 
-                {/* Team Name */}
                 <h3 className="text-xl font-bold text-center text-white mb-3 group-hover:text-[#ffd700] transition">
                   {team.team_name}
                 </h3>
 
-                {/* Team Info */}
                 <div className="space-y-2 text-sm text-white/70">
                   {team.team_location && (
                     <div className="flex items-center gap-2">
@@ -118,7 +108,6 @@ export default function Teams() {
                   )}
                 </div>
 
-                {/* View Details Button */}
                 <div className="mt-4 pt-4 border-t border-white/10">
                   <span className="text-[#ffd700] text-sm font-semibold group-hover:underline">
                     View Team Details →
