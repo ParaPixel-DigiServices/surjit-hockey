@@ -113,7 +113,7 @@ export default function HonoursAndPointsHighlight() {
   }, []);
 
   return (
-    <section className="relative bg-[#020617] text-white py-16 md:py-20 font-[Sora] overflow-hidden">
+    <section className="relative bg-[#020617] text-white py-4 md:py-6 font-[Sora] overflow-hidden">
       <div className="pointer-events-none absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_top,rgba(255,215,0,0.12),transparent_60%)]" />
 
       <div className="relative max-w-6xl mx-auto px-6">

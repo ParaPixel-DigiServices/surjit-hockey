@@ -61,7 +61,7 @@ export default function TrendingNow() {
     return null;
   }
   return (
-    <section className="relative bg-black text-white py-10 overflow-hidden">
+    <section className="relative bg-black text-white py-4 overflow-hidden">
       {/* Section Heading */}
       <div className="text-center mb-10">
         <motion.h2

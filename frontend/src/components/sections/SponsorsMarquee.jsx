@@ -46,7 +46,7 @@ export default function SponsorsMarquee() {
   if (loading || !loopSponsors.length) return null;
 
   return (
-    <section className="w-full overflow-hidden">
+    <section className="w-full overflow-hidden py-2">
       <motion.div
         className="flex items-center"
         animate={{ x: ["0%", "-50%"] }}

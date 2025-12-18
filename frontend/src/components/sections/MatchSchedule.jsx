@@ -139,7 +139,7 @@ export default function MatchSchedule() {
   const hasMatch = (iso) => matches.some((m) => m.date === iso);
 
   return (
-    <section className="relative bg-white text-[#1b2b4a] py-16 px-4 md:px-12 font-[Sora]">
+    <section className="relative bg-white text-[#1b2b4a] py-4 md:py-6 px-4 md:px-12 font-[Sora]">
       {/* Heading */}
       <div className="max-w-6xl mx-auto mb-8 text-center">
         <h2 className="text-3xl md:text-4xl font-bold tracking-wide">

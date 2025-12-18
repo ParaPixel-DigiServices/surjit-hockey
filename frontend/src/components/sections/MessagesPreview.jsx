@@ -100,7 +100,7 @@ export default function MessagesPreview() {
 
   return (
     <>
-      <section className="relative bg-white py-4 md:py-6 font-[Sora]">
+      <section className="relative bg-white py-2 md:py-3 font-[Sora]">
         {/* Section Header */}
         <div className="text-center mb-6">
           <motion.h2

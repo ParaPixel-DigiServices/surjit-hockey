@@ -58,7 +58,7 @@ export default function Messages() {
 
   return (
     <section
-      className="relative bg-white text-[#1b2b4a] py-16 md:py-24 font-[Sora] overflow-hidden"
+      className="relative bg-white text-[#1b2b4a] py-4 md:py-6 font-[Sora] overflow-hidden"
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
     >

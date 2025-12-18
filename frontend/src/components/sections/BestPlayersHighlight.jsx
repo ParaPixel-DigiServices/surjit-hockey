@@ -26,7 +26,7 @@ export default function BestPlayersHighlight() {
   ];
 
   return (
-    <section className="relative bg-[#0b152d] text-white py-16 md:py-20 font-[Sora]">
+    <section className="relative bg-[#0b152d] text-white py-4 md:py-6 font-[Sora]">
       <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-10">

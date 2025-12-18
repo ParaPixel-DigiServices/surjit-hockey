@@ -28,7 +28,7 @@ const players = [
 
 export default function Players() {
   return (
-    <section className="relative bg-[#1b2b4a] text-white py-16 md:py-24 font-[Sora] overflow-hidden">
+    <section className="relative bg-[#1b2b4a] text-white py-4 md:py-6 font-[Sora] overflow-hidden">
       {/* Heading */}
       <div className="text-center mb-10">
         <h2 className="text-3xl md:text-4xl font-extrabold tracking-wide uppercase">
