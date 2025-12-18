@@ -21,7 +21,7 @@ export default function BreakingNews() {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="max-w-[1920px] mx-auto px-2">
+      <div className="w-full px-6">
         <div className="flex items-center gap-3 bg-white shadow-lg rounded-md px-4 py-2">
           {/* Breaking News Label */}
           <div className="relative flex-shrink-0">

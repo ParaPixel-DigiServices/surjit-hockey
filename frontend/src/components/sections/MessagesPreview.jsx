@@ -116,7 +116,7 @@ export default function MessagesPreview() {
         </div>
 
         {/* Officials Grid */}
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="w-full px-6">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-6">
             {messages.map((message, index) => (
               <motion.div

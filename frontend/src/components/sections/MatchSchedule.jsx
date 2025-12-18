@@ -139,16 +139,16 @@ export default function MatchSchedule() {
   const hasMatch = (iso) => matches.some((m) => m.date === iso);
 
   return (
-    <section className="relative bg-white text-[#1b2b4a] py-4 md:py-6 px-4 md:px-12 font-[Sora]">
+    <section className="relative bg-white text-[#1b2b4a] py-4 md:py-6 px-6 font-[Sora]">
       {/* Heading */}
-      <div className="max-w-6xl mx-auto mb-8 text-center">
+      <div className="w-full mb-8 text-center">
         <h2 className="text-3xl md:text-4xl font-bold tracking-wide">
           MATCH SCHEDULE
         </h2>
         <div className="mt-3 h-[3px] w-24 bg-[#ffd700] mx-auto rounded-full" />
       </div>
 
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8">
+      <div className="w-full flex flex-col md:flex-row gap-8">
         {/* LEFT: Match List */}
         <motion.div
           className="md:w-2/3 space-y-6"

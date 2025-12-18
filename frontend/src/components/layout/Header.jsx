@@ -27,7 +27,7 @@ export default function Header() {
     <>
       {/* COMBINED HEADER - Two Rows in One */}
       <header className="sticky top-0 z-50 bg-[#015296] transition-all duration-300 border-b border-white/10 font-[Sora]">
-        <div className="max-w-[1920px] mx-auto px-6 relative">
+        <div className="w-full px-6 relative">
           {/* BOTTOM ROW - Main Navigation (Larger) */}
           <div className="flex items-center h-20">
             {/* ---------- LEFT NAV (PRIMARY - 6 items) ---------- */}

@@ -25,7 +25,7 @@ export default function LatestEvents() {
 
   return (
     <section className="relative py-4 md:py-6 bg-white">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8">
+      <div className="w-full px-6">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
