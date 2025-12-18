@@ -31,7 +31,7 @@ export default function Header() {
           {/* BOTTOM ROW - Main Navigation (Larger) */}
           <div className="flex items-center h-20">
             {/* ---------- LEFT NAV (PRIMARY - 6 items) ---------- */}
-            <nav className="hidden lg:flex items-center gap-1.5 xl:gap-2 text-[11px] xl:text-[12px] font-semibold uppercase tracking-tight flex-1">
+            <nav className="hidden lg:flex items-center gap-2 text-[12px] font-semibold uppercase tracking-tight flex-1">
               {PRIMARY_NAV.map((item) =>
                 item.children ? (
                   <DropdownMenu
@@ -156,7 +156,7 @@ export default function Header() {
             </div>
 
             {/* ---------- RIGHT NAV (SECONDARY - 7 items) ---------- */}
-            <nav className="hidden lg:flex items-center justify-end gap-1.5 xl:gap-2 text-[11px] xl:text-[12px] font-semibold uppercase tracking-tight flex-1">
+            <nav className="hidden lg:flex items-center justify-end gap-2 text-[12px] font-semibold uppercase tracking-tight flex-1">
               {SECONDARY_NAV.map((item) => (
                 <Link
                   key={item.path}

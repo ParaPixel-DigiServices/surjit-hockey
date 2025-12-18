@@ -1,5 +1,6 @@
 import React from "react";
 import Hero from "../components/sections/Hero";
+import BreakingNews from "../components/sections/BreakingNews";
 import LatestEvents from "../components/sections/LatestEvents";
 import TrendingNow from "../components/sections/TrendingNow";
 import MatchSchedule from "../components/sections/MatchSchedule";
@@ -14,6 +15,7 @@ export default function Home() {
   return (
     <main className="bg-white min-h-screen text-[#1b2b4a] overflow-x-hidden">
       <Hero />
+      <BreakingNews />
       <SponsorsMarquee />
       <MessagesPreview />
       <BestPlayersHighlight />

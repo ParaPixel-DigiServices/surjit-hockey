@@ -98,11 +98,11 @@ export default function CountdownTimer() {
   return (
     <div className="flex flex-col items-center">
       {label && (
-        <span className="text-[8px] uppercase tracking-widest opacity-80 mb-1.5">
+        <span className="text-[10px] sm:text-xs uppercase tracking-widest opacity-80 mb-3">
           {label}
         </span>
       )}
-      <div className="flex gap-2 items-center text-[10px] sm:text-xs">
+      <div className="flex gap-2 items-center text-xs sm:text-sm">
         <span className="font-bold">{timeLeft.days}d</span>
         <span>:</span>
         <span className="font-bold">{timeLeft.hours}h</span>
