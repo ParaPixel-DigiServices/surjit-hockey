@@ -27,7 +27,7 @@ export default function Header() {
   return (
     <>
       {/* COMBINED HEADER - Two Rows in One */}
-      <header className="sticky top-0 z-50 bg-[#1b2b4a] transition-all duration-300 border-b border-white/10 font-[Sora]">
+      <header className="sticky top-0 z-50 bg-[#0077be] transition-all duration-300 border-b border-white/10 font-[Sora]">
         <div className="max-w-[1920px] mx-auto px-6 relative">
           {/* BOTTOM ROW - Main Navigation (Larger) */}
           <div className="flex items-center h-20">
@@ -65,7 +65,7 @@ export default function Header() {
                 className="absolute inset-0 w-full h-full"
                 preserveAspectRatio="none"
               >
-                <path d="M0,-8 L20,30 L80,30 L100,-8 Z" fill="#1b2b4a" />
+                <path d="M0,-8 L20,30 L80,30 L100,-8 Z" fill="#0077be" />
               </svg>
 
               {/* Logo centered at the join */}
