@@ -1,25 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 export default function BreakingNews() {
   // Hardcoded news items from the backup database
   const newsItems = [
-    "42ND INDIANOIL SERVO SURJIT HOCKEY TOURNAMENT: THE WINNERS TEAM WILL BE AWARDED RS. 5.51 LAKHS WHEREAS THE RUNNERS UP TEAM WILL BE POCKETED RS. 2.50 LAKHS..",
+    "42ND INDIANOIL SERVO SURJIT HOCKEY TOURNAMENT: THE WINNERS TEAM WILL BE AWARDED RS. 5.51 LAKHS WHEREAS THE RUNNERS UP TEAM WILL BE POCKETED RS. 2.50 LAKHS",
     "40TH INDIAN OIL SERVO SURJIT HOCKEY TOURNAMENT: PUNJAB POLICE JALANDHAR AND CAG DELHI TEAMS ENTER THE LEAGUE ROUND",
     "38TH INDIAN OIL SERVO SURJIT HOCKEY TOURNAMENT BEGINS | PUNJAB POLICE BEAT RAIL COACH FACTORY KAPURTHALA BY 1-0",
     "REGISTRATIONS NOW OPEN FOR THE UPCOMING TOURNAMENT | TEAMS FROM ACROSS THE COUNTRY ARE INVITED TO PARTICIPATE",
   ];
 
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % newsItems.length);
-    }, 8000); // Change news every 8 seconds
-
-    return () => clearInterval(interval);
-  }, [newsItems.length]);
+  // Duplicate news items for seamless looping
+  const allNews = [...newsItems, ...newsItems];
 
   return (
     <section
@@ -55,19 +49,25 @@ export default function BreakingNews() {
           {/* Scrolling News Content */}
           <div className="flex-1 overflow-hidden relative">
             <motion.div
-              key={currentIndex}
-              initial={{ x: "100%" }}
-              animate={{ x: isHovered ? undefined : "-100%" }}
-              transition={{
-                duration: 20,
-                ease: "linear",
-                repeat: 0,
+              className="flex gap-20"
+              animate={{
+                x: isHovered ? undefined : ["0%", "-50%"],
               }}
-              className="whitespace-nowrap"
+              transition={{
+                duration: 60,
+                ease: "linear",
+                repeat: Infinity,
+              }}
+              style={{ width: "max-content" }}
             >
-              <span className="text-sm md:text-base font-medium tracking-wide text-white">
-                {newsItems[currentIndex]}
-              </span>
+              {allNews.map((news, index) => (
+                <span
+                  key={index}
+                  className="text-sm md:text-base font-medium tracking-wide text-white whitespace-nowrap"
+                >
+                  {news}
+                </span>
+              ))}
             </motion.div>
           </div>
         </div>
