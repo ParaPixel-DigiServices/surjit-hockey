@@ -17,12 +17,12 @@ export default function BreakingNews() {
 
   return (
     <section
-      className="w-full bg-white py-3 overflow-hidden relative"
+      className="w-full bg-[#015296] py-0.5 overflow-hidden relative"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="max-w-[1920px] mx-auto px-6">
-        <div className="flex items-center gap-3 bg-black shadow-lg rounded-md px-4 py-2">
+      <div className="max-w-[1920px] mx-auto px-2">
+        <div className="flex items-center gap-3 bg-white shadow-lg rounded-md px-4 py-2">
           {/* Breaking News Label */}
           <div className="relative flex-shrink-0">
             {/* Red Arrow Background */}
@@ -63,7 +63,7 @@ export default function BreakingNews() {
               {allNews.map((news, index) => (
                 <span
                   key={index}
-                  className="text-sm md:text-base font-medium tracking-wide text-white whitespace-nowrap"
+                  className="text-sm md:text-base font-medium tracking-wide text-[#1b2b4a] whitespace-nowrap"
                 >
                   {news}
                 </span>

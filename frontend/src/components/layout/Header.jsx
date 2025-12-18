@@ -78,7 +78,7 @@ export default function Header() {
                 <img
                   src={logo}
                   alt="Surjit Hockey Logo"
-                  className="relative z-10 w-[48%] sm:w-[42%] h-auto object-contain -translate-y-[110%]"
+                  className="relative z-10 w-[48%] sm:w-[42%] h-auto object-contain -translate-y-[100%]"
                   draggable="false"
                 />
               </Link>

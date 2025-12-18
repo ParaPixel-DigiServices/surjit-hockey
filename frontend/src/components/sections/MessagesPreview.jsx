@@ -100,9 +100,9 @@ export default function MessagesPreview() {
 
   return (
     <>
-      <section className="relative bg-white py-8 md:py-12 font-[Sora]">
+      <section className="relative bg-white py-4 md:py-6 font-[Sora]">
         {/* Section Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-6">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -128,7 +128,7 @@ export default function MessagesPreview() {
                 onClick={() => setSelectedMessage(message)}
                 className="text-center cursor-pointer group hover:transform hover:scale-105 transition-all duration-300"
               >
-                <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-[#ffd700]/30 group-hover:border-[#ffd700] transition-colors duration-300 shadow-lg">
+                <div className="w-24 h-24 mx-auto mb-3 rounded-full overflow-hidden border-4 border-[#ffd700]/30 group-hover:border-[#ffd700] transition-colors duration-300 shadow-lg">
                   <SecureImage
                     src={config.getUploadUrl("messages", message.author_image)}
                     alt={message.author_name}
@@ -136,6 +136,12 @@ export default function MessagesPreview() {
                     loading="lazy"
                   />
                 </div>
+                <h3 className="font-bold text-sm text-[#1b2b4a] group-hover:text-[#ffd700] transition-colors duration-300">
+                  {message.author_name}
+                </h3>
+                <p className="text-xs text-gray-600 mt-1">
+                  {message.author_designation}
+                </p>
               </motion.div>
             ))}
           </div>
