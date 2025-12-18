@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { heroImages } from "../../config/heroImages";
+import CountdownTimer from "../layout/CountdownTimer";
 
 export default function Hero() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -35,14 +36,11 @@ export default function Hero() {
       {/* Gradient Overlay for Contrast */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/60"></div>
 
-      {/* Hero Content - Button Only at Bottom */}
+      {/* Hero Content - Timer at Bottom */}
       <div className="relative z-10 w-full min-h-[90vh] flex items-end justify-center pb-12">
-        <Link
-          to="/tournament"
-          className="inline-block bg-[var(--color-accent,#ffd700)] text-[#1b2b4a] font-extrabold uppercase tracking-wide px-8 py-3 rounded-md hover:bg-yellow-400 transition-all duration-300 shadow-lg hover:shadow-xl"
-        >
-          Explore Tournament
-        </Link>
+        <div className="text-[#ffd700] text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-center px-6 py-6 rounded-2xl backdrop-blur-md bg-black/40 border-2 border-[#ffd700]/30 shadow-2xl">
+          <CountdownTimer />
+        </div>
       </div>
     </section>
   );

@@ -6,11 +6,11 @@
  */
 export const PRIMARY_NAV = [
   {
-    label: "Home",
+    label: "HOME",
     path: "/",
   },
   {
-    label: "The Society",
+    label: "THE SOCIETY",
     children: [
       { label: "History Of Society", path: "/about#history-of-society" },
       { label: "Aims & Objectives Of Society", path: "/about#aims-objectives" },
@@ -30,7 +30,7 @@ export const PRIMARY_NAV = [
     ],
   },
   {
-    label: "Tournament",
+    label: "TOURNAMENT",
     children: [
       { label: "HOCKEY INDIA Officials", path: "/tournament#hockey-india-officials" },
       { label: "Online Participation Request", path: "/tournament#online-registration" },
@@ -48,11 +48,11 @@ export const PRIMARY_NAV = [
     ],
   },
   {
-    label: "Results",
+    label: "RESULTS",
     path: "/results",
   },
   {
-    label: "Our Dedicated Team",
+    label: "OUR DEDICATED TEAM",
     children: [
       { label: "7 Member Core Committee", path: "/about#core-committee" },
       { label: "Dedicated Team of Tournament", path: "/about#dedicated-team" },
@@ -60,7 +60,7 @@ export const PRIMARY_NAV = [
     ],
   },
   {
-    label: "News",
+    label: "NEWS",
     path: "/news",
   },
 ];
@@ -70,32 +70,11 @@ export const PRIMARY_NAV = [
  * ---------------------------------------------------------------------------
  */
 export const SECONDARY_NAV = [
-  { label: "E O I", path: "/streaming", highlight: true }, // Expression of Interest / Live Streaming
   { label: "Statistics", path: "/results#statistics" },
   { label: "Fixtures", path: "/fixtures" },
   { label: "Messages", path: "/messages" },
   { label: "Gallery", path: "/gallery" },
   { label: "Our Sponsors", path: "/sponsors" },
   { label: "Contact Us", path: "/contact" },
+  { label: "E O I", path: "/streaming", highlight: true }, // Expression of Interest / Live Streaming
 ];
-
-/**
- * LEGACY NAV_LINKS for backward compatibility
- */
-export const NAV_LINKS = PRIMARY_NAV;
-
-// Flatten all links for mobile or simple rendering
-export const getAllLinks = () => {
-  const links = [];
-  PRIMARY_NAV.forEach((item) => {
-    if (item.children) {
-      links.push(...item.children);
-    } else {
-      links.push(item);
-    }
-  });
-  SECONDARY_NAV.forEach((item) => {
-    links.push(item);
-  });
-  return links;
-};

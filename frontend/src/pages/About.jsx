@@ -14,7 +14,6 @@ import ChiefAdvisor from "../components/about/ChiefAdvisor";
 import Advisers from "../components/about/Advisers";
 import Patrons from "../components/about/Patrons";
 import NRIWellWishers from "../components/about/NRIWellWishers";
-import { Form } from "react-router-dom";
 import LestWeForget from "../components/about/LestWeForget";
 import CoreCommittee from "../components/about/CoreCommittee";
 import DedicatedTeam from "../components/about/DedicatedTeam";
