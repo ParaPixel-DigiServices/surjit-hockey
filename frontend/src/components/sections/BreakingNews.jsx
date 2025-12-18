@@ -23,24 +23,24 @@ export default function BreakingNews() {
 
   return (
     <section
-      className="w-full bg-black text-white py-3 overflow-hidden relative"
+      className="w-full bg-white py-3 overflow-hidden relative"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="max-w-[1920px] mx-auto px-6">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 bg-black shadow-lg rounded-md px-4 py-2">
           {/* Breaking News Label */}
           <div className="relative flex-shrink-0">
             {/* Red Arrow Background */}
-            <div className="relative bg-[#e31e24] px-6 py-2.5 flex items-center justify-center min-w-[180px]">
-              <span className="text-white font-bold text-lg tracking-wider uppercase relative z-10">
+            <div className="relative bg-[#e31e24] px-4 py-1.5 flex items-center justify-center min-w-[150px]">
+              <span className="text-white font-bold text-sm tracking-wider uppercase relative z-10">
                 BREAKING NEWS
               </span>
               {/* Arrow Point */}
               <div className="absolute right-0 top-0 h-full w-0 translate-x-full">
                 <svg
                   className="h-full"
-                  width="20"
+                  width="16"
                   height="100%"
                   viewBox="0 0 20 40"
                   preserveAspectRatio="none"
@@ -65,7 +65,7 @@ export default function BreakingNews() {
               }}
               className="whitespace-nowrap"
             >
-              <span className="text-base md:text-lg font-medium tracking-wide">
+              <span className="text-sm md:text-base font-medium tracking-wide text-white">
                 {newsItems[currentIndex]}
               </span>
             </motion.div>

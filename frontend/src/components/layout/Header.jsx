@@ -31,28 +31,30 @@ export default function Header() {
           {/* BOTTOM ROW - Main Navigation (Larger) */}
           <div className="flex items-center h-20">
             {/* ---------- LEFT NAV (PRIMARY - 6 items) ---------- */}
-            <nav className="hidden lg:flex items-center gap-2 text-[12px] font-semibold uppercase tracking-tight flex-1">
-              {PRIMARY_NAV.map((item) =>
-                item.children ? (
-                  <DropdownMenu
-                    key={item.label}
-                    label={item.label}
-                    items={item.children}
-                  />
-                ) : (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    className={`inline-block relative px-1.5 py-1 transition-colors duration-300 whitespace-nowrap ${
-                      location.pathname === item.path
-                        ? "text-white"
-                        : "text-white/80 hover:text-white"
-                    } after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-0 after:bg-white after:transition-[width] after:duration-400 after:ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:after:w-full`}
-                  >
-                    {item.label}
-                  </Link>
-                )
-              )}
+            <nav className="hidden xl:flex items-center justify-between flex-1 pr-4 text-[12px] font-semibold uppercase tracking-tight">
+              <div className="flex items-center gap-4">
+                {PRIMARY_NAV.map((item) =>
+                  item.children ? (
+                    <DropdownMenu
+                      key={item.label}
+                      label={item.label}
+                      items={item.children}
+                    />
+                  ) : (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      className={`inline-block relative px-1.5 py-1 transition-colors duration-300 whitespace-nowrap ${
+                        location.pathname === item.path
+                          ? "text-white"
+                          : "text-white/80 hover:text-white"
+                      } after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-0 after:bg-white after:transition-[width] after:duration-400 after:ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:after:w-full`}
+                    >
+                      {item.label}
+                    </Link>
+                  )
+                )}
+              </div>
             </nav>
 
             {/* ---------- CENTER HEX LOGO ---------- */}
@@ -156,30 +158,32 @@ export default function Header() {
             </div>
 
             {/* ---------- RIGHT NAV (SECONDARY - 7 items) ---------- */}
-            <nav className="hidden lg:flex items-center justify-end gap-2 text-[12px] font-semibold uppercase tracking-tight flex-1">
-              {SECONDARY_NAV.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`inline-block relative px-1.5 py-1 transition-colors duration-300 whitespace-nowrap ${
-                    item.highlight
-                      ? "text-[#ffd700] animate-pulse font-bold"
-                      : location.pathname === item.path
-                        ? "text-white"
-                        : "text-white/80 hover:text-white"
-                  } after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-0 after:bg-white after:transition-[width] after:duration-400 after:ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:after:w-full`}
-                >
-                  {item.highlight && <span className="mr-1">▶</span>}
-                  {item.label}
-                  {item.highlight && <span className="ml-1">◀</span>}
-                </Link>
-              ))}
+            <nav className="hidden xl:flex items-center justify-between flex-1 pl-4 text-[12px] font-semibold uppercase tracking-tight">
+              <div className="flex items-center gap-4 ml-auto">
+                {SECONDARY_NAV.map((item) => (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className={`inline-block relative px-1.5 py-1 transition-colors duration-300 whitespace-nowrap ${
+                      item.highlight
+                        ? "text-[#ffd700] animate-pulse font-bold"
+                        : location.pathname === item.path
+                          ? "text-white"
+                          : "text-white/80 hover:text-white"
+                    } after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-0 after:bg-white after:transition-[width] after:duration-400 after:ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:after:w-full`}
+                  >
+                    {item.highlight && <span className="mr-1">▶</span>}
+                    {item.label}
+                    {item.highlight && <span className="ml-1">◀</span>}
+                  </Link>
+                ))}
+              </div>
             </nav>
 
             {/* ---------- MOBILE MENU ---------- */}
             <button
               onClick={() => setMobileOpen(true)}
-              className="lg:hidden p-2 rounded-md border border-white/10 text-white hover:bg-white/10 ml-auto"
+              className="xl:hidden p-2 rounded-md border border-white/10 text-white hover:bg-white/10 ml-auto"
               aria-label="Open menu"
             >
               <svg

@@ -100,7 +100,21 @@ export default function MessagesPreview() {
 
   return (
     <>
-      <section className="relative bg-white py-16 md:py-24 font-[Sora]">
+      <section className="relative bg-white py-8 md:py-12 font-[Sora]">
+        {/* Section Header */}
+        <div className="text-center mb-8">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-4xl font-extrabold text-[#1b2b4a] uppercase tracking-wide"
+          >
+            Messages from Dignitaries
+          </motion.h2>
+          <div className="mt-2 h-[3px] w-24 bg-[#ffd700] mx-auto rounded-full" />
+        </div>
+
         {/* Officials Grid */}
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-6">
