@@ -98,7 +98,7 @@ export default function CountdownTimer() {
   return (
     <div className="flex flex-col items-center">
       {label && (
-        <span className="text-[8px] uppercase tracking-widest opacity-80 mb-0.5">
+        <span className="text-[8px] uppercase tracking-widest opacity-80 mb-1.5">
           {label}
         </span>
       )}
