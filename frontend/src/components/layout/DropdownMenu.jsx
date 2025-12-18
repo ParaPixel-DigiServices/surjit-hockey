@@ -61,13 +61,18 @@ export default function DropdownMenu({ label, items }) {
             className="absolute top-full left-0 mt-2 w-72 bg-[#1b2b4a] border border-white/10 rounded-md shadow-2xl overflow-hidden z-50"
           >
             <div className="py-2 max-h-[70vh] overflow-y-auto scrollbar-hide [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
-              {items.map((item) => {
+              {items.map((item, index) => {
                 const hasSections =
                   Array.isArray(item.sections) && item.sections.length > 0;
                 const isActive = location.pathname === item.path;
 
                 return (
                   <div key={item.path} className="relative">
+                    {index > 0 && (
+                      <div className="relative h-px mx-3 my-1.5">
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                      </div>
+                    )}
                     {/* First-level item: label navigates, arrow toggles sections */}
                     <div
                       onMouseEnter={() => {
